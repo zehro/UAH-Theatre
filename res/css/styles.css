@@ -24,7 +24,7 @@
     .gradient(@type; @direction; @colors; @prefixes; (@index - 1));
 
     @prefix  : extract(@prefixes, @index);
-    @dir-old : 90 - (@dir);
+    @dir-old : 90 - (@direction);
 
     background-image: ~"-@{prefix}-@{type}-gradient(@{dir-old}, @{colors})";
   & when ( @index = length(@prefixes) ) {
@@ -55,7 +55,7 @@ a {
     width: 300px;
     height: 540px;
     border: 1px solid #616161;
-    background: #ACC0FD;
+    background: black;//#ACC0FD;
     position: relative;
 }
 
