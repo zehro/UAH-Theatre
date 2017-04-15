@@ -21,12 +21,8 @@
 }
 
 .gradient(@type; @direction; @colors; @prefixes: webkit, moz, ms, o; @index: length(@prefixes)) when (@index > 0) {
-    .gradient(@type; @direction; @colors; @prefixes; (@index - 1));
 
-    @prefix  : extract(@prefixes, @index);
-    @dir-old : 90 - (@dir);
-
-    background-image: black;
+    background: black;
 }
 
 // Main CSS
