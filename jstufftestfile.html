@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width initial-scale=1.0'>        
+         <link rel='stylesheet' href='style/main.css'>
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+         <script>
+$(document).ready(function(){
+    $(".banner").click(function(){
+        $(".menu-option").toggle(1000);
+    });
+    $("a").click(function() {
+        var href = $(this).attr('href');
+        $(".back-button").animate({left: '-500px'});
+        //var stopclock = setInterval(function() {
+        //}, 1000);
+        setTimeout(function() {window.location = href;}, 10000);
+        return false;
+    });
+});
+        </script>
+    </head>
+    <body class='center'>
+        <div id='screen'>
+            <a href='start.html' class='back-button small-white-button'>Back</a>
+            <div class='logo-banner'>
+                <img src='UAH_bluewht.png'>
+            </div>
+            <div class='banner'>Home</div>
+            <div class='vertically-center'>
+                <div class='menu-option'>
+                    <a href='login.html'>Costumes</a>
+                </div>
+                <div class='menu-option'>Props</div>
+                <div class='menu-option'>Add Item</div>
+            </div>
+        </div>
+    </body>
+</html>
