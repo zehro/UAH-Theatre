@@ -130,6 +130,7 @@ a {
 .button.small {
   height: 20px;
   width: 50px;
+  font-size: 14px;
 }
 .button#back-button {
   -webkit-border-radius: 0px;
@@ -154,7 +155,7 @@ a {
 }
 /* Usage */
 #back-button:hover {
-  box-shadow: 2px 2px 12px #ffffff;
+  border-color: white;
 }
 .logo-banner {
   display: flex;
@@ -195,6 +196,7 @@ a {
   top: 50px;
   right: 7.5px;
   visibility: collapse;
+  z-index: 1;
 }
 .menu.show {
   visibility: visible;

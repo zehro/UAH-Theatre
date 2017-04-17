@@ -130,6 +130,7 @@ a {
 .button.small {
   height: 20px;
   width: 50px;
+  font-size: 14px;
 }
 .button#back-button {
   -webkit-border-radius: 0px;
@@ -324,6 +325,7 @@ a {
 #search-screen #search-filters-container #search-button.small {
   height: 20px;
   width: 50px;
+  font-size: 14px;
 }
 #search-screen #search-filters-container #search-button#back-button {
   -webkit-border-radius: 0px;

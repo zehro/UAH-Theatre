@@ -1,4 +1,5 @@
 /* Imports */
+/* Imports */
 @import url("https://fonts.googleapis.com/css?family=Open+Sans");
 /* Mixins */
 /* Variables */
@@ -128,6 +129,7 @@ a {
 .button.small {
   height: 20px;
   width: 50px;
+  font-size: 14px;
 }
 .button#back-button {
   -webkit-border-radius: 0px;
@@ -150,6 +152,7 @@ a {
   width: 100%;
   position: relative;
 }
+/* Usage */
 #logo {
   margin-top: 50px;
 }
