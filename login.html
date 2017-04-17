@@ -2,22 +2,35 @@
     <head>
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width initial-scale=1.0'>
-         <link rel='stylesheet' href='style/main.css'>
+        <link rel='stylesheet' type='text/css' href='res/css/main-exterior.css'>
     </head>
     <body class='center'>
         <div id='screen'>
-            <a href='start.html' class='back-button small-white-button'>Back</a>
-            <div id='logo' class='margin-top-50'>
-                <img src='UAH_bluewht.png'>
+            <a href='index.html' id='back-button' class='small white button'>
+                Back
+            </a>
+
+            <div id='logo'>
+                <img src='res/images/UAH_bluewht.png'>
             </div>
-            <div class='banner margin-top-50'>Login</div>
-            <div class='vertically-center margin-top-30'>
-                <input type='text' placeholder='Username' class='input-field'>
-                <input type='password' placeholder='Password' class='input-field'>
+
+            <div class='banner'>
+                Login
             </div>
-            <div class='vertically-center margin-top-30'>
-                <a href='home.html' class='blue-button'>Login</a>
-                <a href='registration.html'>Or, register now!</a>
+
+            <div id='container-fields' class='vertically-center'>
+                <input type='text'     class='input-field' placeholder='Username'>
+                <input type='password' class='input-field' placeholder='Password'>
+            </div>
+
+            <div class='vertically-center'>
+                <a href='home.html' class='blue button'>
+                    Login
+                </a>
+
+                <a href='registration.html' class='subtext'>
+                    Don't have an account? Register Here!
+                </a>
             </div>
         </div>
     </body>

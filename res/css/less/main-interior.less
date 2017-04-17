@@ -1,0 +1,65 @@
+/* Imports */
+@import "main.less";
+
+/* Usage */
+#back-button:hover {
+    border-color: white;
+}
+
+// Banner Logo Header
+.logo-banner {
+    .banner;
+    background-color: #FFFFFF;
+
+    img {
+        width: 150px;
+    }
+}
+
+// Menu Fav-Bar Icon
+.menu-icon {
+    .border-radius(30px);
+    .animate(all, 0.2s);
+    position: absolute;
+    padding: 6px;
+    top: 8px;
+    right: 8px;
+
+    &:hover {
+        cursor: pointer;
+        background: white;
+        color: black;
+    }
+}
+
+// Drop-Down Corner Menu
+.menu {
+    position: absolute;
+    top: 50px;
+    right: @menu-option-padding;
+    visibility: collapse;
+    z-index: 1;
+
+    &.show {
+        visibility: visible;
+    }
+
+    .menu-option {
+        width: 100%;
+        padding: 12px @menu-option-padding;
+        border: 1px solid #2683CC;
+        text-align: center;
+        background: #FFFFFF;
+        color: #2683CC;
+        font-size: 18px;
+
+        a {
+            color: #2683CC;
+        }
+
+        &:hover {
+            background: lighten(#007AC4, 10%);
+            color: #FFFFFF;
+        }
+    }
+}

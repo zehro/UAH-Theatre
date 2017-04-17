@@ -1,85 +1,107 @@
 <html>
     <head>
         <meta charset='utf-8'>
-        <meta name='viewport' content='width=device-width initial-scale=1.0'>        
-         <link rel='stylesheet' href='style/main.css'>
+        <meta name='viewport' content='width=device-width initial-scale=1.0'>
+        <link rel='stylesheet' type='text/css' href='res/css/main-search.css'>
     </head>
     <body class='center'>
         <div id='screen'>
-            <a href='home.html' class='back-button small-white-button'>Back</a>
-            <div class='banner'>Search
+            <a href='home.html' id='back-button' class='small white button'>
+                Back
+            </a>
+
+            <div class='banner'>
+                <span>Search</span>
+
                 <i class="fa fa-bars menu-icon"></i>
-                <div class='menu vertically-center'>
-                    <span><a href='home.html'>Home</a></span>
-                    <span>Settings</span>
-                    <span><a href='start.html'>Log Out</a></span>
+                <div class='vertically-center menu'>
+                    <a href='home.html' class='menu-option'>
+                        <span>Home</span>
+                    </a>
+                    <a href='' class='menu-option'>
+                        <span>Settings</span>
+                    </a>
+                    <a href='index.html' class='menu-option'>
+                        <span>Log Out</span>
+                    </a>
                 </div>
             </div>
-            <div id='search-bg'>
-                <div class='center'>
-                    <div id='filters' class='has-border'>No Filter</div>
-                    <div id='edit-filter' class='has-border'>Edit Filters</div>
-                </div>
-                <div class='center margin-top-10'>
-                    <input id='search' class='has-border' type='text' placeholder='Search...'>
-                </div>
-                <div class='vertically-center' style='font-size: 16px; margin: 20px 0;'>
-                    <div class='inventory-item center'>
-                        <div class='item-img'></div>
-                        <div class='item-des'>
-                            <span class='item-name'>Item Name</span>
-                            <span>Description XX</span>
-                            <span>XXXXXXXXXXXX</span>
-                            <span>XXXXXXXXXXXX</span>
-                        </div>
+
+            <div id='search-screen'>
+                <div id='search-filters-container'>
+                    <div class='center'>
+                        <div id='filters'     class='has-border'>No Filter</div>
+                        <div id='edit-filter' class='has-border'>Edit Filters</div>
                     </div>
-                    <div class='inventory-item center'>
-                        <div class='item-img'></div>
-                        <div class='item-des'>
-                            <span class='item-name'>King's Crown</span>
-                            <span>Description XX</span>
-                            <span>XXXXXXXXXXXX</span>
-                            <span>XXXXXXXXXXXX</span>
-                        </div>
-                    </div>
-                    <div class='inventory-item center'>
-                        <div class='item-img'></div>
-                        <div class='item-des'>
-                            <span class='item-name'>Ancient Sword</span>
-                            <span>Description XX</span>
-                            <span>XXXXXXXXXXXX</span>
-                            <span>XXXXXXXXXXXX</span>
-                        </div>
-                    </div>
-                    <div class='inventory-item center'>
-                        <div class='item-img'></div>
-                        <div class='item-des'>
-                            <span class='item-name'>Item Name</span>
-                            <span>Description XX</span>
-                            <span>XXXXXXXXXXXX</span>
-                            <span>XXXXXXXXXXXX</span>
-                        </div>
+
+                    <div class='center'>
+                        <input id='search-bar' type='text' class='input-field has-border' placeholder='Search...'>
+
+                        <a href='search.html' id='search-button'>
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </a>
                     </div>
                 </div>
-                <div id='pager' class='center'>
-                    <div class='has-border'>Previous</div>
-                    <div class='has-border'>Page 1</div>
-                    <div class='has-border'>Next</div>
+
+                <div id='search-results-container'>
+                    <a href='search_result.html' class='inventory-item'>
+                        <div class='item-img'><img src="res/images/Trebuchet.jpg"></div>
+                        <div class='item-description'>
+                            <div class='item-name'>Trebuchet</div>
+                            <div class='item-detail'>Description XX</div>
+                            <div class='item-type'>Prop</div>
+                            <div class='item-etc'>XXXXXXXXXXXX</div>
+                        </div>
+                    </a>
+                    <a href='search_result.html' class='inventory-item'>
+                        <div class='item-img'><img src = "res/images/pumpkin.jpeg"></div>
+                        <div class='item-description'>
+                            <div class='item-name'>Pumpkin Kid</div>
+                            <div class='item-detail'>Description:</div>
+                            <div class='item-type'>Costume</div>
+                            <div class='item-etc'>XXXXXXXXXXXX</div>
+                        </div>
+                    </a>
+                    <a href='search_result.html' class='inventory-item'>
+                        <div class='item-img'><img src = "res/images/Crown.jpg"></div>
+                        <div class='item-description'>
+                            <div class='item-name'>King's Crown</div>
+                            <div class='item-detail'>Description XX</div>
+                            <div class='item-type'>Costume</div>
+                            <div class='item-etc'>XXXXXXXXXXXX</div>
+                        </div>
+                    </a>
+                    <a href='search_result.html' class='inventory-item'>
+                        <div class='item-img'><img src = "res/images/Sword.jpg"></div>
+                        <div class='item-description'>
+                            <div class='item-name'>Ancient Sword</div>
+                            <div class='item-detail'>Description XX</div>
+                            <div class='item-type'>Prop</div>
+                            <div class='item-etc'>XXXXXXXXXXXX</div>
+                        </div>
+                    </a>
+                    <a href='search_result.html' class='inventory-item'>
+                        <div class='item-img'><img src = "res/images/pumpkin.jpeg"></div>
+                        <div class='item-description'>
+                            <div class='item-name'>Pumpkin Kid</div>
+                            <div class='item-detail'>Description:</div>
+                            <div class='item-type'>Costume</div>
+                            <div class='item-etc'>XXXXXXXXXXXX</div>
+                        </div>
+                    </a>
+
+                    <div id='pagination' class='center'>
+                        <div class='has-border'>Previous</div>
+                        <div class='has-border'>Page 1</div>
+                        <div class='has-border'>Next</div>
+                    </div>
                 </div>
             </div>
         </div>
+
         <script src="https://use.fontawesome.com/ea1fec41e1.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-        <script>
-            $('.menu-icon').on('click', (e => {
-                $('.menu').toggleClass('show');
-            }));
-            $("#search").change(function() {
-                let $keywords = $(this).val().toLowerCase();
-                $(".inventory-item").each(function() {
-                    $(this).toggle(!$keywords.length || $(".item-name", this).text().toLowerCase().includes($keywords));
-                });
-            });
-        </script>
+        <script src="res/scripts/toggle-menu.js"></script>
+        <script src="res/scripts/find-search-results.js"></script>
     </body>
 </html>
