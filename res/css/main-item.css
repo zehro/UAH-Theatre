@@ -262,6 +262,10 @@ a {
   background: green;
   color: white;
 }
+#item-screen #item-status .unavailable {
+  background: red;
+  color: white;
+}
 #item-screen #item-info {
   color: black;
   margin: 10px;
