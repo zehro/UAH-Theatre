@@ -14,6 +14,7 @@ virtualenv venv
 export FLASK_APP=uah
 export FLASK_DEBUG=true (recommended)
 
+pip install -e .
 flask run
 ```
 Then navigate to localhost:5000, the app should be up.
