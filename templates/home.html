@@ -7,41 +7,44 @@
 {% endblock %}
 
 {% block header %}
-<a id='logo_container' href='home.html'>
-    <img src="{{ url_for('static', filename='/images/UAH_logo.svg') }}" class='logo'>
+<a id="logo_container" href="home.html">
+    <img src="{{ url_for('static', filename='/images/UAH_logo.svg') }}" class="logo">
 </a>
 
-<div id='banner_container'>
-    <h1 class='banner'>Home</h1>
+<div id="banner_container">
+    <h1 class="banner">Home</h1>
 </div>
 
 <div id='logout_container'>
-    <button class='ui button white' onclick='logout();'>
+    <a href="{{ url_for('logout') }}"
+       class="ui button white">
         <i class='icon sign out'></i>
         Logout
-    </button>
+    </a>
 </div>
 {% endblock %}
 
 {% block pagecontent %}
-<nav class='ui menu'>
-    <a class='item blue'>
-        <i class='icon search'></i>
+<nav class="ui menu">
+    <a class="item blue">
+        <i class="icon search"></i>
         Search Items
     </a>
-    <a class='item blue'>
-        <i class='icon write'></i>
+    <a class="item blue">
+        <i class="icon write"></i>
         Edit Inventory
     </a>
-    <a class='item blue'>
-        <i class='icon address book'></i>
+    <a class="item blue">
+        <i class="icon address book"></i>
         Manage Accounts
     </a>
-    <a class='item blue'>
-        <i class='icon settings'></i>
+    <a class="item blue">
+        <i class="icon settings"></i>
         Manage Settings
     </a>
 </nav>
+
+
 {% endblock %}
 
 {% block js %}{% endblock %}
