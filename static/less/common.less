@@ -1,0 +1,50 @@
+// main: main.less
+
+/* Fonts */
+@import url( 'https://fonts.googleapis.com/css?family=Open+Sans' );
+
+/* Variables */
+@import url( 'utils/theme.less' );
+
+/* Mixins */
+@import url( 'utils/mixins.less' );
+
+/* Common Classes */
+.center {
+    .center();
+}
+
+.center-vertical {
+    .center( column );
+}
+
+/* Animations */
+.fade_in {
+    animation : fade_in @anim_duration ease;
+    opacity   : 1;
+}
+
+@keyframes fade_in {
+    0% {
+        opacity : 0;
+    }
+
+    100% {
+        opacity : 1;
+    }
+}
+
+.fade_out {
+    animation : fade_out @anim_duration ease;
+    opacity   : 0;
+}
+
+@keyframes fade_out {
+    0% {
+        opacity : 1;
+    }
+
+    100% {
+        opacity : 0;
+    }
+}

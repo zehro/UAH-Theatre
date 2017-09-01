@@ -1,0 +1,47 @@
+// out: ../css/main.home.css, sourcemap: false, compress: false
+
+// Importing Main Styles
+@import url( 'main.less' );
+
+// Landing Page Content
+header {
+    // Logo
+    #logo_container {
+        display : inline-block;
+        float   : left;
+
+        .logo {
+            height : 36px;
+        }
+    }
+
+    // Banner
+    #banner_container {
+        display : inline-block;
+
+        .banner {
+            display : inline-block;
+            margin  : 0px;
+        }
+    }
+
+    // Logout Button
+    #logout_container {
+        display : inline-block;
+        float   : right;
+    }
+}
+
+nav.ui.menu {
+    //
+}
+
+body#main_content {
+    //
+}
+
+// Mobile Style Overrides
+@media only screen and ( max-width : 750px )
+{
+    //
+}

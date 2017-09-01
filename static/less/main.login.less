@@ -1,0 +1,63 @@
+// out: ../css/main.login.css, sourcemap: false, compress: false
+
+// Importing Main Styles
+@import url( 'main.less' );
+
+// Landing Page Content
+#page_header {
+    padding : 30px;
+
+    // Logo
+    #logo_container {
+        .logo {
+            height : 46px;
+        }
+    }
+}
+
+#page_content {
+    margin     : 20px auto;
+    width      : 25%;
+
+    .input_container, .button_container {
+        border  : none;
+        margin  : 10px 0px;
+        padding : 0px;
+    }
+
+    .subtext {
+        .animate( all, 0.2s );
+        color           : @color_primary;
+        cursor          : pointer;
+        text-decoration : underline;
+
+        &:hover, &:focus {
+            color : white;
+        }
+    }
+}
+
+// Mobile Style Overrides
+@media only screen and ( max-width : 750px )
+{
+    #page_header {
+        // Logo
+        #logo_container {
+            .logo {
+                width : 150px;
+            }
+        }
+
+        // Banner
+        #banner_container {
+            .banner {
+                font-size : 1.2rem;
+            }
+        }
+    }
+
+    #page_content {
+        min-width : auto;
+        width     : 75%;
+    }
+}

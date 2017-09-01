@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ url_for('static', filename='css/main.home.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block header %}
+<a id='logo_container' href='home.html'>
+    <img src="{{ url_for('static', filename='/images/UAH_logo.svg') }}" class='logo'>
+</a>
+
+<div id='banner_container'>
+    <h1 class='banner'>Home</h1>
+</div>
+
+<div id='logout_container'>
+    <button class='ui button white' onclick='logout();'>
+        <i class='icon sign out'></i>
+        Logout
+    </button>
+</div>
+{% endblock %}
+
+{% block pagecontent %}
+<nav class='ui menu'>
+    <a class='item blue'>
+        <i class='icon search'></i>
+        Search Items
+    </a>
+    <a class='item blue'>
+        <i class='icon write'></i>
+        Edit Inventory
+    </a>
+    <a class='item blue'>
+        <i class='icon address book'></i>
+        Manage Accounts
+    </a>
+    <a class='item blue'>
+        <i class='icon settings'></i>
+        Manage Settings
+    </a>
+</nav>
+{% endblock %}
+
+{% block js %}{% endblock %}

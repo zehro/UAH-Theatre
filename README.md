@@ -1,32 +1,16 @@
 # UAH-Theatre
 
-## Set up the local server
+## Setting Up the Local Server
+1. Install Python 3. If you're running Linux, your distribution will provide packages you can use.
+2. Follow the instructions [here](http://flask.pocoo.org/docs/0.12/installation/#installation) to install the virtualenv and related tools
+3. Clone this repository.
+4. Open a terminal and navigate to this repository. Run ```virtualenv venv```. This creates a virtual Python 3 environment where you can install packages specific to this app.
+5. On OS X or Linux, run ```. venv/bin/activate```. On Windows, run ```. venv/Scripts/activate```. This activates the virtual environment.
+6. Install necessary packages by running ```pip install -r requirements.txt```.
 
-1. Follow the instruction [here](http://flask.pocoo.org/docs/0.12/installation/#installation) to install the virtualenv and related tools
-2. Clone this repository, check out to the flask-skeleton branch ```git checkout flask-skeleton```
-3. cd to the repository, run the following commands one by one if it's the first time you set up the environment
-(it's recommended to set up aliases for these commands. On OSX, edit the .bash_profile file and add aliases there (google how to do it))
-```
-virtualenv venv
-
-. venv/bin/activate
-
-export FLASK_APP=uah
-export FLASK_DEBUG=true (recommended)
-
-pip install -e .
-flask run
-```
-Then navigate to localhost:5000, the app should be up.
-
-If you already set up the environment, running these commands each time should be sufficient to get the local server up:
-```
-. venv/bin/activate
-
-flask run
-```
+## Running the Local Server
+1. Open a terminal and navigate to this repository.
+2. If you have not done so, activate the virtual environment. On OS X or Linux, run ```. venv/bin/activate```. On Windows, run ```. venv/Scripts/activate```.
+3. Run the server with ```python app.py```. The server will automatically reload any changed files, provided that they were saved without syntax errors or other problems. If the server stops for this reason, you can always start it again by re-running this command.
 
 Run ```deactivate``` to exit the virtualenv.
-
-If the flask command is not found, try running ```pip install flask``` first in your virtualenv.
-To install other dependencies, run ```pip install requirements.txt```.

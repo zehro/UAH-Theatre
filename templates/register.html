@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ url_for('static', filename='css/main.login.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block header %}
+<div id="logo_container">
+    <img src="{{ url_for('static', filename='images/UAH_logo.svg') }}" class="logo">
+</div>
+
+<div id="banner_container">
+    <h1 class="banner">UAH Theater Inventory</h1>
+</div>
+{% endblock %}
+
+{% block pagecontent %}
+<form method="post">
+    <fieldset class="input_container">
+        <div class="ui input fluid">
+            <input id="username" type="text" placeholder="Username">
+        </div>
+    </fieldset>
+
+    <fieldset class="input_container">
+        <div class="ui input fluid">
+            <input id="password" type="password" placeholder="Password">
+        </div>
+    </fieldset>
+
+    <fieldset class="input_container">
+        <div class="ui input fluid">
+            <input id="confirm_password" type="password" placeholder="Confirm Password">
+        </div>
+    </fieldset>
+
+    <fieldset class="input_container">
+        <div class="ui input fluid">
+            <input id="email" type="email" placeholder="Email">
+        </div>
+    </fieldset>
+
+    <fieldset class="input_container">
+        <div class="ui input fluid">
+            <input id="confirm_email" type="email" placeholder="Confirm Email">
+        </div>
+    </fieldset>
+
+    <div class="button_container">
+        <button type="submit"
+                class="ui button fluid blue">
+            Create Account
+        </button>
+    </div>
+
+    <a href="{{ url_for('login_page') }}"
+       class="subtext">
+        Have an account? Login here
+    </a>
+</form>
+{% endblock %}
+
+{% block js %}{% endblock %}
