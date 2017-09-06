@@ -85,3 +85,19 @@ Edit Object Query
 ```
 UPDATE OBJECT SET [TYPE = 'c' | TYPE = 'p'] [CNDTN = 'New' | CNDTN = 'Good' | CNDTN = 'Decent' | CNDTN = 'Excellent' | CNDTN = 'Bad' | CNDTN = 'Unusable'] [ERA = $era$] [CHECKOUTTO = $uid$] WHERE OID = $objID$;
 ```
+Add Picture Query
+```
+INSERT INTO PICTURE(OID, IMAGE) VALUES ($oid$, $imageBlob$);
+```
+View Logs
+```
+SELECT * FROM AUDIT WHERE [ACTION = $auditaction$] [OBJECT = $oid$] [USER = $uid$];
+```
+Remove Object
+```
+DELETE FROM OBJECT WHERE OID = $oid$;
+```
+Remove User
+```
+DELETE FROM USER WHERE UID = $uid$;
+```
