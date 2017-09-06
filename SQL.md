@@ -63,3 +63,10 @@ INSERT INTO PROPS(PRID, DIMENSION) VALUES (2, '1x1x1');
 INSERT INTO PROPS(PRID, DIMENSION) VALUES (3, '2x7x8');
 INSERT INTO PROPS(PRID, DIMENSION) VALUES (6, '5x8x10');
 ```
+
+# Application Queries
+```
+Login Query: SELECT UID FROM USER WHERE NAME = $name$ AND PASSWORD = $password$ AND ISVERIFIED = 1;
+User Registration Query: INSERT INTO USER(NAME, PASSWORD) VALUES ($name$, $password$);
+Admin Registration Query: INSERT INTO USER(NAME, PASSWORD, ISADMIN) VALUES ($name$, $password$, 1);
+```
