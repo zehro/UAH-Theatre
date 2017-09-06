@@ -65,13 +65,23 @@ INSERT INTO PROPS(PRID, DIMENSION) VALUES (6, '5x8x10');
 ```
 
 # Application Queries
-```
 Login Query
 ```
 SELECT UID FROM USER WHERE NAME = $name$ AND PASSWORD = $password$ AND ISVERIFIED = 1;
 ```
-User Registration Query: INSERT INTO USER(NAME, PASSWORD) VALUES ($name$, $password$);
-Admin Registration Query: INSERT INTO USER(NAME, PASSWORD, ISADMIN) VALUES ($name$, $password$, 1);
-Search Query (with filters): SELECT * FROM OBJECT WHERE NAME = $searchName$ [AND TYPE = 'c' | AND TYPE = 'p'] [AND CNDTN = 'New' | AND CNDTN = 'Good' | AND CNDTN = 'Decent' | AND CNDTN = 'Excellent' | AND CNDTN = 'Bad' | AND CNDTN = 'Unusable'] [AND ERA = $era$] [AND NOT (CHECKEDOUTTO = NULL)];
-Edit Object Query: UPDATE OBJECT SET [TYPE = 'c' | TYPE = 'p'] [CNDTN = 'New' | CNDTN = 'Good' | CNDTN = 'Decent' | CNDTN = 'Excellent' | CNDTN = 'Bad' | CNDTN = 'Unusable'] [ERA = $era$] [CHECKOUTTO = $uid$] WHERE OID = $objID$;
+User Registration Query
+```
+INSERT INTO USER(NAME, PASSWORD) VALUES ($name$, $password$);
+```
+Admin Registration Query
+```
+INSERT INTO USER(NAME, PASSWORD, ISADMIN) VALUES ($name$, $password$, 1);
+```
+Search Query (with filters)
+```
+SELECT * FROM OBJECT WHERE NAME = $searchName$ [AND TYPE = 'c' | AND TYPE = 'p'] [AND CNDTN = 'New' | AND CNDTN = 'Good' | AND CNDTN = 'Decent' | AND CNDTN = 'Excellent' | AND CNDTN = 'Bad' | AND CNDTN = 'Unusable'] [AND ERA = $era$] [AND NOT (CHECKEDOUTTO = NULL)];
+```
+Edit Object Query
+```
+UPDATE OBJECT SET [TYPE = 'c' | TYPE = 'p'] [CNDTN = 'New' | CNDTN = 'Good' | CNDTN = 'Decent' | CNDTN = 'Excellent' | CNDTN = 'Bad' | CNDTN = 'Unusable'] [ERA = $era$] [CHECKOUTTO = $uid$] WHERE OID = $objID$;
 ```
