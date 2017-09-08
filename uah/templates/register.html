@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block stylesheets %}
 <link href="{{ url_for('static', filename='css/main.login.css') }}" rel="stylesheet" type="text/css">
@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block pagecontent %}
-<form method="post">
+<form method="post" action="/users">
     <fieldset class="input_container">
         <div class="ui input fluid">
             <input id="username" type="text" placeholder="Username">
@@ -30,19 +30,35 @@
         </div>
     </fieldset>
 
+    <fieldset class="input_container">
+        <div class="ui input fluid">
+            <input id="confirm_password" type="password" placeholder="Confirm Password">
+        </div>
+    </fieldset>
+
+    <fieldset class="input_container">
+        <div class="ui input fluid">
+            <input id="email" type="email" placeholder="Email">
+        </div>
+    </fieldset>
+
+    <fieldset class="input_container">
+        <div class="ui input fluid">
+            <input id="confirm_email" type="email" placeholder="Confirm Email">
+        </div>
+    </fieldset>
+
     <div class="button_container">
         <button type="submit"
                 class="ui button fluid blue">
-            Login
+            Create Account
         </button>
     </div>
 
-    <div class="button_container">
-        <a href="{{ url_for('register_page') }}"
-           class="ui button fluid blue">
-            Register
-        </a>
-    </div>
+    <a href="{{ url_for('login') }}"
+       class="subtext">
+        Have an account? Login here
+    </a>
 </form>
 {% endblock %}
 

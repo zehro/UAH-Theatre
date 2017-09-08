@@ -1,47 +1,58 @@
-<html>
-    <head>
-        <meta charset='utf-8'>
-        <meta name='viewport' content='width=device-width initial-scale=1.0'>
-        <link rel='stylesheet' type='text/css' href='/static/style/main-home.css'>
-    </head>
-    <body class='center'>
-        <div id='screen'>
-            <div class='logo-banner'>
-                <img src='/static/assets/UAH_bluewht.png'>
-            </div>
+{% extends "base.html" %}
 
-            <div class='banner'>
-                <span>Home</span>
+{% block title %}Home{% endblock %}
 
-                <i class="fa fa-bars menu-icon"></i>
-                <div class='vertically-center menu'>
-                    <a href='home.html' class='menu-option'>
-                        <span>Home</span>
-                    </a>
-                    <a href='' class='menu-option'>
-                        <span>Settings</span>
-                    </a>
-                    <a href='index.html' class='menu-option'>
-                        <span>Log Out</span>
-                    </a>
-                </div>
-            </div>
+{% block stylesheets %}
+<link href="{{ url_for('static', filename='css/main.home.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
 
-            <div class='vertically-center'>
-                <a href='search.html' class='home-option'>
-                    <span>Costumes</span>
-                </a>
-                <a href='search.html' class='home-option'>
-                    <span>Props</span>
-                </a>
-                <a href='' class='home-option'>
-                    <span>Add Item</span>
-                </a>
-            </div>
-        </div>
+{% block header %}
+<a id="logo_container" href="home.html">
+    <img src="{{ url_for('static', filename='/images/UAH_logo.svg') }}" class="logo">
+</a>
 
-        <script src="https://use.fontawesome.com/ea1fec41e1.js"></script>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-        <script src="/static/scripts/toggle-menu.js"></script>
-    </body>
-</html>
+<div id="banner_container">
+    <h1 class="banner">Home</h1>
+</div>
+
+<div id='logout_container'>
+    <a href="{{ url_for('logout') }}"
+       class="ui button white">
+        <i class='icon sign out'></i>
+        Logout
+    </a>
+</div>
+{% endblock %}
+
+{% block pagecontent %}
+<nav class="ui menu">
+    <a class="item blue">
+        <i class="icon search"></i>
+        Search Items
+    </a>
+
+    <a href="{{ url_for('additem_page') }}"
+        class="item blue">
+        <i class="icon write"></i>
+        Add Item
+    </a>
+
+
+    <a class="item blue">
+        <i class="icon write"></i>
+        Edit Inventory
+    </a>
+    <a class="item blue">
+        <i class="icon address book"></i>
+        Manage Accounts
+    </a>
+    <a class="item blue">
+        <i class="icon settings"></i>
+        Manage Settings
+    </a>
+</nav>
+
+
+{% endblock %}
+
+{% block js %}{% endblock %}

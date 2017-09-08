@@ -1,37 +1,49 @@
-<html>
-    <head>
-        <meta charset='utf-8'>
-        <meta name='viewport' content='width=device-width initial-scale=1.0'>
-        <link rel='stylesheet' type='text/css' href='/static/style/main-exterior.css'>
-    </head>
-    <body class='center'>
-        <div id='screen'>
-            <a href='index.html' id='back-button' class='small white button'>
-                Back
-            </a>
+{% extends "base.html" %}
 
-            <div id='logo'>
-                <img src='/static/assets/UAH_bluewht.png'>
-            </div>
+{% block title %}Login{% endblock %}
 
-            <div class='banner'>
-                Login
-            </div>
+{% block stylesheets %}
+<link href="{{ url_for('static', filename='css/main.login.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
 
-            <div id='container-fields' class='vertically-center'>
-                <input type='text'     class='input-field' placeholder='Username'>
-                <input type='password' class='input-field' placeholder='Password'>
-            </div>
+{% block header %}
+<div id="logo_container">
+    <img src="{{ url_for('static', filename='images/UAH_logo.svg') }}" class="logo">
+</div>
 
-            <div class='vertically-center'>
-                <a href='home.html' class='blue button'>
-                    Login
-                </a>
+<div id="banner_container">
+    <h1 class="banner">UAH Theater Inventory</h1>
+</div>
+{% endblock %}
 
-                <a href='registration.html' class='subtext'>
-                    Don't have an account? Register Here!
-                </a>
-            </div>
+{% block pagecontent %}
+<form method="post">
+    <fieldset class="input_container">
+        <div class="ui input fluid">
+            <input id="username" type="text" placeholder="Username">
         </div>
-    </body>
-</html>
+    </fieldset>
+
+    <fieldset class="input_container">
+        <div class="ui input fluid">
+            <input id="password" type="password" placeholder="Password">
+        </div>
+    </fieldset>
+
+    <div class="button_container">
+        <button type="submit"
+                class="ui button fluid blue">
+            Login
+        </button>
+    </div>
+
+    <div class="button_container">
+        <a href="{{ url_for('register_page') }}"
+           class="ui button fluid blue">
+            Register
+        </a>
+    </div>
+</form>
+{% endblock %}
+
+{% block js %}{% endblock %}
