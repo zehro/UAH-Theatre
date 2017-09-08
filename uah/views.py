@@ -17,7 +17,7 @@ def logout():
 @app.route('/')
 def index_page(path=None):
     # to be implemented: check auth, if user is authenticated, render home page. Otherwise, render login page.
-    return redirect(url_for('login'))
+    return redirect(url_for('login_page'))
 
 @app.route('/login', methods=['GET'])
 def login_page():
@@ -26,7 +26,7 @@ def login_page():
 @app.route('/login', methods=['POST'])
 def login():
     # auth; to be implemented using flask-login
-    return redirect(url_for('home'))
+    return redirect(url_for('home_page'))
 
 @app.route('/register', methods=['GET'])
 def register_page():
@@ -35,7 +35,7 @@ def register_page():
 @app.route('/register', methods=['POST'])
 def register():
     # add new user; to be implemented
-    return redirect(url_for('login'))
+    return redirect(url_for('login_page'))
 
 @app.route('/home', methods=['GET'])
 def home_page():
@@ -50,4 +50,4 @@ def additem_page():
 def additem():
     # an example SQL query to demo remote db execution
     result = connection.execute("INSERT INTO AUDIT(ACTION, TIME, USER) VALUES (1, %s ,1)", (strftime("%Y-%m-%d %H:%M:%S", gmtime())))
-    return redirect(url_for('home'))
+    return redirect(url_for('home_page'))
