@@ -39,3 +39,8 @@ def register():
 @app.route('/home', methods=['GET'])
 def home_page():
     return render_template('home.html')
+
+
+@app.route('/additem', methods=['GET'])
+def additem_page():
+    return render_template('additem.html')

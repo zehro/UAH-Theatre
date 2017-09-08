@@ -9,11 +9,11 @@
 ```
 virtualenv venv
 
-. venv/bin/activate (OSX/Linux)
-. venv/Scripts/activate (Windows)
-
 export FLASK_APP=uah
 export FLASK_DEBUG=true (recommended)
+
+. venv/bin/activate (OSX/Linux)
+. venv/Scripts/activate (Windows)
 
 pip install -e .
 ```
