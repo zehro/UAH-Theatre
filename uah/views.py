@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from uah import app
+from uah import db
 
 # Invalid/Error 404 Route
 # All invalid URLs will be redirected to the 404 page
@@ -25,7 +26,7 @@ def login_page():
 @app.route('/login', methods=['POST'])
 def login():
     # auth; to be implemented using flask-login
-    return redirect(url_for('home_page'))
+    return redirect(url_for('home'))
 
 @app.route('/register', methods=['GET'])
 def register_page():
@@ -44,3 +45,9 @@ def home_page():
 @app.route('/additem', methods=['GET'])
 def additem_page():
     return render_template('additem.html')
+
+@app.route('/additem', methods=['GET'])
+def additem():
+    # an example SQL query to demo remote db execution
+    result = connection.execute("INSERT INTO AUDIT(ACTION, TIME, USER) VALUES (1, %s ,1)", (strftime("%Y-%m-%d %H:%M:%S", gmtime())))
+    return redirect(url_for('home'))
