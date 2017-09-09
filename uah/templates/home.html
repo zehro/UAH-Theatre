@@ -7,26 +7,27 @@
 {% endblock %}
 
 {% block header %}
-<a id="logo_container" href="home.html">
-    <img src="{{ url_for('static', filename='/images/UAH_logo.svg') }}" class="logo">
+<a id="logo_container" href="{{ url_for('home_page') }}">
+    <img src="{{ url_for('static', filename='images/UAH_logo.svg') }}" class="logo">
 </a>
+
+<div id="logout_container">
+    <a href="{{ url_for('logout') }}"
+       class="ui button white">
+        <i class="icon sign out"></i>
+        Logout
+    </a>
+</div>
 
 <div id="banner_container">
     <h1 class="banner">Home</h1>
-</div>
-
-<div id='logout_container'>
-    <a href="{{ url_for('logout') }}"
-       class="ui button white">
-        <i class='icon sign out'></i>
-        Logout
-    </a>
 </div>
 {% endblock %}
 
 {% block pagecontent %}
 <nav class="ui menu">
-    <a class="item blue">
+    <a href="{{ url_for('search_page') }}"
+       class="item blue">
         <i class="icon search"></i>
         Search Items
     </a>
@@ -36,7 +37,6 @@
         <i class="icon write"></i>
         Add Item
     </a>
-
 
     <a class="item blue">
         <i class="icon write"></i>
@@ -52,6 +52,12 @@
     </a>
 </nav>
 
+<div class="button_container" style="margin-top: 200px;">
+    <button type="submit"
+            class="ui button blue">
+        Database Demo
+    </button>
+</div>
 
 {% endblock %}
 

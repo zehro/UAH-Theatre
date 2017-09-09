@@ -76,23 +76,23 @@ nav.ui.menu {
     width: 80%;
   }
 }
-header #logo_container {
-  display: inline-block;
-  float: left;
+#page_header #logo_container {
+  position: absolute;
+  left: 20px;
 }
-header #logo_container .logo {
+#page_header #logo_container .logo {
   height: 36px;
 }
-header #banner_container {
+#page_header #banner_container {
   display: inline-block;
 }
-header #banner_container .banner {
+#page_header #banner_container .banner {
   display: inline-block;
   margin: 0px;
 }
-header #logout_container {
-  display: inline-block;
-  float: right;
+#page_header #logout_container {
+  position: absolute;
+  right: 20px;
 }
 @media only screen and (max-width: 750px) {
 }
