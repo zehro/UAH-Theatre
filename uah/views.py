@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from uah import app
-from uah import db
+from uah.db import *
+from time import gmtime, strftime
 
 # Invalid/Error 404 Route
 # All invalid URLs will be redirected to the 404 page
@@ -47,7 +48,7 @@ def home_page():
 def home():
     # an example SQL query to demo remote db execution
     result = connection.execute("INSERT INTO AUDIT(ACTION, TIME, USER) VALUES (1, %s ,1)", (strftime("%Y-%m-%d %H:%M:%S", gmtime())))
-    return redirect(url_for('home'))
+    return redirect(url_for('login_page'))
 
 # Search
 @app.route('/search', methods=['GET'])
