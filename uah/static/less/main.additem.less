@@ -5,17 +5,42 @@
 
 // Landing Page Content
 #page_header {
-    padding : 30px;
-
     // Logo
     #logo_container {
+        position : absolute;
+        left     : 20px;
+
         .logo {
-            height : 46px;
+            height : 36px;
         }
+    }
+
+    // Banner
+    #banner_container {
+        display : inline-block;
+
+        .banner {
+            display : inline-block;
+            margin  : 0px;
+        }
+    }
+
+    // Logout Button
+    #logout_container {
+        position : absolute;
+        right    : 20px;
     }
 }
 
+nav.ui.menu {
+    //
+}
+
 #page_content {
+    //
+}
+
+.temp_class {
     margin     : 20px auto;
     width      : 25%;
 
@@ -47,22 +72,6 @@
 // Mobile Style Overrides
 @media only screen and ( max-width : 750px )
 {
-    #page_header {
-        // Logo
-        #logo_container {
-            .logo {
-                width : 150px;
-            }
-        }
-
-        // Banner
-        #banner_container {
-            .banner {
-                font-size : 1.2rem;
-            }
-        }
-    }
-
     #page_content {
         min-width : auto;
         width     : 75%;

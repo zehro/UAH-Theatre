@@ -76,29 +76,41 @@ nav.ui.menu {
     width: 80%;
   }
 }
-#page_header {
-  padding: 30px;
+#page_header #logo_container {
+  position: absolute;
+  left: 20px;
 }
 #page_header #logo_container .logo {
-  height: 46px;
+  height: 36px;
 }
-#page_content {
+#page_header #banner_container {
+  display: inline-block;
+}
+#page_header #banner_container .banner {
+  display: inline-block;
+  margin: 0px;
+}
+#page_header #logout_container {
+  position: absolute;
+  right: 20px;
+}
+.temp_class {
   margin: 20px auto;
   width: 25%;
 }
-#page_content .input_container,
-#page_content .button_container {
+.temp_class .input_container,
+.temp_class .button_container {
   border: none;
   margin: 10px 0px;
   padding: 0px;
 }
-#page_content .textbox {
+.temp_class .textbox {
   border: none;
   margin: 10px 0px;
   padding: 0px;
   height: 100px;
 }
-#page_content .subtext {
+.temp_class .subtext {
   -webkit-transition: all 0.2s ease;
   -moz-transition: all 0.2s ease;
   -ms-transition: all 0.2s ease;
@@ -108,17 +120,11 @@ nav.ui.menu {
   cursor: pointer;
   text-decoration: underline;
 }
-#page_content .subtext:hover,
-#page_content .subtext:focus {
+.temp_class .subtext:hover,
+.temp_class .subtext:focus {
   color: white;
 }
 @media only screen and (max-width: 750px) {
-  #page_header #logo_container .logo {
-    width: 150px;
-  }
-  #page_header #banner_container .banner {
-    font-size: 1.2rem;
-  }
   #page_content {
     min-width: auto;
     width: 75%;
