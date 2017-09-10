@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from uah import app
 from uah.db import *
 from time import gmtime, strftime
@@ -10,37 +10,37 @@ from time import gmtime, strftime
 def page_not_found(error):
     return render_template('page_not_found.html')
 
-# Login
->>>>>>> origin/master
+# Login Routes
 @app.route('/login', methods=['GET'])
 def login_page():
     return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
 def login():
-    # auth; to be implemented using flask-login
+    # TODO: check user login
     return redirect(url_for('home_page'))
 
-# Register
+# Register Routes
 @app.route('/register', methods=['GET'])
 def register_page():
     return render_template('register.html')
 
 @app.route('/register', methods=['POST'])
 def register():
-    # add new user; to be implemented
+    # TODO: add new user
     return redirect(url_for('login_page'))
 
 # Main App / Default Routes
 @app.route('/')
 def index_page(path=None):
-    # to be implemented: check auth, if user is authenticated, render home page. Otherwise, render login page.
     return redirect(url_for('login_page'))
 
 @app.route("/logout")
 def logout():
+    # TODO: clear session
     return redirect(url_for('index_page'))
 
+# "Home" Routes -> will move to index/default when sessions are implemented
 @app.route('/home', methods=['GET'])
 def home_page():
     return render_template('home.html')
@@ -51,12 +51,12 @@ def home():
     result = connection.execute("INSERT INTO AUDIT(ACTION, TIME, USER) VALUES (1, %s ,1)", (strftime("%Y-%m-%d %H:%M:%S", gmtime())))
     return redirect(url_for('login_page'))
 
-# Search
+# Search Routes
 @app.route('/search', methods=['GET'])
 def search_page():
     return render_template('search.html')
 
-# Add Item
+# Add Item Routes
 @app.route('/additem', methods=['GET'])
 def additem_page():
     return render_template('additem.html')
