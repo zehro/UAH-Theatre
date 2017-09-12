@@ -3,37 +3,32 @@
 // Importing Main Styles
 @import url( 'main.less' );
 
-// Landing Page Content
+// Main Styles
+#screen {
+    overflow : auto;
+}
+
+// Header Styles
 #page_header {
     padding : 30px;
 
     // Logo
     #logo_container {
+        position : static;
+
         .logo {
             height : 46px;
         }
     }
 }
 
+// Page Content Styles
 #page_content {
-    margin     : 20px auto;
-    width      : 25%;
+    margin : 20px auto;
+    width  : 25%;
 
     .input_container, .button_container {
-        border  : none;
-        margin  : 10px 0px;
-        padding : 0px;
-    }
-
-    .subtext {
-        .animate( all, 0.2s );
-        color           : @color_primary;
-        cursor          : pointer;
-        text-decoration : underline;
-
-        &:hover, &:focus {
-            color : white;
-        }
+        margin : 10px 0px;
     }
 }
 
@@ -52,6 +47,13 @@
         #banner_container {
             .banner {
                 font-size : 1.2rem;
+            }
+        }
+
+        // Logout Button
+        #logout_container {
+            .icon {
+                display : inline;
             }
         }
     }

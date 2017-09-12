@@ -18,15 +18,17 @@
         {% block header %}{% endblock %}
     </header>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="alert alert-{{ messages[0][0] }}" role="alert">
-                {{ messages[0][1] }}
-            </div>
-        {% endif %}
-    {% endwith %}
+    {% block navbar %}{% endblock %}
 
     <div id="page_content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert alert-{{ messages[0][0] }}" role="alert">
+                    {{ messages[0][1] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+
         {% block pagecontent %}{% endblock %}
     </div>
 

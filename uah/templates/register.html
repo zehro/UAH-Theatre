@@ -16,35 +16,35 @@
 </div>
 {% endblock %}
 
+{% block navbar %}{% endblock %}
+
 {% block pagecontent %}
 <form method="post">
     <fieldset class="input_container">
-        <div class="ui input fluid">
-            <input id="username" type="text" placeholder="Username">
+        <div class="ui input width_half left">
+            <input id="first_name" type="text" name="firstName" placeholder="First Name">
+        </div>
+
+        <div class="ui input width_half right">
+            <input id="last_name" type="text" name="lastName" placeholder="Last Name">
         </div>
     </fieldset>
 
     <fieldset class="input_container">
         <div class="ui input fluid">
-            <input id="password" type="password" placeholder="Password">
+            <input id="username" type="text" name="username" placeholder="Username">
         </div>
     </fieldset>
 
     <fieldset class="input_container">
         <div class="ui input fluid">
-            <input id="confirm_password" type="password" placeholder="Confirm Password">
+            <input id="password" type="password" name="password" placeholder="Password">
         </div>
     </fieldset>
 
     <fieldset class="input_container">
         <div class="ui input fluid">
-            <input id="email" type="email" placeholder="Email">
-        </div>
-    </fieldset>
-
-    <fieldset class="input_container">
-        <div class="ui input fluid">
-            <input id="confirm_email" type="email" placeholder="Confirm Email">
+            <input id="confirm_password" type="password" name="confirmPassword" placeholder="Confirm Password">
         </div>
     </fieldset>
 
