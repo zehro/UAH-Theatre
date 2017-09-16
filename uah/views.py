@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from uah import app
 from uah.db import *
 from uah.sessions import *
-
+import sys
 # Sets up variables/functions for use in Jinja templates
 @app.context_processor
 def inject_isAdmin_function():
@@ -74,17 +74,17 @@ def login():
     with DatabaseConnection() as conn:
         # Checks if there are any valid user/password combination
         result = conn.execute(User.check_login, {
-            'Username' : username,
-            'Password' : password,
-            'isAdmin'  : FALSE
+            'Username'   : username,
+            'Password'   : password
         })
-        if len(result.fetchall()) < 1:
+        queryResult = result.fetchall();
+        if len(queryResult) < 1:
             flash(u'Invalid username or password.', 'danger')
             return login_page()
         # Sets the user in the application context
-        g.user = result.fetchone()
+        g.user = queryResult[0]
         # Sets up a session
-        session['user'] = g.user['Username']
+        session['user'] = g.user[0]
     # Navigates to the main page
     return redirect('/')
 
@@ -144,8 +144,7 @@ def register():
             # Registers the new user
             conn.execute(User.insert, {
                 'Username' : username,
-                'Password' : password,
-                'isAdmin'  : FALSE
+                'Password' : password
             })
             # Commits the transaction changes
             transaction.commit()
