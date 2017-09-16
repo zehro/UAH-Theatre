@@ -35,6 +35,11 @@ User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)
 User.findby_username = 'SELECT USERNAME, ISADMIN FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
 User.check_login     = 'SELECT USERNAME, ISADMIN FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
 
+Item = Bunch()
+Item.get_eras      = 'SELECT ERANAME FROM ERA'
+Item.get_colors    = 'SELECT COLORNAME FROM COLOR'
+Item.get_condition = 'SELECT CNDTNNAME FROM CNDTN'
+
 def String buildSearch(name, objecttype, condition, era, checkedout, color, dimension, size):
 	query = 'SELECT OID FROM OBJECT WHERE';
 	if (name != null):
