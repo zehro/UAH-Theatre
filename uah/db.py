@@ -40,16 +40,20 @@ Item.get_eras      = 'SELECT ERANAME FROM ERA'
 Item.get_colors    = 'SELECT COLORNAME FROM COLOR'
 Item.get_condition = 'SELECT CNDTNNAME FROM CNDTN'
 
+Retrieval = Bunch()
+Retrieval.get_colors = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
+Retrieval.get_images = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
+
 def String buildSearch(name, objecttype, condition, era, checkedout, color, dimension, size):
-	query = 'SELECT OID FROM OBJECT WHERE';
+	query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA WHERE';
 	if (name != null):
 		query += ' NAME = %' + str(name) + '% AND '
 	if (objecttype != null):
 		query += ' TYPE = \'' + str(type) + '\''
 	if (condition != null):
-		query += ' OID IN (SELECT OID FROM OBJECT NATURAL JOIN CNDTN WHERE CNDTNNAME = ' + str(condition) + ') AND '
+		query += ' CNDTNNAME = ' + str(condition) + ' AND '
 	if (era != null):
-		query += ' OID IN (SELECT OID FROM OBJECT NATURAL JOIN ERA WHERE ERANAME = ' + str(era) + ') AND '
+		query += ' ERANAME = ' + str(era) + ' AND '
 	if (checkedout != null):
 		if (checkedout):
 			query += ' CHECKEDOUTTO IS NOT NULL AND '
