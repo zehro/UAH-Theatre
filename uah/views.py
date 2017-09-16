@@ -7,7 +7,7 @@ import sys
 @app.context_processor
 def inject_isAdmin_function():
     def isAdmin():
-        return 0#g.user['isAdmin'] == 1
+        return g.user['isAdmin'] == TRUE
     return dict(isAdmin=isAdmin)
 
 # Request to be executed before all requests
@@ -23,7 +23,9 @@ def before_request():
                 'Username': session['user']
             })
             # Sets the user in the application context
-            g.user = result.fetchone()
+            queryResult = result.fetchone()
+            g.user = {'Username' : queryResult[0],
+                      'isAdmin'  : queryResult[1]}
 
 # Invalid/Error 404 Route
 # All invalid URLs will be redirected to the 404 page
@@ -78,13 +80,14 @@ def login():
             'Password'   : password
         })
         queryResult = result.fetchall();
-        if len(queryResult) < 1:
+        if len(queryResult) != 1:
             flash(u'Invalid username or password.', 'danger')
             return login_page()
         # Sets the user in the application context
-        g.user = queryResult[0]
-        # Sets up a session
-        session['user'] = g.user[0]
+        g.user = {'Username' : queryResult[0],
+                  'isAdmin'  : queryResult[1]}
+        # Sets up a session with user from application context
+        session['user'] = g.user['Username']
     # Navigates to the main page
     return redirect('/')
 

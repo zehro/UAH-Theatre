@@ -31,6 +31,6 @@ FALSE = 0
 
 # Creates Bunch contexts for the database schema and queries
 User = Bunch()
-User.insert          = 'INSERT INTO USER(NAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
-User.findby_username = 'SELECT * FROM USER WHERE NAME = %(Username)s AND ISVERIFIED = 1'
-User.check_login     = 'SELECT NAME FROM USER WHERE NAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
+User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
+User.findby_username = 'SELECT USERNAME, ISADMIN FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
+User.check_login     = 'SELECT USERNAME, ISADMIN FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
