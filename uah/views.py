@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from uah import app
 from uah.db import *
 from uah.sessions import *
+from uah.image_uploader import save_image, load_image
+
 import sys
 # Sets up variables/functions for use in Jinja templates
 @app.context_processor
@@ -92,12 +94,12 @@ def login():
     return redirect('/')
 
 # Register Route: HTML Template
-@app.route('/register', methods=['GET'])
+@app.route('/users/new', methods=['GET'])
 def register_page():
     return render_template('register.html')
 
 # Register Route: POST method after form submission
-@app.route('/register', methods=['POST'])
+@app.route('/users', methods=['POST'])
 def register():
     # Checks if required fields exist in form
     if 'username' not in request.form or \
@@ -170,12 +172,14 @@ def home():
     return redirect(url_for('login_page'))
 
 # Search Route: HTML Template
-@app.route('/search', methods=['GET'])
+@app.route('/items', methods=['GET'])
 def search_page():
-    return render_template('search.html')
+    conn = DatabaseConnection().__enter__()
+    items = conn.execute("SELECT * FROM OBJECT").fetchall()
+    return render_template('search.html', items=items)
 
 # Search Route: POST method after form submission
-@app.route('/search', methods=['POST'])
+@app.route('/items', methods=['POST'])
 def search():
     # Checks if required fields exist in form
     if 'itemName' not in request.form:
@@ -186,21 +190,25 @@ def search():
     itemName = request.form['itemName']
     # get filter inputs
 
-    # Checks user/password combination
     with DatabaseConnection() as conn:
-        # Checks if there are any valid user/password combination
-        result = conn.execute(Item.findby_name, {
-            'Name' : itemName
-        })
-        # display results on page
-    return search_page()
+        if len(itemName):
+            items = conn.execute("SELECT * FROM OBJECT WHERE OBJECTNAME = %s", itemName).fetchall()
+            # display results on page
+            return render_template('search.html', items=items)
+        else:
+            return search_page()
 
 # Add Item Route: HTML Template
-@app.route('/additem', methods=['GET'])
+@app.route('/items/new', methods=['GET'])
 def additem_page():
     return render_template('additem.html')
 
 # Add Item Route: POST method after form submission
-@app.route('/additem', methods=['POST'])
+@app.route('/items/new', methods=['POST'])
 def additem():
-    return redirect(url_for('home_page'))
+    if request.files:
+        image = request.files['image']
+        imageName = save_image(image)
+        return search_page()
+    else:
+        return redirect(url_for('home_page'))
