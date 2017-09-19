@@ -24,7 +24,7 @@
 </div>
 {% endblock %}
 
-{% block pagecontent %}
+{% block navbar %}
 <nav class="ui menu">
     <a href="{{ url_for('search_page') }}"
        class="item blue">
@@ -42,16 +42,22 @@
         <i class="icon write"></i>
         Edit Inventory
     </a>
+
+    {% if isAdmin() %}
     <a class="item blue">
         <i class="icon address book"></i>
         Manage Accounts
     </a>
+    {% endif %}
+
     <a class="item blue">
         <i class="icon settings"></i>
         Manage Settings
     </a>
 </nav>
+{% endblock %}
 
+{% block pagecontent %}
 <form method="post">
     <div class="button_container" style="margin-top: 200px;">
         <button type="submit"

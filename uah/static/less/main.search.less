@@ -1,0 +1,67 @@
+// out: ../css/main.search.css, sourcemap: false, compress: false
+
+// Importing Main Styles
+@import url( 'main.less' );
+
+// Search Styles
+#page_content {
+    .search_container {
+        background              : @color_primary;
+        border-top-left-radius  : 10px;
+        border-top-right-radius : 10px;
+        padding                 : 20px;
+    }
+
+    .search_result_container {
+        background                 : @color_secondary;
+        border-bottom              : 30px solid @color_primary;
+        border-bottom-left-radius  : 10px;
+        border-bottom-right-radius : 10px;
+        max-height                 : ~"calc(100% - 360px)";
+        overflow-y                 : auto;
+        text-align                 : left;
+
+        .ui.items {
+            &.divided .item {
+                border-color   : fade(white, 80%);
+                flex-direction : row;
+                padding        : 20px !important;
+
+                .header, .meta, .description {
+                    color : white;
+                }
+
+
+
+                &:hover {
+                    background : lighten(@color_secondary, 25%);
+
+                    .header, .meta, .description {
+                        color : black;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Mobile Style Overrides
+@media only screen and ( max-width : @screen_max_width )
+{
+    #page_content .ui.items .item {
+        .image {
+            display: inline-block;
+            margin: 0;
+            width: 70px !important;
+
+            img {
+                display: inline-block;
+                height: 50px;
+            }
+        }
+
+        .content {
+            padding-top : 5px;
+        }
+    }
+}

@@ -1,58 +1,131 @@
-/* Imports */
+// Importing Common Styles
 @import url( 'common.less' );
 
 // Main Styles
 #screen {
-    background : @color_secondary;
+    background : @color_tertiary;
+    overflow   : hidden;
 }
 
+// Header Styles
 #page_header {
     padding    : 20px;
     background : @color_primary;
     text-align : center;
     width      : 100%;
 
+    // Logo
+    #logo_container {
+        position : absolute;
+        left     : 20px;
+
+        .logo {
+            height : 36px;
+        }
+    }
+
     // Banner
     #banner_container {
+        display : inline-block;
+
         .banner {
-            color : white;
+            color   : white;
+            display : inline-block;
+            margin  : 0px;
         }
+    }
+
+    // Logout Button
+    #logout_container {
+        position : absolute;
+        right    : 20px;
     }
 }
 
+// Navbar Styles
 nav.ui.menu {
     border-radius : 0px;
     margin        : 0px;
 }
 
+// Page Content Styles
 #page_content {
-    margin     : 0px;
+    height     : 100%;
+    margin     : 20px auto;
     min-width  : 500px;
     text-align : center;
-    width      : 100%;
+    width      : 90%;
+
+    .ui.divider.white {
+        border-bottom-color : fade(white, 60%);
+        border-top-color    : fade(black, 20%);
+    }
+
+    .input_container, .button_container {
+        border  : none;
+        margin  : 0px;
+        padding : 0px;
+
+        .width_half {
+            width : 49.5%;
+
+            &.left {
+                float : left;
+            }
+
+            &.right {
+                float : right;
+            }
+        }
+    }
+
+    .textbox {
+        border  : none;
+        margin  : 10px 0px;
+        padding : 0px;
+        height  : 100px;
+    }
+
+    .subtext {
+        .animate( all, 0.2s );
+        color           : @color_primary;
+        cursor          : pointer;
+        text-decoration : underline;
+
+        &:hover, &:focus {
+            color : white;
+        }
+    }
 }
 
 // Mobile Style Overrides
-@media only screen and ( max-width : 750px )
+@media only screen and ( max-width : @screen_max_width )
 {
     #page_header {
         // Logo
         #logo_container {
             .logo {
-                width : 150px;
+                width : 90px;
             }
         }
 
         // Banner
         #banner_container {
             .banner {
-                font-size : 1.2rem;
+                font-size : 1.8rem;
+            }
+        }
+
+        // Logout Button
+        #logout_container {
+            .icon {
+                display : none;
             }
         }
     }
 
     #page_content {
         min-width : auto;
-        width     : 80%;
+        width     : 90%;
     }
 }
