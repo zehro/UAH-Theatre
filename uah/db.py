@@ -44,7 +44,7 @@ Retrieval = Bunch()
 Retrieval.get_colors = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
 Retrieval.get_images = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
 
-def String buildSearch(name, objecttype, condition, era, checkedout, color, dimension, size):
+def buildSearch(name, objecttype, condition, era, checkedout, color, dimension, size):
 	query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA WHERE';
 	if (name != null):
 		query += ' NAME = %' + str(name) + '% AND '
@@ -57,7 +57,7 @@ def String buildSearch(name, objecttype, condition, era, checkedout, color, dime
 	if (checkedout != null):
 		if (checkedout):
 			query += ' CHECKEDOUTTO IS NOT NULL AND '
-		else if (not checkedout):
+		elif (not checkedout):
 			query += ' CHECKEDOUTTO IS NULL AND '
 	if (color != null):
 		query += ' OID IN (SELECT OID FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE COLORNAME = ' + str(color) + ') AND '
