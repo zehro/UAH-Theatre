@@ -7,7 +7,8 @@ import sys
 @app.context_processor
 def inject_isAdmin_function():
     def isAdmin():
-        return g.user['isAdmin'] == TRUE
+        if g.user:
+            return g.user['isAdmin'] == TRUE
     return dict(isAdmin=isAdmin)
 
 # Request to be executed before all requests
