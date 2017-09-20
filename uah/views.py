@@ -173,7 +173,29 @@ def home():
 # Search Route: HTML Template
 @app.route('/search', methods=['GET'])
 def search_page():
-    return render_template('search.html')
+    with DatabaseConnection() as conn:
+        # Gets the color filters
+        conditionResult = conn.execute(Item.get_condition_filters)
+        conditionQuery = conditionResult.fetchall()
+        conditionList = []
+        for conditionTuple in conditionQuery:
+            conditionList.append(conditionTuple[0])
+
+        # Gets the color filters
+        colorResult = conn.execute(Item.get_color_filters)
+        colorQuery = colorResult.fetchall()
+        colorList = []
+        for colorTuple in colorQuery:
+            colorList.append(colorTuple[0])
+
+        # Gets the color filters
+        eraResult = conn.execute(Item.get_era_filters)
+        eraQuery = eraResult.fetchall()
+        eraList = []
+        for eraTuple in eraQuery:
+            eraList.append(eraTuple[0])
+
+    return render_template('search.html', conditions=conditionList, colors=colorList, eras=eraList)
 
 # Search Route: POST method after form submission
 @app.route('/search', methods=['POST'])

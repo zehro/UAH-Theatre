@@ -36,13 +36,14 @@ User.findby_username = 'SELECT USERNAME, ISADMIN FROM USER WHERE USERNAME = %(Us
 User.check_login     = 'SELECT USERNAME, ISADMIN FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
 
 Item = Bunch()
-Item.get_eras      = 'SELECT ERANAME FROM ERA'
-Item.get_colors    = 'SELECT COLORNAME FROM COLOR'
-Item.get_condition = 'SELECT CNDTNNAME FROM CNDTN'
+Item.get_era_filters       = 'SELECT ERANAME FROM ERA'
+Item.get_color_filters     = 'SELECT COLORNAME FROM COLOR'
+Item.get_condition_filters = 'SELECT CNDTNNAME FROM CNDTN'
+Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
+Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
 
-Retrieval = Bunch()
-Retrieval.get_colors = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
-Retrieval.get_images = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
+
+
 
 def buildSearch(name, objecttype, condition, era, checkedout, color, dimension, size):
 	query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA WHERE';

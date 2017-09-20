@@ -60,28 +60,40 @@
 {% block pagecontent %}
 <div class="search_container">
     <fieldset class="input_container">
+
         <div class="ui dropdown selection">
-            <input type="hidden" name="">
+            <input type="hidden" name="condition_filter">
             <i class="dropdown icon"></i>
             <div class="default text">Condition</div>
             <div class="menu">
-                {% for condition in condition %}
-                <div class="item" data-value="">{{ condition }}</div>
+                {% for condition in conditions %}
+                <div class="item">{{ condition }}</div>
                 {% endfor %}
             </div>
         </div>
 
         <div class="ui dropdown selection">
-            <input type="hidden" name="">
+            <input type="hidden" name="color_filter">
             <i class="dropdown icon"></i>
-            <div class="default text">Condition</div>
+            <div class="default text">Colors</div>
             <div class="menu">
-                <div class="item" data-value="">New</div>
-                <div class="item" data-value="">Good</div>
-                <div class="item" data-value="">Decent</div>
-                <div class="item" data-value="">Worn</div>
+                {% for color in colors %}
+                <div class="item">{{ color }}</div>
+                {% endfor %}
             </div>
         </div>
+
+        <div class="ui dropdown selection">
+            <input type="hidden" name="era_filter">
+            <i class="dropdown icon"></i>
+            <div class="default text">Era</div>
+            <div class="menu">
+                {% for era in eras %}
+                <div class="item">{{ era }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
     </fieldset>
 
     <div class="ui divider white"></div>
