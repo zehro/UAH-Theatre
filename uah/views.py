@@ -203,4 +203,31 @@ def additem_page():
 # Add Item Route: POST method after form submission
 @app.route('/additem', methods=['POST'])
 def additem():
+
+    # Checks if required fields exist in form
+    if 'itemname' not in request.form or \
+            'category' not in request.form or \
+            'description' not in request.form:
+        flash(u'Required fields do not exist.', 'danger')
+        return additem_page()
+
+
+    # Get field inputs
+    itemname       = request.form['itemname']
+    category       = request.form['category']
+    description    = request.form['description']
+    condition      = request.form['condition']
+    color          = request.form['color']
+    size           = request.form['size']
+    era            = request.form['era']
+
+    # Checks if required fields are empty
+    if itemname == '':
+        flash(u'Name field cannot be empty.', 'danger')
+        return additem_page()
+    if category == '':
+        flash(u'Category field cannot be empty.', 'danger')
+        return additem_page()
+
+
     return redirect(url_for('home_page'))
