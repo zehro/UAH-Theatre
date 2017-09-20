@@ -198,7 +198,21 @@ def search():
 # Add Item Route: HTML Template
 @app.route('/additem', methods=['GET'])
 def additem_page():
-    return render_template('additem.html')
+    # connect
+    with DatabaseConnection() as conn:
+        e = conn.execute(Item.get_eras)
+        something = e.fetchall()
+        alist = []
+        for t in something:
+            alist.append(t[0])
+
+
+
+    return render_template('additem.html', eras = alist )
+
+
+
+
 
 # Add Item Route: POST method after form submission
 @app.route('/additem', methods=['POST'])
@@ -229,5 +243,29 @@ def additem():
         flash(u'Category field cannot be empty.', 'danger')
         return additem_page()
 
+    '''
+    # Checks user/password combination
+    with DatabaseConnection() as conn:
+        # Begins a transaction
+        transaction = conn.begin()
+        try:
+
+            # Registers the new user
+            conn.execute(User.insert, { ######change to additem
+                'Itemname'      : itemname,
+                'Category'      : category,
+                'Description'   : description,
+                'Condition'     : condition,
+                'Color'         : color,
+                'Size'          : size,
+                'Era'           : era
+            })
+            # Commits the transaction changes
+            transaction.commit()
+        except:
+            # Rollback and discard transaction changes upon failure
+            transaction.rollback()
+            raise
+    '''
 
     return redirect(url_for('home_page'))

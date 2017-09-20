@@ -124,8 +124,9 @@
                 <i class="dropdown icon"></i>
                 <div class="default text">Era</div>
                 <div class="menu">
-                    <div class="item">Chinese</div>
-                    <div class="item">Medieval</div>
+                    {% for e in eras %}
+                    <div class="item"> {{e}} </div>
+                    {% endfor %}
                 </div>
             </div>
         </fieldset>
