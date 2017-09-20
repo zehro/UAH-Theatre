@@ -45,25 +45,40 @@ Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COL
 
 
 
+#Any input that isn't being searched on should be null
 def buildSearch(name, objecttype, condition, era, checkedout, color, dimension, size):
-	query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA WHERE';
-	if (name != null):
-		query += ' NAME = %' + str(name) + '% AND '
-	if (objecttype != null):
-		query += ' TYPE = \'' + str(type) + '\''
-	if (condition != null):
-		query += ' CNDTNNAME = ' + str(condition) + ' AND '
-	if (era != null):
-		query += ' ERANAME = ' + str(era) + ' AND '
-	if (checkedout != null):
-		if (checkedout):
-			query += ' CHECKEDOUTTO IS NOT NULL AND '
-		elif (not checkedout):
-			query += ' CHECKEDOUTTO IS NULL AND '
-	if (color != null):
-		query += ' OID IN (SELECT OID FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE COLORNAME = ' + str(color) + ') AND '
-	if (objecttype == 'p' and dimension != null):
-		query += ' OID IN (SELECT OID FROM PROP WHERE DIMENSION = ' + str(dimension) + ') AND '
-	if (objecttype == 'c' and size != null):
-		query += ' OID IN (SELECT OID FROM COSTUME WHERE SIZE = \'' + str(size) + '\' AND '
-	return query[:-5];
+    query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA WHERE';
+    if (name != null):
+        query += ' OBJECTNAME = %' + str(name) + '% AND '
+    if (objecttype != null):
+        query += ' TYPE = \'' + str(type) + '\''
+    if (condition != null):
+        query += ' CNDTNNAME = ' + str(condition) + ' AND '
+    if (era != null):
+        query += ' ERANAME = ' + str(era) + ' AND '
+    if (checkedout != null):
+        if (checkedout):
+            query += ' CHECKEDOUTTO IS NOT NULL AND '
+        elif (not checkedout):
+            query += ' CHECKEDOUTTO IS NULL AND '
+    if (color != null):
+        query += ' OID IN (SELECT OID FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE COLORNAME = ' + str(color) + ') AND '
+    if (objecttype == 'p' and dimension != null):
+        query += ' OID IN (SELECT OID FROM PROP WHERE DIMENSION = ' + str(dimension) + ') AND '
+    if (objecttype == 'c' and size != null):
+        query += ' OID IN (SELECT OID FROM COSTUME WHERE SIZE = \'' + str(size) + '\' AND '
+    return query[:-5];
+
+#Name, objecttype, condition, and era are required of type String
+#colors should be a list of valid colors
+#For Costumes, size is required
+#For props, dimension is required
+def buildCreate(name, description, objecttype, condition, era, colors, dimension, size):
+    return 'INSERT INTO OBJECT(OBJECTNAME, TYPE, CNID, EID) VALUES (\'New Object\', \'c\', 0, 0)'
+    #query = [];
+    #query.add('');
+    #query[0] = 'INSERT INTO OBJECT(OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (\'' + name + '\', \''+ objecttype 
+    #for color in colors:
+
+def buildUpdate(name, objecttype, condition, era, checkedout, color, dimension, size):
+#similar to search, just not implemented yet

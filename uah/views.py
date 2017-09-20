@@ -30,7 +30,6 @@ def before_request():
 
 # Invalid/Error 404 Route
 # All invalid URLs will be redirected to the 404 page
-@app.route('/<path:path>')
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html')
