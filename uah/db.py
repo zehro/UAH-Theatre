@@ -76,8 +76,9 @@ def buildCreate(name, description, objecttype, condition, era, colors, dimension
     return 'INSERT INTO OBJECT(OBJECTNAME, TYPE, CNID, EID) VALUES (\'New Object\', \'c\', 0, 0)'
     #query = [];
     #query.add('');
-    #query[0] = 'INSERT INTO OBJECT(OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (\'' + name + '\', \''+ objecttype 
+    #query[0] = 'INSERT INTO OBJECT(OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (\'' + name + '\', \''+ objecttype
     #for color in colors:
 
 def buildUpdate(name, objecttype, condition, era, checkedout, color, dimension, size):
 #similar to search, just not implemented yet
+    print name #placeholder
