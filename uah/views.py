@@ -201,16 +201,26 @@ def additem_page():
     # connect
     with DatabaseConnection() as conn:
         e = conn.execute(Item.get_eras)
-        something = e.fetchall()
-        alist = []
-        for t in something:
-            alist.append(t[0])
+        erasfetch = e.fetchall()
+        eralist = []
+        for t in erasfetch:
+            eralist.append(t[0])
+
+        c = conn.execute(Item.get_colors)
+        colorsfetch = c.fetchall()
+        colorlist = []
+        for c in colorsfetch:
+            colorlist.append(c[0])
+
+        cn = conn.execute(Item.get_condition)
+        confetch = cn.fetchall()
+        conlist = []
+        for cn in confetch:
+            conlist.append(cn[0])
 
 
 
-    return render_template('additem.html', eras = alist )
-
-
+    return render_template('additem.html', eras = eralist, colors = colorlist, conditions = conlist )
 
 
 

@@ -82,10 +82,9 @@
                 <i class="dropdown icon"></i>
                 <div class="default text">Condition</div>
                 <div class="menu">
-                    <div class="item">New</div>
-                    <div class="item">Good</div>
-                    <div class="item">Decent</div>
-                    <div class="item">Worn</div>
+                    {% for cn in conditions %}
+                    <div class="item"> {{cn}} </div>
+                    {% endfor %}
                 </div>
             </div>
         </fieldset>
@@ -96,10 +95,9 @@
                 <i class="dropdown icon"></i>
                 <div class="default text">Color</div>
                 <div class="menu">
-                    <div class="item">Red</div>
-                    <div class="item">Blue</div>
-                    <div class="item">Green</div>
-                    <div class="item">Black</div>
+                    {% for c in colors %}
+                    <div class="item"> {{c}} </div>
+                    {% endfor %}
                 </div>
             </div>
         </fieldset>
