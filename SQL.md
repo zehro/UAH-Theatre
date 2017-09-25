@@ -60,7 +60,7 @@ INSERT INTO USER(USERNAME, ISADMIN, PASSWORD) VALUES ("admin", 1, "admin");
 
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (1, "Crown", "Shiny, pointy, and goes on head", 'c', 3, 1);
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (2, "Broadsword", "A big sword for swinging around", 'p', 5, 1);
-INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (3, "Katana", "For when just wearing all black doesn't make you ninja enough", 'p', 2, 2);
+INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (3, "Katana", "For when just wearing all black doesn't make you NINJA enough", 'p', 2, 2);
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (4, "Cape", "NO CAPES!", 'c', 2, 3);
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (5, "Sunglasses", "For blocking bright lights or just to look cool", 'c', 3, 3);
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (6, "Trebuchet", "To launch Pumpkin Kid aerially into your enemies", 'p', 5, 1);
