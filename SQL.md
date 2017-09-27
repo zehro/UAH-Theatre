@@ -117,3 +117,7 @@ Remove User
 ```
 DELETE FROM USER WHERE UID = $uid$;
 ```
+Get Objects and its pictures
+```
+SELECT * FROM OBJECT NATURAL JOIN PICTURE
+```
