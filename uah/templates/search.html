@@ -107,13 +107,15 @@
 
     <div class="ui divider white"></div>
 
-    <div class="ui search">
+    <form class="ui search" method='post' action='/items'>
         <div class="ui icon input fluid">
-            <input class="prompt" type="text" name="search" placeholder="Search...">
-            <i class="search icon"></i>
+            <input class="prompt" type="text" name="itemName" placeholder="Search...">
+            <button type='submit'>
+                <i class="search icon"></i>
+            </button>
         </div>
         <div class="results"></div>
-    </div>
+    </form>
 </div>
 
 <div class="search_result_container">
@@ -121,16 +123,16 @@
         {% for item in items %}
         <a class="item">
             <div class="ui small image">
-                <img src="{{ url_for('static', filename='images/inventory/Crown.jpg') }}">
+                <img src="{{ url_for('load_image', filename='uploaded.jpeg') }}">
             </div>
             <div class="content">
-                <div class="header">{{ item['Name'] }}</div>
+                <div class="header">{{ item.OBJECTNAME }}</div>
                 <div class="meta">
-                    <span class="timePeriod">{{ item['TimePeriod'] }}</span>
-                    <span class="condition">{{ item['Condition'] }}</span>
+                    <span class="timePeriod">{{ item.EID }}</span>
+                    <span class="condition">{{ item.CNID }}</span>
                 </div>
                 <div class="description">
-                    <p>{{ item['Description'] }}</p>
+                    <p>{{ item.DESCRIPTION }}</p>
                 </div>
             </div>
         </a>

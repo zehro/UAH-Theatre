@@ -50,7 +50,7 @@
 </nav>
 
 <div class="temp_class">
-    <form method="post">
+    <form method="post" action="/items/new" enctype="multipart/form-data">
         <fieldset class="input_container">
             <div class="ui input fluid">
                 <input id="itemname" type="text" placeholder="Item Name">
@@ -59,7 +59,7 @@
 
         <fieldset class="input_container">
             <div class="ui selection dropdown fluid">
-                <input type="hidden" name="gender">
+                <input type="hidden" name="">
                 <i class="dropdown icon"></i>
                 <div class="default text">Category</div>
                 <div class="menu">
@@ -77,7 +77,7 @@
 
         <fieldset class="input_container">
             <div class="ui selection dropdown fluid">
-                <input type="hidden" name="gender">
+                <input type="hidden" name="">
                 <i class="dropdown icon"></i>
                 <div class="default text">Condition</div>
                 <div class="menu">
@@ -117,11 +117,13 @@
             </select>
         </fieldset>
 
+        <input type="file" name='image' accept='.jpg, .jpeg, .png, .bmp, .gif'>
+
         <div class="button_container">
-            <a href="{{ url_for('home_page') }}"
+            <button type='submit'
                class="ui button fluid blue">
                 Submit
-            </a>
+            </button>
         </div>
 
         <div class="button_container">
