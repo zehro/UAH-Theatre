@@ -82,4 +82,4 @@ def buildCreate(name, description, objecttype, condition, era, colors, dimension
 
 def buildUpdate(name, objecttype, condition, era, checkedout, color, dimension, size):
 #similar to search, just not implemented yet
-    print name #placeholder
+    print(name) #placeholder
