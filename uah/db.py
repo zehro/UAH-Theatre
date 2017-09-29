@@ -36,37 +36,69 @@ User.findby_username = 'SELECT USERNAME, ISADMIN FROM USER WHERE USERNAME = %(Us
 User.check_login     = 'SELECT USERNAME, ISADMIN FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
 
 Item = Bunch()
-Item.get_eras      = 'SELECT ERANAME FROM ERA'
-Item.get_colors    = 'SELECT COLORNAME FROM COLOR'
-Item.get_condition = 'SELECT CNDTNNAME FROM CNDTN'
+Item.get_era_filters       = 'SELECT ERANAME FROM ERA'
+Item.get_color_filters     = 'SELECT COLORNAME FROM COLOR'
+Item.get_condition_filters = 'SELECT CNDTNNAME FROM CNDTN'
+# Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
+# Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
 
-Retrieval = Bunch()
-Retrieval.get_colors = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
-Retrieval.get_images = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
+def convertCategory(category):
+    if category == 'costume':
+        return 'c'
+    if category == 'prop':
+        return 'p'
+    return category
 
 #Any input that isn't being searched on should be null
-def buildSearch(name, objecttype, condition, era, checkedout, color, dimension, size):
-    query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA WHERE';
-    if (name != null):
-        query += ' OBJECTNAME = %' + str(name) + '% AND '
-    if (objecttype != null):
-        query += ' TYPE = \'' + str(type) + '\''
-    if (condition != null):
-        query += ' CNDTNNAME = ' + str(condition) + ' AND '
-    if (era != null):
-        query += ' ERANAME = ' + str(era) + ' AND '
-    if (checkedout != null):
-        if (checkedout):
-            query += ' CHECKEDOUTTO IS NOT NULL AND '
-        elif (not checkedout):
-            query += ' CHECKEDOUTTO IS NULL AND '
-    if (color != null):
-        query += ' OID IN (SELECT OID FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE COLORNAME = ' + str(color) + ') AND '
-    if (objecttype == 'p' and dimension != null):
-        query += ' OID IN (SELECT OID FROM PROP WHERE DIMENSION = ' + str(dimension) + ') AND '
-    if (objecttype == 'c' and size != null):
-        query += ' OID IN (SELECT OID FROM COSTUME WHERE SIZE = \'' + str(size) + '\' AND '
-    return query[:-5];
+def buildSearch(name, objecttype, condition, color, era, checkedout, dimension, size):
+    query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA'
+    if name != '' or  \
+            objecttype != '' or \
+            condition != '' or \
+            color != '' or \
+            era != '':
+        query += ' WHERE '
+
+    if name != '':
+        query += 'OBJECTNAME = \'' + name + '\''
+        if objecttype != '' or \
+                condition != '' or \
+                color != '' or \
+                era != '':
+            query += ' AND '
+
+    if objecttype != '':
+        query += 'TYPE = \'' + objecttype + '\''
+        if condition != '' or \
+                color != '' or \
+                era != '':
+            query += ' AND '
+
+    if condition != '':
+        query += 'CNDTNNAME = \'' + condition + '\''
+        if color != '' or \
+                era != '':
+            query += ' AND '
+
+    if color != '':
+        query += 'OID IN (SELECT OID FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE COLORNAME = \'' + color + '\')'
+        if era != '':
+            query += ' AND '
+
+    if era != '':
+        query += 'ERANAME = \'' + era + '\''
+
+    # if checkedout != '':
+    #     if (checkedout):
+    #         query += ' CHECKEDOUTTO IS NOT NULL AND '
+    #     elif (not checkedout):
+    #         query += ' CHECKEDOUTTO IS NULL AND '
+    #
+    # if objecttype == 'p' and dimension != '':
+    #     query += ' OID IN (SELECT OID FROM PROP WHERE DIMENSION = ' + dimension + ') AND '
+    # if objecttype == 'c' and size != '':
+    #     query += ' OID IN (SELECT OID FROM COSTUME WHERE SIZE = \'' + size + '\' AND '
+    return query;
 
 #Name, objecttype, condition, and era are required of type String
 #colors should be a list of valid colors
@@ -81,4 +113,4 @@ def buildCreate(name, description, objecttype, condition, era, colors, dimension
 
 def buildUpdate(name, objecttype, condition, era, checkedout, color, dimension, size):
 #similar to search, just not implemented yet
-    print name #placeholder
+    print(name) #placeholder

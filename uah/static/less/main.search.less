@@ -10,6 +10,28 @@
         border-top-left-radius  : 10px;
         border-top-right-radius : 10px;
         padding                 : 20px;
+
+        .ui.search {
+            .ui.dropdown.selection {
+                margin : 0 4px;
+            }
+
+            .prompt {
+                border-bottom-right-radius : 0px;
+                border-top-right-radius    : 0px;
+            }
+
+            .ui.button {
+                border-bottom-right-radius : 500rem;
+                border-top-right-radius    : 500rem;
+                padding-right              : 1em;
+
+                .icon {
+                    height : 1em;
+                    margin : 0;
+                }
+            }
+        }
     }
 
     .search_result_container {
@@ -31,8 +53,6 @@
                     color : white;
                 }
 
-
-
                 &:hover {
                     background : lighten(@color_secondary, 25%);
 
@@ -41,27 +61,72 @@
                     }
                 }
             }
+
+            .empty {
+                color     : white;
+                font-size : 1.5rem;
+                padding   : 30px;
+            }
         }
+    }
+}
+
+@media only screen and ( max-width : 970px )
+{
+    #page_content .search_container .ui.search .ui.dropdown.selection {
+        min-width : 0;
+        width     : 23%;
     }
 }
 
 // Mobile Style Overrides
 @media only screen and ( max-width : @screen_max_width )
 {
-    #page_content .ui.items .item {
-        .image {
-            display: inline-block;
-            margin: 0;
-            width: 70px !important;
+    #page_content {
+        height : ~"calc(100% - 150px)";
 
-            img {
-                display: inline-block;
-                height: 50px;
+        .search_container {
+            .ui.search .ui.dropdown.selection {
+                margin : 5px 0;
+                width  : 100%;
+
+                &:first-child {
+                    margin-top : 0;
+                }
+
+                &:last-child {
+                    margin-bottom : 0;
+                }
             }
         }
 
-        .content {
-            padding-top : 5px;
+        .search_result_container {
+            max-height: ~"calc(100% - 300px)"; //change to 300 after filters are changed
+
+            .ui.items .item {
+                .image {
+                    display : inline-block;
+                    height  : 80px !important;
+                    width   : 90px !important;
+
+                    img {
+                        height         : auto !important;
+                        width          : auto !important;
+                    }
+                }
+
+                .content {
+                    height : 80px;
+                    padding : 0 0 0 20px;
+
+                    .description p {
+                        height        : 20px;
+                        overflow      : hidden;
+                        text-overflow : ellipsis;
+                        white-space   : nowrap;
+                    }
+                }
+            }
         }
     }
 }
