@@ -46,6 +46,10 @@
 nav.ui.menu {
     border-radius : 0px;
     margin        : 0px;
+
+    .item.ui.dropdown {
+        display : none;
+    }
 }
 
 // Page Content Styles
@@ -120,6 +124,16 @@ nav.ui.menu {
         #logout_container {
             .icon {
                 display : none;
+            }
+        }
+    }
+
+    .ui.menu:not(.vertical) {
+        .item {
+            display : none;
+
+            &.ui.dropdown {
+                display : flex;
             }
         }
     }

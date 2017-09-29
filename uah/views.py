@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g
 from uah import app
 from uah.db import *
-from uah.sessions import *
 from uah.image_uploader import save_image, load_image
 
+from uah.sessions import *
 import sys
+
 # Sets up variables/functions for use in Jinja templates
 @app.context_processor
 def inject_isAdmin_function():
@@ -34,7 +35,7 @@ def before_request():
 # All invalid URLs will be redirected to the 404 page
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('page_not_found.html')
+    return render_template('error404.html')
 
 # Main App / Default Routes
 @app.route('/')
@@ -78,8 +79,8 @@ def login():
     with DatabaseConnection() as conn:
         # Checks if there are any valid user/password combination
         result = conn.execute(User.check_login, {
-            'Username'   : username,
-            'Password'   : password
+            'Username' : username,
+            'Password' : password
         })
         queryResult = result.fetchall();
         if len(queryResult) != 1:
@@ -94,12 +95,12 @@ def login():
     return redirect('/')
 
 # Register Route: HTML Template
-@app.route('/users/new', methods=['GET'])
+@app.route('/register', methods=['GET'])
 def register_page():
     return render_template('register.html')
 
 # Register Route: POST method after form submission
-@app.route('/users', methods=['POST'])
+@app.route('/register', methods=['POST'])
 def register():
     # Checks if required fields exist in form
     if 'username' not in request.form or \
@@ -172,7 +173,7 @@ def home():
     return redirect(url_for('login_page'))
 
 # Search Route: HTML Template
-@app.route('/items', methods=['GET'])
+@app.route('/search', methods=['GET'])
 def search_page():
     with DatabaseConnection() as conn:
         # Gets the color filters
@@ -196,28 +197,82 @@ def search_page():
         for eraTuple in eraQuery:
             eraList.append(eraTuple[0])
 
+        # test code
         items = conn.execute("SELECT * FROM OBJECT").fetchall()
+        test = 'images/inventory/Crown.jpg'
 
-    return render_template('search.html', conditions=conditionList, colors=colorList, eras=eraList, items=items)
+    return render_template('search.html',
+                            conditions = conditionList,
+                            colors     = colorList,
+                            eras       = eraList,
+                            items      = items,
+                            test       = test)
+
 # Search Route: POST method after form submission
-@app.route('/items', methods=['POST'])
+@app.route('/search', methods=['POST'])
 def search():
     # Checks if required fields exist in form
-    if 'itemName' not in request.form:
+    if 'itemName' not in request.form or \
+            'itemCategory' not in request.form or \
+            'itemCondition' not in request.form or \
+            'itemColor' not in request.form or \
+            'itemEra' not in request.form:
         flash(u'Required fields do not exist.', 'danger')
         return search_page()
 
     # Get search bar input
     itemName = request.form['itemName']
+
     # get filter inputs
+    itemCategory  = request.form['itemCategory']
+    itemCondition = request.form['itemCondition']
+    itemColor     = request.form['itemColor']
+    itemEra       = request.form['itemEra']
+
+    # check optional filters
+    #######
+
+    # get the search query
+    searchQuery = buildSearch(itemName, convertCategory(itemCategory), itemCondition, itemColor, itemEra, '', '', '')
 
     with DatabaseConnection() as conn:
-        if len(itemName):
-            items = conn.execute("SELECT * FROM OBJECT WHERE OBJECTNAME = %s", itemName).fetchall()
-            # display results on page
-            return render_template('search.html', items=items)
-        else:
-            return search_page()
+        # Gets the color filters
+        conditionResult = conn.execute(Item.get_condition_filters)
+        conditionQuery = conditionResult.fetchall()
+        conditionList = []
+        for conditionTuple in conditionQuery:
+            conditionList.append(conditionTuple[0])
+
+        # Gets the color filters
+        colorResult = conn.execute(Item.get_color_filters)
+        colorQuery = colorResult.fetchall()
+        colorList = []
+        for colorTuple in colorQuery:
+            colorList.append(colorTuple[0])
+
+        # Gets the color filters
+        eraResult = conn.execute(Item.get_era_filters)
+        eraQuery = eraResult.fetchall()
+        eraList = []
+        for eraTuple in eraQuery:
+            eraList.append(eraTuple[0])
+
+        # Gets the search results
+        searchResults = conn.execute(searchQuery).fetchall()
+
+        # test code
+        test = 'images/inventory/Crown.jpg'
+
+        return render_template('search.html',
+                                conditions        = conditionList,
+                                colors            = colorList,
+                                eras              = eraList,
+                                items             = searchResults,
+                                selectedCategory  = itemCategory,
+                                selectedCondition = itemCondition,
+                                selectedColor     = itemColor,
+                                selectedEra       = itemEra,
+                                test              = test)
 
 # Add Item Route: HTML Template
 @app.route('/items/new', methods=['GET'])

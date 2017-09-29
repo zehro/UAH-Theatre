@@ -95,6 +95,9 @@ nav.ui.menu {
   border-radius: 0px;
   margin: 0px;
 }
+nav.ui.menu .item.ui.dropdown {
+  display: none;
+}
 #page_content {
   height: 100%;
   margin: 20px auto;
@@ -144,7 +147,7 @@ nav.ui.menu {
 #page_content .subtext:focus {
   color: white;
 }
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 767px) {
   #page_header #logo_container .logo {
     width: 90px;
   }
@@ -154,9 +157,15 @@ nav.ui.menu {
   #page_header #logout_container .icon {
     display: none;
   }
+  .ui.menu:not(.vertical) .item {
+    display: none;
+  }
+  .ui.menu:not(.vertical) .item.ui.dropdown {
+    display: flex;
+  }
   #page_content {
     min-width: auto;
-    width: 75%;
+    width: 90%;
   }
 }
 #screen {
