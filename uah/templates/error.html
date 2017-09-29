@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Error{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ url_for('static', filename='css/main.error.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block header %}
+<div id="logo_container">
+    <img src="{{ url_for('static', filename='images/UAH_logo.svg') }}" class="logo">
+</div>
+
+<div id="banner_container">
+    <h1 class="banner">UAH Theater Inventory</h1>
+</div>
+{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block pagecontent %}
+<div id="error_block">The page you were looking for could not be found</div>
+{% endblock %}
+
+{% block js %}{% endblock %}

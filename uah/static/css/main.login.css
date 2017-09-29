@@ -188,7 +188,7 @@ nav.ui.menu .item.ui.dropdown {
 #page_content .button_container {
   margin: 10px 0px;
 }
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 767px) {
   #page_header #logo_container .logo {
     width: 150px;
   }

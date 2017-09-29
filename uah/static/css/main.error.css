@@ -168,8 +168,37 @@ nav.ui.menu .item.ui.dropdown {
     width: 90%;
   }
 }
+#screen {
+  overflow: auto;
+}
 #page_header {
   padding: 30px;
 }
+#page_header #logo_container {
+  position: static;
+}
+#page_header #logo_container .logo {
+  height: 46px;
+}
+#page_content {
+  padding: 40px;
+}
+#page_content #error_block {
+  font-size: 3rem;
+  color: white;
+}
 @media only screen and (max-width: 767px) {
+  #page_header #logo_container .logo {
+    width: 150px;
+  }
+  #page_header #banner_container .banner {
+    font-size: 1.2rem;
+  }
+  #page_header #logout_container .icon {
+    display: inline;
+  }
+  #page_content {
+    min-width: auto;
+    width: 75%;
+  }
 }
