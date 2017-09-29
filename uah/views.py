@@ -2,9 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from uah import app
 from uah.db import *
 from uah.image_uploader import save_image, load_image
-
 from uah.sessions import *
-import sys
 
 # Sets up variables/functions for use in Jinja templates
 @app.context_processor
@@ -47,11 +45,16 @@ def index_page(path=None):
 def logout():
     # Clear session
     session.clear()
+    # Clear user from application context
+    g.user = None
+
     return redirect(url_for('login_page'))
 
 # Login Route: HTML Template
 @app.route('/login', methods=['GET'])
 def login_page():
+    # If user manually navigates away from app, automatically logout
+    session.clear()
     return render_template('login.html')
 
 # Login Route: POST method after form submission
@@ -87,8 +90,8 @@ def login():
             flash(u'Invalid username or password.', 'danger')
             return login_page()
         # Sets the user in the application context
-        g.user = {'Username' : queryResult[0],
-                  'isAdmin'  : queryResult[1]}
+        g.user = {'Username' : queryResult[0][0],
+                  'isAdmin'  : queryResult[0][1]}
         # Sets up a session with user from application context
         session['user'] = g.user['Username']
     # Navigates to the main page
@@ -97,6 +100,8 @@ def login():
 # Register Route: HTML Template
 @app.route('/register', methods=['GET'])
 def register_page():
+    # If user manually navigates away from app, automatically logout
+    session.clear()
     return render_template('register.html')
 
 # Register Route: POST method after form submission
@@ -162,11 +167,13 @@ def register():
 
 # Homepage Route: HTML Template
 @app.route('/home', methods=['GET'])
+@login_required()
 def home_page():
     return render_template('home.html')
 
 # Homepage Route: POST method after form submission
 @app.route('/home', methods=['POST'])
+@login_required()
 def home():
     # an example SQL query to demo remote db execution
     result = connection.execute("INSERT INTO AUDIT(ACTION, TIME, USER) VALUES (1, %s ,1)", (strftime("%Y-%m-%d %H:%M:%S", gmtime())))
@@ -174,6 +181,7 @@ def home():
 
 # Search Route: HTML Template
 @app.route('/search', methods=['GET'])
+@login_required()
 def search_page():
     with DatabaseConnection() as conn:
         # Gets the color filters
@@ -210,6 +218,7 @@ def search_page():
 
 # Search Route: POST method after form submission
 @app.route('/search', methods=['POST'])
+@login_required()
 def search():
     # Checks if required fields exist in form
     if 'itemName' not in request.form or \
@@ -276,11 +285,13 @@ def search():
 
 # Add Item Route: HTML Template
 @app.route('/items/new', methods=['GET'])
+@login_required()
 def additem_page():
     return render_template('additem.html')
 
 # Add Item Route: POST method after form submission
 @app.route('/items/new', methods=['POST'])
+@login_required()
 def additem():
     if request.files:
         image = request.files['image']

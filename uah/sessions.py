@@ -4,25 +4,24 @@ from datetime import datetime
 import base64
 import hashlib
 import hmac
-from flask import g, redirect, url_for, request, abort
+from flask import g, redirect, url_for, request, abort, Blueprint
 from flask.sessions import SessionInterface, SessionMixin
 from functools import wraps
 from werkzeug.datastructures import CallbackDict
 
+sessionsBlueprint = Blueprint("sessions", __name__)
 
-def login_required(t='C'):
+def login_required(t = 0):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
             if not g.user:
-                return redirect(url_for('login', next=request.path))
-            if t is not None and g.user['Type'] != t:
+                return redirect(url_for('login_page'))
+            if t is not None and g.user['isAdmin'] != t:
                 abort(403)
             return func(*args, **kwargs)
-
         return wrapper
     return decorator
-
 
 class JWTSession(CallbackDict, SessionMixin):
     def __init__(self, initial=None):
@@ -31,7 +30,6 @@ class JWTSession(CallbackDict, SessionMixin):
 
         CallbackDict.__init__(self, initial, on_update)
         self.modified = False
-
 
 class JWTSessionInterface(SessionInterface):
     class BadTokenException(Exception):
@@ -67,8 +65,9 @@ class JWTSessionInterface(SessionInterface):
             return JWTSession()
         try:
             session_data = JWTSessionInterface.jwt_decode(app.secret_key, val)
-            if session_data.get('iss') != 'ao' or session_data.get('nbf') > int(datetime.utcnow().timestamp()) or \
-                            session_data.get('exp') < int(datetime.utcnow().timestamp()):
+            if session_data.get('iss') != 'ao' or \
+                    session_data.get('nbf') > int(datetime.utcnow().timestamp()) or \
+                    session_data.get('exp') < int(datetime.utcnow().timestamp()):
                 raise JWTSessionInterface.BadTokenException()
             return JWTSession(session_data)
         except JWTSessionInterface.BadTokenException:
@@ -79,7 +78,7 @@ class JWTSessionInterface(SessionInterface):
             return
 
         domain = self.get_cookie_domain(app)
-        path = self.get_cookie_path(app)
+        path   = self.get_cookie_path(app)
 
         if not session:
             if session.modified:
@@ -87,7 +86,7 @@ class JWTSessionInterface(SessionInterface):
             return
 
         httponly = self.get_cookie_httponly(app)
-        expires = datetime.utcnow().timestamp() + (app.permanent_session_lifetime if session.permanent else 30 * 60)
+        expires  = datetime.utcnow().timestamp() + (app.permanent_session_lifetime if session.permanent else 30 * 60)
 
         session['exp'] = int(expires)
         if 'nbf' not in session:
@@ -96,5 +95,4 @@ class JWTSessionInterface(SessionInterface):
             session['iss'] = 'ao'
 
         val = JWTSessionInterface.jwt_encode(app.secret_key, dict(session))
-        response.set_cookie(app.session_cookie_name, val, httponly=httponly, expires=expires, domain=domain, path=path,
-                            secure=False)
+        response.set_cookie(app.session_cookie_name, val, httponly=httponly, expires=expires, domain=domain, path=path, secure=False)
