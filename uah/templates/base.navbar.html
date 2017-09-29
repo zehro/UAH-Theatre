@@ -1,0 +1,66 @@
+<nav class="ui menu">
+    <div class="ui dropdown item">
+        <i class="icon sidebar"></i>
+        Menu
+
+        <div class="menu">
+            <a href="{{ url_for('search_page') }}"
+               class="item blue">
+                <i class="icon search"></i>
+                Search Items
+            </a>
+
+            <a href="{{ url_for('additem_page') }}"
+                class="item blue">
+                <i class="icon write"></i>
+                Add Item
+            </a>
+
+            <a class="item blue">
+                <i class="icon write"></i>
+                Edit Inventory
+            </a>
+
+            {% if isAdmin() %}
+            <a class="item blue">
+                <i class="icon address book"></i>
+                Manage Accounts
+            </a>
+            {% endif %}
+
+            <a class="item blue">
+                <i class="icon settings"></i>
+                Manage Settings
+            </a>
+        </div>
+    </div>
+
+    <a href="{{ url_for('search_page') }}"
+       class="item blue">
+        <i class="icon search"></i>
+        Search Items
+    </a>
+
+    <a href="{{ url_for('additem_page') }}"
+        class="item blue">
+        <i class="icon write"></i>
+        Add Item
+    </a>
+
+    <a class="item blue">
+        <i class="icon write"></i>
+        Edit Inventory
+    </a>
+
+    {% if isAdmin() %}
+    <a class="item blue">
+        <i class="icon address book"></i>
+        Manage Accounts
+    </a>
+    {% endif %}
+
+    <a class="item blue">
+        <i class="icon settings"></i>
+        Manage Settings
+    </a>
+</nav>
