@@ -59,7 +59,9 @@ def logout():
 @app.route('/login', methods=['GET'])
 def login_page():
     # If user manually navigates away from app, automatically logout
-    session.clear()
+    if g.user != None:
+        session.clear()
+
     return render_template('login.html')
 
 # Login Route: POST method after form submission
@@ -106,7 +108,9 @@ def login():
 @app.route('/register', methods=['GET'])
 def register_page():
     # If user manually navigates away from app, automatically logout
-    session.clear()
+    if g.user != None:
+        session.clear()
+
     return render_template('register.html')
 
 # Register Route: POST method after form submission
