@@ -31,6 +31,9 @@
 {% block pagecontent %}
 <div class="search_container">
     <form class="ui search" method='post'>
+        <button id="edit_filters" class="ui button fluid">
+            Edit Filters
+        </button>
         <fieldset class="input_container">
             <div class="ui dropdown selection" id="category_filter">
                 <input type="hidden" name="itemCategory">
@@ -80,7 +83,7 @@
 
         <div class="ui icon input fluid">
             <input class="prompt" type="text" name="itemName" placeholder="Search...">
-            <button class="ui button right attached" type='submit'>
+            <button id="search_button" class="ui button right attached" type='submit'>
                 <i class="search icon"></i>
             </button>
         </div>

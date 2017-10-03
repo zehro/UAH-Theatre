@@ -12,6 +12,11 @@
         padding                 : 20px;
 
         .ui.search {
+            #edit_filters {
+                display       : none;
+                margin-bottom : 10px;
+            }
+
             .ui.dropdown.selection {
                 margin : 0 4px;
             }
@@ -21,7 +26,7 @@
                 border-top-right-radius    : 0px;
             }
 
-            .ui.button {
+            #search_button {
                 border-bottom-right-radius : 500rem;
                 border-top-right-radius    : 500rem;
                 padding-right              : 1em;
@@ -86,22 +91,36 @@
         height : ~"calc(100% - 150px)";
 
         .search_container {
-            .ui.search .ui.dropdown.selection {
-                margin : 5px 0;
-                width  : 100%;
-
-                &:first-child {
-                    margin-top : 0;
+            .ui.search {
+                #edit_filters {
+                    display : block;
                 }
 
-                &:last-child {
-                    margin-bottom : 0;
+                .input_container {
+                    display : none;
+
+                    &.toggled {
+                        display : block;
+                    }
+
+                    .ui.dropdown.selection {
+                        margin : 5px 0;
+                        width  : 100%;
+
+                        &:first-child {
+                            margin-top : 0;
+                        }
+
+                        &:last-child {
+                            margin-bottom : 0;
+                        }
+                    }
                 }
             }
         }
 
         .search_result_container {
-            max-height: ~"calc(100% - 300px)"; //change to 300 after filters are changed
+            max-height: ~"calc(100% - 150px)";
 
             .ui.items .item {
                 .image {
