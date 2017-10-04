@@ -31,6 +31,9 @@
 {% block pagecontent %}
 <div class="search_container">
     <form class="ui search" method='post'>
+        <button id="edit_filters" class="ui button fluid">
+            Edit Filters
+        </button>
         <fieldset class="input_container">
             <div class="ui dropdown selection" id="category_filter">
                 <input type="hidden" name="itemCategory">
@@ -80,7 +83,7 @@
 
         <div class="ui icon input fluid">
             <input class="prompt" type="text" name="itemName" placeholder="Search...">
-            <button class="ui button right attached" type='submit'>
+            <button id="search_button" class="ui button right attached" type='submit'>
                 <i class="search icon"></i>
             </button>
         </div>
@@ -93,14 +96,13 @@
         {% for item in items %}
         <a class="item">
             <div class="ui small image">
-                <img src="{{ url_for('static', filename=test) }}">
+                <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
             </div>
             <div class="content">
                 <div class="header">{{ item.OBJECTNAME }}</div>
                 <div class="meta">
-                    <span class="category">{{ item.TYPE }}</span>
-                    <span class="condition">{{ item.CNID }}</span>
-                    <span class="timePeriod">{{ item.EID }}</span>
+                    <p class="condition">Condition: {{ item.CNDTNNAME }}</p>
+                    <p class="timePeriod">Era: {{ item.ERANAME }}</p>
                 </div>
                 <div class="description">
                     <p>{{ item.DESCRIPTION }}</p>
