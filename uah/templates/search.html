@@ -96,14 +96,13 @@
         {% for item in items %}
         <a class="item">
             <div class="ui small image">
-                <img src="{{ url_for('static', filename=test) }}">
+                <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
             </div>
             <div class="content">
                 <div class="header">{{ item.OBJECTNAME }}</div>
                 <div class="meta">
-                    <span class="category">{{ item.TYPE }}</span>
-                    <span class="condition">{{ item.CNID }}</span>
-                    <span class="timePeriod">{{ item.EID }}</span>
+                    <p class="condition">Condition: {{ item.CNDTNNAME }}</p>
+                    <p class="timePeriod">Era: {{ item.ERANAME }}</p>
                 </div>
                 <div class="description">
                     <p>{{ item.DESCRIPTION }}</p>

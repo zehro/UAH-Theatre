@@ -215,15 +215,13 @@ def search_page():
             eraList.append(eraTuple[0])
 
         # test code
-        items = conn.execute("SELECT * FROM OBJECT").fetchall()
-        test = 'images/inventory/Crown.jpg'
+        items = conn.execute("SELECT * FROM OBJECT NATURAL JOIN ERA NATURAL JOIN CNDTN NATURAL JOIN PICTURE").fetchall()
 
     return render_template('search.html',
                             conditions = conditionList,
                             colors     = colorList,
                             eras       = eraList,
-                            items      = items,
-                            test       = test)
+                            items      = items)
 
 # Search Route: POST method after form submission
 @app.route('/search', methods=['POST'])
@@ -278,9 +276,6 @@ def search():
         # Gets the search results
         searchResults = conn.execute(searchQuery).fetchall()
 
-        # test code
-        test = 'images/inventory/Crown.jpg'
-
         return render_template('search.html',
                                 conditions        = conditionList,
                                 colors            = colorList,
@@ -289,8 +284,7 @@ def search():
                                 selectedCategory  = itemCategory,
                                 selectedCondition = itemCondition,
                                 selectedColor     = itemColor,
-                                selectedEra       = itemEra,
-                                test              = test)
+                                selectedEra       = itemEra)
 
 # Add Item Route: HTML Template
 @app.route('/items/new', methods=['GET'])
