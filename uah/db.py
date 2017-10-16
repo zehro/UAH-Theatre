@@ -51,7 +51,7 @@ def convertCategory(category):
 
 #Any input that isn't being searched on should be null
 def buildSearch(name, objecttype, condition, color, era, checkedout, dimension, size):
-    query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA'
+    query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE'
     if name != '' or  \
             objecttype != '' or \
             condition != '' or \
