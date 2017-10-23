@@ -42,8 +42,8 @@ def error_page():
 
 # Main App / Default Routes
 @app.route('/')
-def index_page(path=None):
-    return redirect(url_for('home_page'))
+def home_page(path=None):
+    return redirect(url_for('search_page'))
 
 # Logout Route
 @app.route("/logout")
@@ -172,20 +172,6 @@ def register():
             # Rollback and discard transaction changes upon failure
             transaction.rollback()
             raise
-    return redirect(url_for('login_page'))
-
-# Homepage Route: HTML Template
-@app.route('/home', methods=['GET'])
-@login_required()
-def home_page():
-    return render_template('home.html')
-
-# Homepage Route: POST method after form submission
-@app.route('/home', methods=['POST'])
-@login_required()
-def home():
-    # an example SQL query to demo remote db execution
-    result = connection.execute("INSERT INTO AUDIT(ACTION, TIME, USER) VALUES (1, %s ,1)", (strftime("%Y-%m-%d %H:%M:%S", gmtime())))
     return redirect(url_for('login_page'))
 
 # Search Route: HTML Template

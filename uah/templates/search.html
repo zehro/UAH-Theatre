@@ -35,6 +35,10 @@
             Edit Filters
         </button>
         <fieldset class="input_container">
+            <button id="clear_filters" class="ui button orange">
+                Clear
+            </button>
+
             <div class="ui dropdown selection" id="category_filter">
                 <input type="hidden" name="itemCategory">
                 <i class="dropdown icon"></i>
@@ -144,4 +148,9 @@
 </script>
 {% endif %}
 
+<script type="text/javascript">
+    $('#clear_filters').click(function() {
+        $('.ui.dropdown').dropdown('clear');
+    });
+</script>
 {% endblock %}
