@@ -209,16 +209,16 @@ nav.ui.menu .item.ui.dropdown {
   padding: 20px !important;
 }
 #page_content .search_result_container .ui.items.divided .item .image {
-  width: 150px;
-  height: 150px;
-  display: flex;
   background: black;
+  display: flex;
+  height: 150px;
+  width: 150px;
 }
 #page_content .search_result_container .ui.items.divided .item .image img {
-  max-width: 150px;
-  max-height: 150px;
-  width: auto;
+  max-height: 100% !important;
+  max-width: 100% !important;
   margin: auto;
+  width: auto;
 }
 #page_content .search_result_container .ui.items.divided .item .header,
 #page_content .search_result_container .ui.items.divided .item .meta,
@@ -272,7 +272,7 @@ nav.ui.menu .item.ui.dropdown {
   }
   #page_content .search_result_container .ui.items .item .image {
     display: inline-block;
-    height: 80px !important;
+    height: 90px !important;
     width: 90px !important;
   }
   #page_content .search_result_container .ui.items .item .image img {
@@ -282,6 +282,15 @@ nav.ui.menu .item.ui.dropdown {
   #page_content .search_result_container .ui.items .item .content {
     height: 80px;
     padding: 0 0 0 20px;
+  }
+  #page_content .search_result_container .ui.items .item .content .meta p {
+    display: inline-block;
+    margin: 0;
+  }
+  #page_content .search_result_container .ui.items .item .content .meta p.condition {
+    border-right: 1px solid white;
+    margin-right: 5px;
+    padding-right: 10px;
   }
   #page_content .search_result_container .ui.items .item .content .description p {
     height: 20px;
