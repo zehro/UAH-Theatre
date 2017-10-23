@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Item | {{ item.OBJECTNAME }}{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ url_for('static', filename='css/main.search.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block header %}
+<a id="logo_container" href="{{ url_for('home_page') }}">
+    <img src="{{ url_for('static', filename='images/UAH_logo.svg') }}" class="logo">
+</a>
+
+<div id="logout_container">
+    <a href="{{ url_for('logout') }}"
+       class="ui button white">
+        <i class="icon sign out"></i>
+        Logout
+    </a>
+</div>
+
+<div id="banner_container">
+    <h1 class="banner">Search</h1>
+</div>
+{% endblock %}
+
+{% block navbar %}
+{% include "base.navbar.html" %}
+{% endblock %}
+
+{% block pagecontent %}
+{% endblock %}
+
+{% block js %}
+{% endblock %}
