@@ -29,7 +29,21 @@
 {% endblock %}
 
 {% block pagecontent %}
+<div>
+    <div class="ui small image">
+        <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
+    </div>
+    <div class="header">{{ item.OBJECTNAME }}</div>
+    <div class="description">
+        <p>{{ item.DESCRIPTION }}</p>
+    </div>
+    <div class="meta">
+        <p class="condition">Condition: {{ item.CNDTNNAME }}</p>
+        <p class="timePeriod">Era: {{ item.ERANAME }}</p>
+    </div>
+</div>
 {% endblock %}
 
 {% block js %}
+<script src="{{ url_for('static', filename='js/semantic.dropdown.js') }}" type="text/javascript"></script>
 {% endblock %}

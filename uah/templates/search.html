@@ -98,7 +98,7 @@
 <div class="search_result_container">
     <div class="ui items divided">
         {% for item in items %}
-        <a class="item">
+        <a class="item" href="{{ url_for('item_page', oid=item.OID) }}">
             <div class="ui small image">
                 <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
             </div>

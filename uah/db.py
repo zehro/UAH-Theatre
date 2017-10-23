@@ -39,8 +39,10 @@ Item = Bunch()
 Item.get_era_filters       = 'SELECT ERANAME FROM ERA'
 Item.get_color_filters     = 'SELECT COLORNAME FROM COLOR'
 Item.get_condition_filters = 'SELECT CNDTNNAME FROM CNDTN'
-# Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
-# Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
+Item.find_all              = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE'
+Item.findby_oid            = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE WHERE OID = %(OID)s'
+Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
+Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
 
 def convertCategory(category):
     if category == 'costume':

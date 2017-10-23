@@ -200,8 +200,8 @@ def search_page():
         for eraTuple in eraQuery:
             eraList.append(eraTuple[0])
 
-        # test code
-        items = conn.execute("SELECT * FROM OBJECT NATURAL JOIN ERA NATURAL JOIN CNDTN NATURAL JOIN PICTURE").fetchall()
+        # Populating initial search with all results and no filters
+        items = conn.execute(Item.find_all).fetchall()
 
     return render_template('search.html',
                             conditions = conditionList,
@@ -271,6 +271,25 @@ def search():
                                 selectedCondition = itemCondition,
                                 selectedColor     = itemColor,
                                 selectedEra       = itemEra)
+
+# View Item Route: HTML Template
+@app.route('/items/id/<int:oid>', methods=['GET'])
+@login_required()
+def item_page(oid):
+    with DatabaseConnection() as conn:
+        # test code
+        item = conn.execute(Item.findby_oid, {
+            'OID' : oid,
+        }).fetchone()
+
+        images = conn.execute(Item.get_images, {
+            'OID' : oid,
+        }).fetchall()
+
+    return render_template('item.html',
+                            item = item,
+                            images = images)
+
 
 # Add Item Route: HTML Template
 @app.route('/items/new', methods=['GET'])
