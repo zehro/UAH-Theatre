@@ -126,31 +126,25 @@
 
 {% block js %}
 <script src="{{ url_for('static', filename='js/semantic.dropdown.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+$('#clear_filters').click(function() {
+    $('.ui.dropdown').dropdown('clear');
+});
 
 {% if selectedCategory %}
-<script type="text/javascript">
-    $('#category_filter').dropdown('set selected', '{{ selectedCategory }}');
-</script>
-{% endif %}
-{% if selectedCondition %}
-<script type="text/javascript">
-    $('#condition_filter').dropdown('set selected', '{{ selectedCondition }}');
-</script>
-{% endif %}
-{% if selectedColor %}
-<script type="text/javascript">
-    $('#color_filter').dropdown('set selected', '{{ selectedColor }}');
-</script>
-{% endif %}
-{% if selectedEra %}
-<script type="text/javascript">
-    $('#era_filter').dropdown('set selected', '{{ selectedEra }}');
-</script>
+$('#category_filter').dropdown('set selected', '{{ selectedCategory }}');
 {% endif %}
 
-<script type="text/javascript">
-    $('#clear_filters').click(function() {
-        $('.ui.dropdown').dropdown('clear');
-    });
+{% if selectedCondition %}
+$('#condition_filter').dropdown('set selected', '{{ selectedCondition }}');
+{% endif %}
+
+{% if selectedColor %}
+$('#color_filter').dropdown('set selected', '{{ selectedColor }}');
+{% endif %}
+
+{% if selectedEra %}
+$('#era_filter').dropdown('set selected', '{{ selectedEra }}');
+{% endif %}
 </script>
 {% endblock %}

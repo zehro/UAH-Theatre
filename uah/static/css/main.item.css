@@ -179,6 +179,16 @@ nav.ui.menu .item.ui.dropdown {
   text-align: center;
   width: 50%;
 }
+#page_content .item_container .image {
+  background: black;
+  outline: none;
+}
+#page_content .item_container .image img {
+  margin: auto;
+}
+#page_content .item_container .gallery {
+  display: none;
+}
 #page_content .item_container .description {
   background: #007AC4;
   border-radius: 10px;

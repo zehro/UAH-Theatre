@@ -279,23 +279,69 @@ def search():
 @login_required()
 def item_page(oid):
     with DatabaseConnection() as conn:
-        # test code
+        # Gets the color filters
+        conditionResult = conn.execute(Item.get_condition_filters)
+        conditionQuery = conditionResult.fetchall()
+        conditionList = []
+        for conditionTuple in conditionQuery:
+            conditionList.append(conditionTuple[0])
+
+        # Gets the color filters
+        colorResult = conn.execute(Item.get_color_filters)
+        colorQuery = colorResult.fetchall()
+        colorList = []
+        for colorTuple in colorQuery:
+            colorList.append(colorTuple[0])
+
+        # Gets the color filters
+        eraResult = conn.execute(Item.get_era_filters)
+        eraQuery = eraResult.fetchall()
+        eraList = []
+        for eraTuple in eraQuery:
+            eraList.append(eraTuple[0])
+
+        # Get the item
         item = conn.execute(Item.findby_oid, {
             'OID' : oid,
         }).fetchone()
 
+        # Get the item's images
         images = conn.execute(Item.get_images, {
             'OID' : oid,
         }).fetchall()
 
-    print(images, file=sys.stderr)
-    print(item, file=sys.stderr)
-    print(item.IMAGE, file=sys.stderr)
+    # print(images, file=sys.stderr)
+    # print(item, file=sys.stderr)
+    # print(item.IMAGE, file=sys.stderr)
 
     return render_template('item.html',
-                            item = item,
-                            images = images)
+                            item              = item,
+                            images            = images,
+                            conditions        = conditionList,
+                            colors            = colorList,
+                            eras              = eraList)
 
+# View Item Route: HTML Template
+@app.route('/items/id/<int:oid>', methods=['POST'])
+@login_required()
+def item_update(oid):
+    # with DatabaseConnection() as conn:
+    #     # Begins a transaction
+    #     transaction = conn.begin()
+    #     try:
+    #         # If updating
+    #
+    #         # Commits the transaction changes
+    #         transaction.commit()
+    #     except:
+    #         # Rollback and discard transaction changes upon failure
+    #         transaction.rollback()
+    #         raise
+
+    if request.form['submit'] == 'Update':
+        return redirect(url_for('home_page'))
+    elif request.form['submit'] == 'Delete':
+        return redirect(url_for('home_page'))
 
 # Add Item Route: HTML Template
 @app.route('/items/new', methods=['GET'])
