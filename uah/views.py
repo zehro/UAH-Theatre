@@ -4,6 +4,8 @@ from uah.db import *
 from uah.image_uploader import save_image, load_image
 from uah.sessions import *
 
+import sys
+
 # Sets up variables/functions for use in Jinja templates
 @app.context_processor
 def inject_isAdmin_function():
@@ -285,6 +287,10 @@ def item_page(oid):
         images = conn.execute(Item.get_images, {
             'OID' : oid,
         }).fetchall()
+
+    print(images, file=sys.stderr)
+    print(item, file=sys.stderr)
+    print(item.IMAGE, file=sys.stderr)
 
     return render_template('item.html',
                             item = item,

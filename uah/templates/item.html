@@ -3,7 +3,7 @@
 {% block title %}Item | {{ item.OBJECTNAME }}{% endblock %}
 
 {% block stylesheets %}
-<link href="{{ url_for('static', filename='css/main.search.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static', filename='css/main.item.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block header %}
@@ -29,21 +29,96 @@
 {% endblock %}
 
 {% block pagecontent %}
-<div>
-    <div class="ui small image">
-        <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
+<div class="item_container">
+    {% for image in images %}
+    <div class="ui image medium">
+        <img src="{{ url_for('load_image', filename=image[0]) }}">
     </div>
-    <div class="header">{{ item.OBJECTNAME }}</div>
+    {% endfor %}
     <div class="description">
-        <p>{{ item.DESCRIPTION }}</p>
+        <h2 class="header">{{ item.OBJECTNAME }}</h2>
+        <div class="meta">
+            <label>Description: </label>
+            <p class="static">{{ item.DESCRIPTION }}</p>
+            <textarea class="update" rows="8">{{ item.DESCRIPTION }}</textarea>
+        </div>
+        <div class="meta">
+            <label>Era: </label>
+            <p class="static">{{ item.ERANAME }}</p>
+
+            <div class="ui dropdown selection update" id="era_filter">
+                <input type="hidden" name="itemEra">
+                <i class="dropdown icon"></i>
+                <div class="default text">Era</div>
+                <div class="menu">
+                    {% for era in eras %}
+                    <div class="item">{{ era }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="meta">
+            <label>Condition: </label>
+            <p class="static condition {{ item.CNDTNNAME }}">{{ item.CNDTNNAME }}</p>
+
+            <div class="ui dropdown selection update" id="condition_filter">
+                <input type="hidden" name="itemCondition">
+                <i class="dropdown icon"></i>
+                <div class="default text">Condition</div>
+                <div class="menu">
+                    {% for condition in conditions %}
+                    <div class="item">{{ condition }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="meta">
-        <p class="condition">Condition: {{ item.CNDTNNAME }}</p>
-        <p class="timePeriod">Era: {{ item.ERANAME }}</p>
+
+    <div class="button_container static">
+        <button class="ui button fluid">
+            Check In
+        </button>
+    </div>
+
+    <div class="button_container static">
+        <button class="ui button fluid yellow" id="update_button">
+            Update
+        </button>
+    </div>
+
+    <div class="button_container update">
+        <button class="ui button fluid green" id="confirm_button">
+            Confirm
+        </button>
+    </div>
+
+    <div class="button_container update">
+        <button class="ui button fluid" id="cancel_button">
+            Cancel
+        </button>
+    </div>
+
+    <div class="button_container static">
+        <button class="ui button fluid red">
+            Delete
+        </button>
     </div>
 </div>
 {% endblock %}
 
 {% block js %}
 <script src="{{ url_for('static', filename='js/semantic.dropdown.js') }}" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $('#update_button').click(function() {
+        $('.static').css('display', 'none');
+        $('.update').css('display', 'block');
+    });
+
+    $('#cancel_button').click(function() {
+        $('.static').css('display', 'inline-block');
+        $('.static.button_container').css('display', 'block');
+        $('.update').css('display', 'none');
+    });
+</script>
 {% endblock %}

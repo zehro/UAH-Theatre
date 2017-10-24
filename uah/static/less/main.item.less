@@ -1,0 +1,106 @@
+// out: ../css/main.item.css, sourcemap: false, compress: false
+
+// Importing Main Styles
+@import url( 'main.less' );
+
+// Item Page Styles
+#page_content {
+    .static {
+        display : block;
+    }
+
+    .update {
+        display : none;
+    }
+
+    .item_container {
+        margin     : 0 auto;
+        text-align : center;
+        width      : 50%;
+
+        .description {
+            background     : @color_primary;
+            border-radius  : 10px;
+            color          : white;
+            margin         : 20px 0;
+            padding-bottom : 10px;
+
+            .header {
+                border-bottom : 1px solid white;
+                padding       : 10px;
+            }
+
+            .meta {
+                padding     : 0.5em 1em;
+                padding-top : 0;
+                text-align  : left;
+
+                label {
+                    display         : inline-block;
+                    text-decoration : underline;
+                    width           : 6em;
+                }
+
+                p {
+                    border-radius : 5px;
+                    display       : inline-block;
+                    margin        : 0;
+                    padding       : 5px 0;
+                    text-align    : left;
+                }
+
+                textarea {
+                    vertical-align : top;
+                }
+
+                .static {
+                    display : inline-block;
+                }
+
+                .update {
+                    margin-top: 5px;
+                    min-width: 100%;
+                    max-width: 100%;
+                    width: 100%;
+                }
+
+                .condition {
+                    padding : 5px;
+                }
+
+                .Unusable {
+                    background : #db2828;
+                }
+                .Bad {
+                    background : #F2351C;
+                }
+                .Decent {
+                    background : #F0C60E;
+                }
+                .Good {
+                    background : #97C635;
+                }
+                .Excellent {
+                    background : #26B800;
+                }
+                .New {
+                    background : #00A000;
+                }
+            }
+        }
+
+        .button_container {
+            margin : 10px 0;
+        }
+    }
+}
+
+// Mobile Style Overrides
+@media only screen and ( max-width : @screen_max_width )
+{
+    #page_content {
+        .item_container {
+            width : 80%;
+        }
+    }
+}
