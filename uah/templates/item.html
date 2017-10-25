@@ -3,7 +3,8 @@
 {% block title %}Item | {{ item.OBJECTNAME }}{% endblock %}
 
 {% block stylesheets %}
-<link href="{{ url_for('static', filename='css/main.search.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static', filename='css/main.item.css') }}"       rel="stylesheet" type="text/css">
+<link href="{{ url_for('static', filename='css/jquery.colorbox.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block header %}
@@ -29,7 +30,194 @@
 {% endblock %}
 
 {% block pagecontent %}
+<form class="item_container" method="post">
+    <a class="ui image medium group" href="{{ url_for('load_image', filename=item.IMAGE) }}">
+        <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
+    </a>
+    {% for image in images %}
+    <a class="group gallery" href="{{ url_for('load_image', filename=image[0]) }}"></a>
+    {% endfor %}
+    <div class="description">
+        <h2 class="header static">{{ item.OBJECTNAME }}</h2>
+        <div class="ui form meta update">
+            <div class="field">
+                <label>Name</label>
+                <input name="itemName" type="text" value="{{ item.OBJECTNAME }}"></input>
+            </div>
+        </div>
+
+        <div class="ui form meta">
+            <div class="field">
+                <label>Description: </label>
+                <p class="static">{{ item.DESCRIPTION }}</p>
+                <textarea name="itemDescription" rows="8" class="update">{{ item.DESCRIPTION }}</textarea>
+            </div>
+        </div>
+
+        <div class="ui form meta">
+            <div class="field">
+                <label>Category: </label>
+                <p class="static">{{ convertTypeToString(item.TYPE) }}</p>
+
+                <div class="ui dropdown selection update" id="category_dropdown">
+                    <input type="hidden" name="itemCategory">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Category</div>
+                    <div class="menu">
+                        <div class="item">Costume</div>
+                        <div class="item">Prop</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui form meta">
+            <div class="field">
+                <label>Era: </label>
+                <p class="static">{{ item.ERANAME }}</p>
+
+                <div class="ui dropdown selection update" id="era_dropdown">
+                    <input type="hidden" name="itemEra">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Era</div>
+                    <div class="menu">
+                        {% for era in eras %}
+                        <div class="item">{{ era }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui form meta">
+            <div class="field">
+                <label>Colors: </label>
+                <p class="static">{{ itemColors }}</p>
+
+                <div class="ui dropdown selection multiple update" id="color_select">
+                    <input type="hidden" name="itemColors">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Colors</div>
+                    <div class="menu">
+                        {% for color in colors %}
+                        <div class="item">{{ color }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if item.TYPE == 'c' %}
+        <div class="ui form meta">
+            <div class="field">
+                <label>Size: </label>
+                <p class="static">{{ item.SIZE }}</p>
+
+                <div class="ui dropdown selection update" id="size_dropdown">
+                    <input type="hidden" name="itemSize">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Size</div>
+                    <div class="menu">
+                        {% for size in sizes %}
+                        <div class="item">{{ size }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if item.TYPE == 'p' %}
+        <div class="ui form meta">
+            <div class="field">
+                <label>Dimension: </label>
+                <p class="static">{{ item.DIMENSION }}</p>
+
+                <div class="ui dropdown selection update" id="dimension_dropdown">
+                    <input type="hidden" name="itemDimension">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Dimension</div>
+                    <div class="menu">
+                        {% for dimension in dimensions %}
+                        <div class="item">{{ dimension }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="ui form meta">
+            <div class="field">
+                <label>Condition: </label>
+                <p class="static condition {{ item.CNDTNNAME }}">{{ item.CNDTNNAME }}</p>
+
+                <div class="ui dropdown selection update" id="condition_dropdown">
+                    <input type="hidden" name="itemCondition">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Condition</div>
+                    <div class="menu">
+                        {% for condition in conditions %}
+                        <div class="item">{{ condition }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="button_container static">
+        <button class="ui button fluid" id="check_in_button">
+            Check In
+        </button>
+    </div>
+
+    <div class="button_container static">
+        <button class="ui button fluid yellow" type="button" id="update_button">
+            Update
+        </button>
+    </div>
+
+    <div class="button_container update">
+        <input class="ui button fluid green" type="submit" name="submit" value="Confirm"></input>
+    </div>
+
+    <div class="button_container update">
+        <button class="ui button fluid" type="button" id="cancel_button">
+            Cancel
+        </button>
+    </div>
+
+    <div class="button_container static">
+        <input class="ui button fluid red" type="submit" type="submit" value="Delete"></input>
+    </div>
+</form>
 {% endblock %}
 
 {% block js %}
+<script src="{{ url_for('static', filename='js/jquery.colorbox.min.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/semantic.dropdown.js') }}"   type="text/javascript"></script>
+<script type="text/javascript">
+$(".group").colorbox({
+    maxWidth    : '80%',
+    scalePhotos : true,
+    rel         :'group'
+});
+
+$('#update_button').click(function() {
+    $('.static').css('display', 'none');
+    $('.update').css('display', 'block');
+});
+
+$('#cancel_button').click(function() {
+    $('.static').css('display', 'inline-block');
+    $('.header.static, .button_container.static').css('display', 'block');
+    $('.update').css('display', 'none');
+});
+
+$('#category_dropdown').dropdown('set selected', '{{ convertTypeToString(item.TYPE) }}');
+$('#era_dropdown').dropdown('set selected', '{{ item.ERANAME }}');
+$('#color_select').dropdown('set selected', '{{ item.CNDTNNAME }}');
+$('#condition_dropdown').dropdown('set selected', '{{ item.CNDTNNAME }}');
+</script>
 {% endblock %}

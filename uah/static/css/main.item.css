@@ -168,8 +168,94 @@ nav.ui.menu .item.ui.dropdown {
     min-width: auto;
   }
 }
-#page_header {
-  padding: 30px;
+#page_content .static {
+  display: block;
+}
+#page_content .update {
+  display: none;
+}
+#page_content .item_container {
+  margin: 0 auto;
+  text-align: center;
+  width: 50%;
+}
+#page_content .item_container .image {
+  background: black;
+  outline: none;
+}
+#page_content .item_container .image img {
+  margin: auto;
+}
+#page_content .item_container .gallery {
+  display: none;
+}
+#page_content .item_container .description {
+  background: #007AC4;
+  border-radius: 10px;
+  color: white;
+  margin: 20px 0;
+  padding: 10px 0;
+}
+#page_content .item_container .description .header {
+  border-bottom: 1px solid white;
+  padding-bottom: 10px;
+}
+#page_content .item_container .description .meta {
+  padding: 0.5em 1em;
+  padding-top: 0;
+  text-align: left;
+}
+#page_content .item_container .description .meta label {
+  color: white;
+  display: inline-block;
+  text-decoration: underline;
+  width: 6em;
+}
+#page_content .item_container .description .meta p {
+  border-radius: 5px;
+  display: inline-block;
+  margin: 0;
+  padding: 5px 0;
+  text-align: left;
+}
+#page_content .item_container .description .meta textarea {
+  vertical-align: top;
+}
+#page_content .item_container .description .meta .static {
+  display: inline-block;
+}
+#page_content .item_container .description .meta .update {
+  margin-top: 5px;
+  min-width: 100%;
+  max-width: 100%;
+  width: 100%;
+}
+#page_content .item_container .description .meta .condition {
+  padding: 5px;
+}
+#page_content .item_container .description .meta .Unusable {
+  background: #db2828;
+}
+#page_content .item_container .description .meta .Bad {
+  background: #F2351C;
+}
+#page_content .item_container .description .meta .Decent {
+  background: #F0C60E;
+}
+#page_content .item_container .description .meta .Good {
+  background: #97C635;
+}
+#page_content .item_container .description .meta .Excellent {
+  background: #26B800;
+}
+#page_content .item_container .description .meta .New {
+  background: #00A000;
+}
+#page_content .item_container .button_container {
+  margin: 10px 0;
 }
 @media only screen and (max-width: 767px) {
+  #page_content .item_container {
+    width: 80%;
+  }
 }

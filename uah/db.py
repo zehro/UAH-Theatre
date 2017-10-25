@@ -34,15 +34,19 @@ FALSE = 0
 # Creates Bunch contexts for the database schema and queries
 User = Bunch()
 User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
-User.findby_username = 'SELECT USERNAME, ISADMIN FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
-User.check_login     = 'SELECT USERNAME, ISADMIN FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
+User.findby_username = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
+User.check_login     = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
 
 Item = Bunch()
+Item.find_all              = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE'
+Item.findby_oid            = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE WHERE OID = %(OID)s'
+Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
+Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
+Item.get_sizes             = ''
+Item.get_dimensions        = ''
 Item.get_era_filters       = 'SELECT ERANAME FROM ERA'
 Item.get_color_filters     = 'SELECT COLORNAME FROM COLOR'
 Item.get_condition_filters = 'SELECT CNDTNNAME FROM CNDTN'
-# Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
-# Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
 
 def convertCategory(category):
     if category == 'costume':
@@ -51,14 +55,24 @@ def convertCategory(category):
         return 'p'
     return category
 
+def convertChecked(status):
+    if status == 'Checked-In':
+        return 1
+    if status == 'Checked-Out':
+        return 0
+    return status
+
 #Any input that isn't being searched on should be null
-def buildSearch(name, objecttype, condition, color, era, checkedout, dimension, size):
+def buildSearch(name, objecttype, condition, color, era, checkedout, size, dimension):
     query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE'
     if name != '' or  \
             objecttype != '' or \
             condition != '' or \
             color != '' or \
-            era != '':
+            era != '' or \
+            checkedout != '' or \
+            size != '' or \
+            dimension != '':
         query += ' WHERE '
 
     if name != '':
@@ -89,17 +103,22 @@ def buildSearch(name, objecttype, condition, color, era, checkedout, dimension, 
 
     if era != '':
         query += 'ERANAME = \'' + era + '\''
+        if checkedout != '':
+            query += ' AND '
 
-    # if checkedout != '':
-    #     if (checkedout):
-    #         query += ' CHECKEDOUTTO IS NOT NULL AND '
-    #     elif (not checkedout):
-    #         query += ' CHECKEDOUTTO IS NULL AND '
-    #
-    # if objecttype == 'p' and dimension != '':
-    #     query += ' OID IN (SELECT OID FROM PROP WHERE DIMENSION = ' + dimension + ') AND '
-    # if objecttype == 'c' and size != '':
-    #     query += ' OID IN (SELECT OID FROM COSTUME WHERE SIZE = \'' + size + '\' AND '
+    if checkedout != '':
+        if (checkedout):
+            query += ' CHECKEDOUTTO IS NOT NULL'
+        elif (not checkedout):
+            query += ' CHECKEDOUTTO IS NULL'
+        if size != '' or dimension != '':
+            query += ' AND '
+
+    if objecttype == 'c' and size != '':
+        query += ' OID IN (SELECT OID FROM COSTUME WHERE SIZE = \'' + size + '\''
+    elif objecttype == 'p' and dimension != '':
+        query += ' OID IN (SELECT OID FROM PROP WHERE DIMENSION = ' + dimension + ')'
+
     return query;
 
 #Name, objecttype, condition, and era are required of type String
