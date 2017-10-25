@@ -470,3 +470,12 @@ def additem():
         return search_page()
     else:
         return redirect(url_for('home_page'))
+
+@app.route('/accounts', methods=['GET'])
+@login_required()
+def manage_accounts():
+    with DatabaseConnection() as conn:
+        accounts = conn.execute(User.find_all).fetchall()
+    return render_template('manageAccounts.html', accounts=accounts)
+
+@app.route('/account/<int:userId>', methods=['POST'])

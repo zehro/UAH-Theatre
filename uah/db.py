@@ -34,6 +34,7 @@ FALSE = 0
 # Creates Bunch contexts for the database schema and queries
 User = Bunch()
 User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
+User.find_all        = 'SELECT * FROM USER'
 User.findby_username = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
 User.check_login     = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
 
@@ -135,3 +136,9 @@ def buildCreate(name, description, objecttype, condition, era, colors, dimension
 def buildUpdate(name, objecttype, condition, era, checkedout, color, dimension, size):
 #similar to search, just not implemented yet
     print(name) #placeholder
+
+def toggleVerifyUser(username):
+    isVerified = 'SELECT ISVERIFIED FROM USER WHERE USERNAME = \'' + username + '\''
+    query = 'UPDATE USER SET ISVERIFIED = \'' + !isVerified + '\''
+    print query
+    return query
