@@ -34,54 +34,89 @@
         <button id="edit_filters" class="ui button fluid">
             Edit Filters
         </button>
-        <fieldset class="input_container">
+
+        <div class="filter_container">
             <button id="clear_filters" class="ui button orange">
                 Clear
             </button>
 
-            <div class="ui dropdown selection" id="category_filter">
-                <input type="hidden" name="itemCategory">
-                <i class="dropdown icon"></i>
-                <div class="default text">Category</div>
-                <div class="menu">
-                    <div class="item">Costume</div>
-                    <div class="item">Prop</div>
+            <fieldset class="input_container">
+                <div class="ui dropdown selection" id="category_filter">
+                    <input type="hidden" name="itemCategory">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Category</div>
+                    <div class="menu">
+                        <div class="item">Costume</div>
+                        <div class="item">Prop</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="ui dropdown selection" id="condition_filter">
-                <input type="hidden" name="itemCondition">
-                <i class="dropdown icon"></i>
-                <div class="default text">Condition</div>
-                <div class="menu">
-                    {% for condition in conditions %}
-                    <div class="item">{{ condition }}</div>
-                    {% endfor %}
+                <div class="ui dropdown selection" id="condition_filter">
+                    <input type="hidden" name="itemCondition">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Condition</div>
+                    <div class="menu">
+                        {% for condition in conditions %}
+                        <div class="item">{{ condition }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
 
-            <div class="ui dropdown selection" id="color_filter">
-                <input type="hidden" name="itemColor">
-                <i class="dropdown icon"></i>
-                <div class="default text">Colors</div>
-                <div class="menu">
-                    {% for color in colors %}
-                    <div class="item">{{ color }}</div>
-                    {% endfor %}
+                <div class="ui dropdown selection" id="color_filter">
+                    <input type="hidden" name="itemColor">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Colors</div>
+                    <div class="menu">
+                        {% for color in colors %}
+                        <div class="item">{{ color }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
 
-            <div class="ui dropdown selection" id="era_filter">
-                <input type="hidden" name="itemEra">
-                <i class="dropdown icon"></i>
-                <div class="default text">Era</div>
-                <div class="menu">
-                    {% for era in eras %}
-                    <div class="item">{{ era }}</div>
-                    {% endfor %}
+                <div class="ui dropdown selection" id="era_filter">
+                    <input type="hidden" name="itemEra">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Era</div>
+                    <div class="menu">
+                        {% for era in eras %}
+                        <div class="item">{{ era }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        </fieldset>
+
+                <div class="ui dropdown selection" id="checked_filter">
+                    <input type="hidden" name="itemChecked">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Check Status</div>
+                    <div class="menu">
+                        <div class="item">Checked-In</div>
+                        <div class="item">Checked-Out</div>
+                    </div>
+                </div>
+
+                <div class="ui dropdown selection costume" id="size_filter">
+                    <input type="hidden" name="itemSize">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Size</div>
+                    <div class="menu">
+                        {% for size in sizes %}
+                        <div class="item">{{ size }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="ui dropdown selection prop" id="dimension_filter">
+                    <input type="hidden" name="itemDimension">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Dimension</div>
+                    <div class="menu">
+                        {% for dimension in dimensions %}
+                        <div class="item">{{ dimension }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </fieldset>
+        </div>
 
         <div class="ui divider white"></div>
 
@@ -129,6 +164,25 @@
 <script type="text/javascript">
 $('#clear_filters').click(function() {
     $('.ui.dropdown').dropdown('clear');
+    $('.costume').css('display', 'none');
+    $('.prop').css('display', 'none');
+});
+
+$('#category_filter .menu').click(function() {
+    if ($('#category_filter input').val() == 'costume')
+    {
+        $('.costume').css('display', 'inline-block');
+        $('.prop').css('display', 'none');
+    }
+    else if ($('#category_filter input').val() == 'prop')
+    {
+        $('.costume').css('display', 'none');
+        $('.prop').css('display', 'inline-block');
+    }
+    else {
+        $('.costume').css('display', 'none');
+        $('.prop').css('display', 'none');
+    }
 });
 
 {% if selectedCategory %}
@@ -145,6 +199,20 @@ $('#color_filter').dropdown('set selected', '{{ selectedColor }}');
 
 {% if selectedEra %}
 $('#era_filter').dropdown('set selected', '{{ selectedEra }}');
+{% endif %}
+
+{% if selectedCategory == "costume" %}
+    $('.costume').css('display', 'inline-block');
+    {% if selectedSize %}
+        $('#size_filter').dropdown('set selected', '{{ selectedSize }}');
+    {% endif %}
+{% endif %}
+
+{% if selectedCategory == "prop" %}
+    $('.prop').css('display', 'inline-block');
+    {% if selectedDimension %}
+        $('#dimension_filter').dropdown('set selected', '{{ selectedDimension }}');
+    {% endif %}
 {% endif %}
 </script>
 {% endblock %}

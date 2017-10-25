@@ -17,7 +17,7 @@ def login_required(t = 0):
         def wrapper(*args, **kwargs):
             if not g.user:
                 return redirect(url_for('login_page'))
-            if t is not None and g.user['isAdmin'] != t:
+            if t is not None and g.user['isVerified'] == t:
                 abort(403)
             return func(*args, **kwargs)
         return wrapper
