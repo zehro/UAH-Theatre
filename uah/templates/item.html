@@ -38,39 +38,71 @@
     <a class="group gallery" href="{{ url_for('load_image', filename=image[0]) }}"></a>
     {% endfor %}
     <div class="description">
-        <h2 class="header">{{ item.OBJECTNAME }}</h2>
-        <div class="meta">
-            <label>Description: </label>
-            <p class="static">{{ item.DESCRIPTION }}</p>
-            <textarea class="update" rows="8">{{ item.DESCRIPTION }}</textarea>
+        <h2 class="header static">{{ item.OBJECTNAME }}</h2>
+        <div class="ui form meta update">
+            <div class="field">
+                <label>Name</label>
+                <input type="text" value="{{ item.OBJECTNAME }}"></input>
+            </div>
         </div>
-        <div class="meta">
-            <label>Era: </label>
-            <p class="static">{{ item.ERANAME }}</p>
 
-            <div class="ui dropdown selection update" id="era_dropdown">
-                <input type="hidden" name="itemEra">
-                <i class="dropdown icon"></i>
-                <div class="default text">Era</div>
-                <div class="menu">
-                    {% for era in eras %}
-                    <div class="item">{{ era }}</div>
-                    {% endfor %}
+        <div class="ui form meta">
+            <div class="field">
+                <label>Description: </label>
+                <p class="static">{{ item.DESCRIPTION }}</p>
+                <textarea rows="8" class="update">{{ item.DESCRIPTION }}</textarea>
+            </div>
+        </div>
+
+        <div class="ui form meta">
+            <div class="field">
+                <label>Category: </label>
+                <p class="static">{{ item.TYPE }}</p>
+
+                <div class="ui dropdown selection update" id="category_dropdown">
+                    <input type="hidden" name="itemCategory">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Category</div>
+                    <div class="menu">
+                        <div class="item">Costume</div>
+                        <div class="item">Prop</div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="meta">
-            <label>Condition: </label>
-            <p class="static condition {{ item.CNDTNNAME }}">{{ item.CNDTNNAME }}</p>
 
-            <div class="ui dropdown selection update" id="condition_dropdown">
-                <input type="hidden" name="itemCondition">
-                <i class="dropdown icon"></i>
-                <div class="default text">Condition</div>
-                <div class="menu">
-                    {% for condition in conditions %}
-                    <div class="item">{{ condition }}</div>
-                    {% endfor %}
+        <div class="ui form meta">
+            <div class="field">
+                <label>Era: </label>
+                <p class="static">{{ item.ERANAME }}</p>
+
+                <div class="ui dropdown selection update" id="era_dropdown">
+                    <input type="hidden" name="itemEra">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Era</div>
+                    <div class="menu">
+                        {% for era in eras %}
+                        <div class="item">{{ era }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui form meta">
+            <div class="field">
+                <label>Condition: </label>
+                <p class="static condition {{ item.CNDTNNAME }}">{{ item.CNDTNNAME }}</p>
+
+                <div class="ui dropdown selection update" id="condition_dropdown">
+                    <input type="hidden" name="itemCondition">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Condition</div>
+                    <div class="menu">
+                        {% for condition in conditions %}
+                        <div class="item">{{ condition }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,7 +121,7 @@
     </div>
 
     <div class="button_container update">
-        <button class="ui button fluid green" type="submit" value="Confirm">a</button>
+        <input class="ui button fluid green" type="submit" name="submit" value="Confirm"></input>
     </div>
 
     <div class="button_container update">
@@ -99,7 +131,7 @@
     </div>
 
     <div class="button_container static">
-        <button class="ui button fluid red" type="submit" value="Delete">aa</button>
+        <input class="ui button fluid red" type="submit" type="submit" value="Delete"></input>
     </div>
 </form>
 {% endblock %}
@@ -121,7 +153,7 @@ $('#update_button').click(function() {
 
 $('#cancel_button').click(function() {
     $('.static').css('display', 'inline-block');
-    $('.static.button_container').css('display', 'block');
+    $('.header.static, .button_container.static').css('display', 'block');
     $('.update').css('display', 'none');
 });
 

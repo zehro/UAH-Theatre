@@ -14,6 +14,15 @@ def inject_isAdmin_function():
             return g.user['isAdmin'] == TRUE
     return dict(isAdmin=isAdmin)
 
+# @app.context_processor
+# def inject_convertTypeToString_function():
+#     def convertTypeToString(enum):
+#         if enum == 'c':
+#             return 'costume'
+#         if enum == 'p':
+#             return 'prop'
+#         return enum
+
 # Request to be executed before all requests
 @app.before_request
 def before_request():
@@ -310,38 +319,54 @@ def item_page(oid):
             'OID' : oid,
         }).fetchall()
 
-    # print(images, file=sys.stderr)
-    # print(item, file=sys.stderr)
-    # print(item.IMAGE, file=sys.stderr)
+        #print(eraList, file=sys.stderr)
 
     return render_template('item.html',
-                            item              = item,
-                            images            = images,
-                            conditions        = conditionList,
-                            colors            = colorList,
-                            eras              = eraList)
+                            item       = item,
+                            images     = images,
+                            conditions = conditionList,
+                            colors     = colorList,
+                            eras       = eraList)
 
 # View Item Route: HTML Template
 @app.route('/items/id/<int:oid>', methods=['POST'])
 @login_required()
 def item_update(oid):
-    # with DatabaseConnection() as conn:
-    #     # Begins a transaction
-    #     transaction = conn.begin()
-    #     try:
-    #         # If updating
-    #
-    #         # Commits the transaction changes
-    #         transaction.commit()
-    #     except:
-    #         # Rollback and discard transaction changes upon failure
-    #         transaction.rollback()
-    #         raise
+    # Checks if required fields exist in form
+    if 'itemName' not in request.form or \
+            'itemCategory' not in request.form or \
+            'itemCondition' not in request.form or \
+            'itemColor' not in request.form or \
+            'itemEra' not in request.form:
+        flash(u'Required fields do not exist.', 'danger')
+        return search_page()
 
-    if request.form['submit'] == 'Update':
-        return redirect(url_for('home_page'))
-    elif request.form['submit'] == 'Delete':
-        return redirect(url_for('home_page'))
+    # Get search bar input
+    itemName = request.form['itemName']
+
+    # get filter inputs
+    itemCategory  = request.form['itemCategory']
+    itemCondition = request.form['itemCondition']
+    itemColor     = request.form['itemColor']
+    itemEra       = request.form['itemEra']
+
+    with DatabaseConnection() as conn:
+        # Begins a transaction
+        transaction = conn.begin()
+        try:
+            # If updating
+            if request.form['submit'] == 'Confirm':
+                return redirect(url_for('home_page'))
+            # If deleting
+            elif request.form['submit'] == 'Delete':
+                return redirect(url_for('home_page'))
+
+            # Commits the transaction changes
+            transaction.commit()
+        except:
+            # Rollback and discard transaction changes upon failure
+            transaction.rollback()
+            raise
 
 # Add Item Route: HTML Template
 @app.route('/items/new', methods=['GET'])
