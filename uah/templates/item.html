@@ -31,12 +31,12 @@
 
 {% block pagecontent %}
 <form class="item_container" method="post">
-    <a class="ui image medium group" href="{{ url_for('load_image', filename=item.IMAGE) }}">
+    {% for image in images %}
+    <a class="ui image medium group" href="{{ url_for('load_image', filename=image[0]) }}">
         <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
     </a>
-    {% for image in images %}
-    <a class="group gallery" href="{{ url_for('load_image', filename=image[0]) }}"></a>
     {% endfor %}
+
     <div class="description">
         <h2 class="header static">{{ item.OBJECTNAME }}</h2>
         <div class="ui form meta update">
@@ -217,7 +217,7 @@ $('#cancel_button').click(function() {
 
 $('#category_dropdown').dropdown('set selected', '{{ convertTypeToString(item.TYPE) }}');
 $('#era_dropdown').dropdown('set selected', '{{ item.ERANAME }}');
-$('#color_select').dropdown('set selected', '{{ item.CNDTNNAME }}');
+$('#color_select').dropdown('set selected', {{ itemColorArray | safe }});
 $('#condition_dropdown').dropdown('set selected', '{{ item.CNDTNNAME }}');
 </script>
 {% endblock %}

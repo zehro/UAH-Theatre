@@ -182,6 +182,10 @@ nav.ui.menu .item.ui.dropdown {
 #page_content .item_container .image {
   background: black;
   outline: none;
+  display: none;
+}
+#page_content .item_container .image:first-child {
+  display: inline-block;
 }
 #page_content .item_container .image img {
   margin: auto;
