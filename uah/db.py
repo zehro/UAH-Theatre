@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from bunch import Bunch
 from time import gmtime, strftime
-
+import sys
 # Creates a SQLAlchemy engine to execute query statements on the engine's connection
 engine = create_engine('mysql+pymysql://test:sombra123@35.185.36.22/UAH_Theater')
 # new engine:
@@ -31,27 +31,7 @@ class DatabaseConnection:
 TRUE = 1
 FALSE = 0
 
-# Creates Bunch contexts for the database schema and queries
-User = Bunch()
-User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
-User.findby_username = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
-User.check_login     = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
-
-Item = Bunch()
-Item.find_all              = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA LEFT JOIN PICTURE ON OBJECT.OID = PICTURE.OID'
-Item.findby_oid            = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE WHERE OID = %(OID)s'
-#Item.insert
-#Item.update
-#Item.checkout
-#Item.checkin
-Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
-Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
-Item.get_size_filters      = 'SELECT SIZENAME FROM SIZE'
-Item.get_dimension_filters = 'SELECT DIMENSIONNAME FROM DIMENSION'
-Item.get_era_filters       = 'SELECT ERANAME FROM ERA'
-Item.get_color_filters     = 'SELECT COLORNAME FROM COLOR'
-Item.get_condition_filters = 'SELECT CNDTNNAME FROM CNDTN'
-
+# Declares some useful functions
 def convertCategory(category):
     if category == 'costume':
         return 'c'
@@ -66,10 +46,12 @@ def convertChecked(status):
         return 0
     return status
 
-#Any input that isn't being searched on should be null
-def buildSearch(name, objecttype, condition, color, era, checkedout, size, dimension):
-    query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA LEFT JOIN PICTURE'
-    if name != '' or  \
+# Any input that isn't being searched on should be null
+def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, dimension):
+    query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE WHERE OBJORDER = 1'
+
+    if oid != '' or \
+            name != '' or \
             objecttype != '' or \
             condition != '' or \
             color != '' or \
@@ -77,58 +59,84 @@ def buildSearch(name, objecttype, condition, color, era, checkedout, size, dimen
             checkedout != '' or \
             size != '' or \
             dimension != '':
-        query += ' WHERE '
+        query += ' AND '
 
-    if name != '':
-        query += 'OBJECTNAME = \'' + name + '\''
-        if objecttype != '' or \
-                condition != '' or \
-                color != '' or \
-                era != '':
-            query += ' AND '
+        if oid != '':
+            query += 'OID = ' + str(oid)
+            if name != '' or \
+                    objecttype != '' or \
+                    condition != '' or \
+                    color != '' or \
+                    era != '' or \
+                    checkedout != '' or \
+                    size != '' or \
+                    dimension != '':
+                query += ' AND '
 
-    if objecttype != '':
-        query += 'TYPE = \'' + objecttype + '\''
-        if condition != '' or \
-                color != '' or \
-                era != '':
-            query += ' AND '
+        if name != '':
+            query += 'OBJECTNAME = \'' + name + '\''
+            if objecttype != '' or \
+                    condition != '' or \
+                    color != '' or \
+                    era != '' or \
+                    checkedout != '' or \
+                    size != '' or \
+                    dimension != '':
+                query += ' AND '
 
-    if condition != '':
-        query += 'CNDTNNAME = \'' + condition + '\''
-        if color != '' or \
-                era != '':
-            query += ' AND '
+        if objecttype != '':
+            query += 'TYPE = \'' + objecttype + '\''
+            if condition != '' or \
+                    color != '' or \
+                    era != '' or \
+                    checkedout != '' or \
+                    size != '' or \
+                    dimension != '':
+                query += ' AND '
 
-    if color != '':
-        query += 'OID IN (SELECT OID FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE COLORNAME = \'' + color + '\')'
+        if condition != '':
+            query += 'CNDTNNAME = \'' + condition + '\''
+            if color != '' or \
+                    era != '' or \
+                    checkedout != '' or \
+                    size != '' or \
+                    dimension != '':
+                query += ' AND '
+
+        if color != '':
+            query += 'OID IN (SELECT OID FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE COLORNAME = \'' + color + '\')'
+            if era != '' or \
+                    checkedout != '' or \
+                    size != '' or \
+                    dimension != '':
+                query += ' AND '
+
         if era != '':
-            query += ' AND '
+            query += 'ERANAME = \'' + era + '\''
+            if checkedout != '' or \
+                    size != '' or \
+                    dimension != '':
+                query += ' AND '
 
-    if era != '':
-        query += 'ERANAME = \'' + era + '\''
         if checkedout != '':
-            query += ' AND '
+            if (checkedout):
+                query += ' CHECKEDOUTTO IS NOT NULL'
+            elif (not checkedout):
+                query += ' CHECKEDOUTTO IS NULL'
+            if size != '' or dimension != '':
+                query += ' AND '
 
-    if checkedout != '':
-        if (checkedout):
-            query += ' CHECKEDOUTTO IS NOT NULL'
-        elif (not checkedout):
-            query += ' CHECKEDOUTTO IS NULL'
-        if size != '' or dimension != '':
-            query += ' AND '
-
-    if objecttype == 'c' and size != '':
-        query += ' OID IN (SELECT OID FROM COSTUME WHERE SIZE = \'' + size + '\''
-    elif objecttype == 'p' and dimension != '':
-        query += ' OID IN (SELECT OID FROM PROP WHERE DIMENSION = ' + dimension + ')'
+        if objecttype == 'c' and size != '':
+            query += 'OID IN (SELECT OID FROM COSTUME NATURAL JOIN SIZE WHERE SIZENAME = \'' + size + '\')'
+        elif objecttype == 'p' and dimension != '':
+            query += 'OID IN (SELECT OID FROM PROP NATURAL JOIN DIMENSION WHERE DIMENSIONNAME = \'' + dimension + '\')'
 
     return query;
 
-#Name, objecttype, condition, and era are required of type String
-#colors should be a list of valid colors
-#For Costumes, size is required
-#For props, dimension is required
+# Name, objecttype, condition, and era are required of type String
+# Colors should be a list of valid colors
+# For Costumes, size is required
+# For Props, dimension is required
 def buildCreate(name, description, objecttype, condition, era, colors, dimension, size):
     return 'INSERT INTO OBJECT(OBJECTNAME, TYPE, CNID, EID) VALUES (\'New Object\', \'c\', 0, 0)'
     #query = [];
@@ -139,3 +147,24 @@ def buildCreate(name, description, objecttype, condition, era, colors, dimension
 def buildUpdate(name, objecttype, condition, era, checkedout, color, dimension, size):
 #similar to search, just not implemented yet
     print(name) #placeholder
+
+# Creates Bunch contexts for the database schema and queries
+User = Bunch()
+User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
+User.findby_username = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
+User.check_login     = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
+
+Item = Bunch()
+# Item.insert                = ''
+# Item.update                = ''
+# Item.checkout              = ''
+# Item.checkin               = ''
+Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
+Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
+Item.get_size              = 'SELECT SIZENAME FROM COSTUME NATURAL JOIN SIZE WHERE OID = %(OID)s'
+Item.get_dimension         = 'SELECT DIMENSIONNAME FROM PROP NATURAL JOIN DIMENSION WHERE OID = %(OID)s'
+Item.get_size_filters      = 'SELECT SIZENAME FROM SIZE'
+Item.get_dimension_filters = 'SELECT DIMENSIONNAME FROM DIMENSION'
+Item.get_era_filters       = 'SELECT ERANAME FROM ERA'
+Item.get_color_filters     = 'SELECT COLORNAME FROM COLOR'
+Item.get_condition_filters = 'SELECT CNDTNNAME FROM CNDTN'

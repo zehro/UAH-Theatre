@@ -231,8 +231,11 @@ def search_page():
         for dimensionTuple in dimensionQuery:
             dimensionList.append(dimensionTuple[0])
 
-        # Populating initial search with all results and no filters
-        items = conn.execute(Item.find_all).fetchall()
+        # Get all search results and no filters
+        searchQuery = buildSearch('', '', '', '', '', '', '', '', '')
+
+        # Gets the search results
+        searchResults = conn.execute(searchQuery).fetchall()
 
     return render_template('search.html',
                             conditions = conditionList,
@@ -240,7 +243,7 @@ def search_page():
                             eras       = eraList,
                             sizes      = sizeList,
                             dimensions = dimensionList,
-                            items      = items)
+                            items      = searchResults)
 
 # Search Route: POST method after form submission
 @app.route('/search', methods=['POST'])
@@ -269,13 +272,8 @@ def search():
     itemChecked   = request.form['itemChecked']
 
     # check optional filters
-    itemSize      = request.form['itemSize']
-    itemDimension = request.form['itemDimension']
-
-    # get the search query
-    searchQuery = buildSearch(itemName, convertCategory(itemCategory), itemCondition,
-                              itemColor, itemEra, convertChecked(itemChecked),
-                              itemSize, itemDimension)
+    itemSize      = request.form['itemSize'].upper()
+    itemDimension = request.form['itemDimension'].capitalize()
 
     with DatabaseConnection() as conn:
         # Gets the condition filters
@@ -313,8 +311,16 @@ def search():
         for dimensionTuple in dimensionQuery:
             dimensionList.append(dimensionTuple[0])
 
+        # Get the search query
+        searchQuery = buildSearch('', itemName, convertCategory(itemCategory),
+                                  itemCondition, itemColor, itemEra,
+                                  convertChecked(itemChecked),
+                                  itemSize, itemDimension)
+
         # Gets the search results
         searchResults = conn.execute(searchQuery).fetchall()
+
+        print(searchQuery, file=sys.stderr)
 
         return render_template('search.html',
                                 conditions        = conditionList,
@@ -371,18 +377,35 @@ def item_page(oid):
         for dimensionTuple in dimensionQuery:
             dimensionList.append(dimensionTuple[0])
 
+        # Get an item by an OID
+        searchQuery = buildSearch(oid, '', '', '', '', '', '', '', '')
+
         # Get the item
-        item = conn.execute(Item.findby_oid, {
-            'OID' : oid,
-        }).fetchone()
+        item = conn.execute(searchQuery).fetchone()
+
         # Get the item's images
         images = conn.execute(Item.get_images, {
             'OID' : oid,
         }).fetchall()
+
         # Get the item's colors
         colors = conn.execute(Item.get_colors, {
             'OID' : oid,
         }).fetchall()
+
+        # Get the item's size
+        size = conn.execute(Item.get_size, {
+            'OID' : oid,
+        }).fetchone()
+        if size != None:
+            size = size[0]
+
+        # Get the item's dimension
+        dimension = conn.execute(Item.get_dimension, {
+            'OID' : oid,
+        }).fetchone()
+        if dimension != None:
+            dimension = dimension[0]
 
     # Parse and format the item's colors
     itemColorArray = []
@@ -399,6 +422,8 @@ def item_page(oid):
     return render_template('item.html',
                             item           = item,
                             images         = images,
+                            size           = size,
+                            dimension      = dimension,
                             itemColors     = itemColors,
                             itemColorArray = itemColorArray,
                             conditions     = conditionList,
@@ -428,9 +453,6 @@ def item_update(oid):
     itemCategory    = request.form['itemCategory']
     itemColors      = request.form['itemColors']
     itemEra         = request.form['itemEra']
-
-    #print(request.form['submit'], file=sys.stderr)
-
 
     # check optional filters
     if 'itemSize' in request.form:
