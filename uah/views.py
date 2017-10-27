@@ -38,9 +38,10 @@ def before_request():
             })
             # Sets the user in the application context
             queryResult = result.fetchone()
-            g.user = {'Username'   : queryResult[0],
-                      'isAdmin'    : queryResult[1],
-                      'isVerified' : queryResult[2]}
+            if (queryResult != None):
+                    g.user = {'Username'   : queryResult[0],
+                              'isAdmin'    : queryResult[1],
+                              'isVerified' : queryResult[2]}
 
 # Invalid/Error 404 Route
 # All invalid URLs will be redirected to the 404 page
@@ -319,8 +320,6 @@ def search():
 
         # Gets the search results
         searchResults = conn.execute(searchQuery).fetchall()
-
-        print(searchQuery, file=sys.stderr)
 
         return render_template('search.html',
                                 conditions        = conditionList,

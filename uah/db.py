@@ -40,10 +40,10 @@ def convertCategory(category):
     return category
 
 def convertChecked(status):
-    if status == 'Checked-In':
-        return 1
-    if status == 'Checked-Out':
-        return 0
+    if status == 'checked-in':
+        return False
+    if status == 'checked-out':
+        return True
     return status
 
 # Any input that isn't being searched on should be null
@@ -120,9 +120,9 @@ def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, 
 
         if checkedout != '':
             if (checkedout):
-                query += ' CHECKEDOUTTO IS NOT NULL'
+                query += 'CHECKEDOUTTO IS NOT NULL'
             elif (not checkedout):
-                query += ' CHECKEDOUTTO IS NULL'
+                query += 'CHECKEDOUTTO IS NULL'
             if size != '' or dimension != '':
                 query += ' AND '
 
