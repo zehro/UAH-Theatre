@@ -44,11 +44,6 @@
         Add Item
     </a>
 
-    <a class="item blue">
-        <i class="icon write"></i>
-        Edit Inventory
-    </a>
-
     {% if isAdmin() %}
     <a class="item blue">
         <i class="icon address book"></i>
@@ -56,8 +51,10 @@
     </a>
     {% endif %}
 
+    {% if isAdmin() %}
     <a class="item blue">
         <i class="icon settings"></i>
         Manage Settings
     </a>
+    {% endif %}
 </nav>
