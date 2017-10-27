@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from bunch import Bunch
 from time import gmtime, strftime
-import sys
+
 # Creates a SQLAlchemy engine to execute query statements on the engine's connection
 engine = create_engine('mysql+pymysql://test:sombra123@35.185.36.22/UAH_Theater')
 # new engine:
