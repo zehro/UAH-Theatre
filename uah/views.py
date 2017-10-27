@@ -38,9 +38,11 @@ def before_request():
             })
             # Sets the user in the application context
             queryResult = result.fetchone()
-            g.user = {'Username'   : queryResult[0],
-                      'isAdmin'    : queryResult[1],
-                      'isVerified' : queryResult[2]}
+            if (queryResult != None):
+                g.user = {'UID'        : queryResult[0],
+                          'Username'   : queryResult[1],
+                          'isAdmin'    : queryResult[2],
+                          'isVerified' : queryResult[3]}
 
 # Invalid/Error 404 Route
 # All invalid URLs will be redirected to the 404 page
@@ -110,9 +112,10 @@ def login():
             flash(u'Invalid username or password.', 'danger')
             return login_page()
         # Sets the user in the application context
-        g.user = {'Username'   : queryResult[0][0],
-                  'isAdmin'    : queryResult[0][1],
-                  'isVerified' : queryResult[0][2]}
+        g.user = {'UID'        : queryResult[0][0],
+                  'Username'   : queryResult[0][1],
+                  'isAdmin'    : queryResult[0][2],
+                  'isVerified' : queryResult[0][3]}
         # Sets up a session with user from application context
         session['user'] = g.user['Username']
     # Navigates to the main page
@@ -218,21 +221,24 @@ def search_page():
             eraList.append(eraTuple[0])
 
         # Gets the size filters
-        # sizeResult = conn.execute(Item.get_size_filters)
-        # sizeQuery = sizeResult.fetchall()
+        sizeResult = conn.execute(Item.get_size_filters)
+        sizeQuery = sizeResult.fetchall()
         sizeList = []
-        # for sizeTuple in sizeQuery:
-        #     sizeList.append(sizeTuple[0])
+        for sizeTuple in sizeQuery:
+            sizeList.append(sizeTuple[0])
 
         # Gets the dimension filters
-        # dimensionResult = conn.execute(Item.get_dimension_filters)
-        # dimensionQuery = dimensionResult.fetchall()
+        dimensionResult = conn.execute(Item.get_dimension_filters)
+        dimensionQuery = dimensionResult.fetchall()
         dimensionList = []
-        # for dimensionTuple in dimensionQuery:
-        #     dimensionList.append(dimensionTuple[0])
+        for dimensionTuple in dimensionQuery:
+            dimensionList.append(dimensionTuple[0])
 
-        # Populating initial search with all results and no filters
-        items = conn.execute(Item.find_all).fetchall()
+        # Get all search results and no filters
+        searchQuery = buildSearch('', '', '', '', '', '', '', '', '')
+
+        # Gets the search results
+        searchResults = conn.execute(searchQuery).fetchall()
 
     return render_template('search.html',
                             conditions = conditionList,
@@ -240,7 +246,7 @@ def search_page():
                             eras       = eraList,
                             sizes      = sizeList,
                             dimensions = dimensionList,
-                            items      = items)
+                            items      = searchResults)
 
 # Search Route: POST method after form submission
 @app.route('/search', methods=['POST'])
@@ -269,13 +275,8 @@ def search():
     itemChecked   = request.form['itemChecked']
 
     # check optional filters
-    itemSize      = request.form['itemSize']
-    itemDimension = request.form['itemDimension']
-
-    # get the search query
-    searchQuery = buildSearch(itemName, convertCategory(itemCategory), itemCondition,
-                              itemColor, itemEra, convertChecked(itemChecked),
-                              itemSize, itemDimension)
+    itemSize      = request.form['itemSize'].upper()
+    itemDimension = request.form['itemDimension'].capitalize()
 
     with DatabaseConnection() as conn:
         # Gets the condition filters
@@ -300,18 +301,24 @@ def search():
             eraList.append(eraTuple[0])
 
         # Gets the size filters
-        # sizeResult = conn.execute(Item.get_size_filters)
-        # sizeQuery = sizeResult.fetchall()
+        sizeResult = conn.execute(Item.get_size_filters)
+        sizeQuery = sizeResult.fetchall()
         sizeList = []
-        # for sizeTuple in sizeQuery:
-        #     sizeList.append(sizeTuple[0])
+        for sizeTuple in sizeQuery:
+            sizeList.append(sizeTuple[0])
 
         # Gets the dimension filters
-        # dimensionResult = conn.execute(Item.get_dimension_filters)
-        # dimensionQuery = dimensionResult.fetchall()
+        dimensionResult = conn.execute(Item.get_dimension_filters)
+        dimensionQuery = dimensionResult.fetchall()
         dimensionList = []
-        # for dimensionTuple in dimensionQuery:
-        #     dimensionList.append(dimensionTuple[0])
+        for dimensionTuple in dimensionQuery:
+            dimensionList.append(dimensionTuple[0])
+
+        # Get the search query
+        searchQuery = buildSearch('', itemName, convertCategory(itemCategory),
+                                  itemCondition, itemColor, itemEra,
+                                  convertChecked(itemChecked),
+                                  itemSize, itemDimension)
 
         # Gets the search results
         searchResults = conn.execute(searchQuery).fetchall()
@@ -358,31 +365,48 @@ def item_page(oid):
             eraList.append(eraTuple[0])
 
         # Gets the size filters
-        # sizeResult = conn.execute(Item.get_size_filters)
-        # sizeQuery = sizeResult.fetchall()
+        sizeResult = conn.execute(Item.get_size_filters)
+        sizeQuery = sizeResult.fetchall()
         sizeList = []
-        # for sizeTuple in sizeQuery:
-        #     sizeList.append(sizeTuple[0])
+        for sizeTuple in sizeQuery:
+            sizeList.append(sizeTuple[0])
 
         # Gets the dimension filters
-        # dimensionResult = conn.execute(Item.get_dimension_filters)
-        # dimensionQuery = dimensionResult.fetchall()
+        dimensionResult = conn.execute(Item.get_dimension_filters)
+        dimensionQuery = dimensionResult.fetchall()
         dimensionList = []
-        # for dimensionTuple in dimensionQuery:
-        #     dimensionList.append(dimensionTuple[0])
+        for dimensionTuple in dimensionQuery:
+            dimensionList.append(dimensionTuple[0])
+
+        # Get an item by an OID
+        searchQuery = buildSearch(oid, '', '', '', '', '', '', '', '')
 
         # Get the item
-        item = conn.execute(Item.findby_oid, {
-            'OID' : oid,
-        }).fetchone()
+        item = conn.execute(searchQuery).fetchone()
+
         # Get the item's images
         images = conn.execute(Item.get_images, {
             'OID' : oid,
         }).fetchall()
+
         # Get the item's colors
         colors = conn.execute(Item.get_colors, {
             'OID' : oid,
         }).fetchall()
+
+        # Get the item's size
+        size = conn.execute(Item.get_size, {
+            'OID' : oid,
+        }).fetchone()
+        if size != None:
+            size = size[0]
+
+        # Get the item's dimension
+        dimension = conn.execute(Item.get_dimension, {
+            'OID' : oid,
+        }).fetchone()
+        if dimension != None:
+            dimension = dimension[0]
 
     # Parse and format the item's colors
     itemColorArray = []
@@ -391,66 +415,113 @@ def item_page(oid):
 
     # Get a string of all the item's colors
     itemColors = ''
-    for color in range(len(itemColorArray)):
-        itemColors += itemColorArray[color]
-        if color < len(itemColorArray) - 1:
-            itemColors += ', '
+    if len(itemColorArray) == 0:
+        itemColors = 'None'
+    else:
+        for color in range(len(itemColorArray)):
+            itemColors += itemColorArray[color]
+            if color < len(itemColorArray) - 1:
+                itemColors += ', '
 
     return render_template('item.html',
-                            item       = item,
-                            images     = images,
-                            itemColors = itemColors,
-                            conditions = conditionList,
-                            colors     = colorList,
-                            eras       = eraList)
+                            user           = g.user,
+                            item           = item,
+                            images         = images,
+                            size           = size,
+                            dimension      = dimension,
+                            itemColors     = itemColors,
+                            itemColorArray = itemColorArray,
+                            conditions     = conditionList,
+                            colors         = colorList,
+                            eras           = eraList,
+                            sizes          = sizeList,
+                            dimensions     = dimensionList)
 
 # View Item Route: HTML Template
 @app.route('/items/id/<int:oid>', methods=['POST'])
 @login_required()
 def item_update(oid):
-    # # Checks if required fields exist in form
-    # if 'itemName' not in request.form or \
-    #         'itemDescription' not in request.form or \
-    #         'itemCategory' not in request.form or \
-    #         'itemColors' not in request.form or \
-    #         'itemEra' not in request.form or \
-    #         ('itemSize' not in request.form and \
-    #         'itemDimension' not in request.form):
-    #     flash(u'Required fields do not exist.', 'danger')
-    #     return item_page(oid)
-    #
-    # # Get search bar input
-    # itemName = request.form['itemName']
-    #
-    # # get filter inputs
-    # itemDescription = request.form['itemDescription']
-    # itemCategory    = request.form['itemCategory']
-    # itemColors      = request.form['itemColors']
-    # itemEra         = request.form['itemEra']
-    # itemChecked     = request.form['itemChecked']
-    #
-    # # check optional filters
-    # itemSize        = request.form['itemSize']
-    # itemDimension   = request.form['itemDimension']
-    #
-    # with DatabaseConnection() as conn:
-    #     # Begins a transaction
-    #     transaction = conn.begin()
-    #     try:
-    #         # # If updating
-    #         # if request.form['submit'] == 'Confirm':
-    #         #     flash(u'Item updated.', 'success')
-    #         #     return redirect(url_for('item_page', oid=oid))
-    #         # elif request.form['submit'] == 'Delete':
-    #         #     flash(u'Item deleted.', 'success')
-    #         #     return redirect(url_for('search_page'))
-    #
-    #         # Commits the transaction changes
-    #         transaction.commit()
-    #     except:
-    #         # Rollback and discard transaction changes upon failure
-    #         transaction.rollback()
-    #         raise
+    # Checks if required fields exist in form
+    if 'itemName' not in request.form or \
+            'itemDescription' not in request.form or \
+            'itemCategory' not in request.form or \
+            'itemCondition' not in request.form or \
+            'itemEra' not in request.form or \
+            'itemColors' not in request.form or \
+            ('itemSize' not in request.form and \
+            'itemDimension' not in request.form):
+        flash(u'Required fields do not exist.', 'danger')
+        return item_page(oid)
+
+    # Get search bar input
+    itemName = request.form['itemName']
+
+    # get filter inputs
+    itemDescription = request.form['itemDescription']
+    itemCategory    = request.form['itemCategory']
+    itemCondition   = request.form['itemCondition']
+    itemEra         = request.form['itemEra']
+    itemColors      = request.form['itemColors']
+
+    # check optional filters
+    if 'itemSize' in request.form:
+        itemSize = request.form['itemSize']
+    elif 'itemDimension' in request.form:
+        itemDimension = request.form['itemDimension']
+
+    with DatabaseConnection() as conn:
+        # Begins a transaction
+        transaction = conn.begin()
+        try:
+            # If updating
+            if request.form['submit'] == 'Confirm':
+                # # Updates the item
+                # conn.execute(Item.update)
+
+                # Commits the transaction changes
+                transaction.commit()
+
+                flash(u'Item updated.', 'success')
+                return redirect(url_for('item_page', oid=oid))
+            # If deleting
+            elif request.form['submit'] == 'Delete':
+                # # Deletes the item
+                # conn.execute(Item.delete)
+
+                # Commits the transaction changes
+                transaction.commit()
+
+                flash(u'Item deleted.', 'success')
+                return redirect(url_for('search_page'))
+            # If checking out
+            elif request.form['submit'] == 'Check Out':
+                # # Checks out the item
+                # conn.execute(Item.checkout, {
+                #     'OID' : oid,
+                #     'UID' : g.user['UID'],
+                # })
+
+                # Commits the transaction changes
+                transaction.commit()
+
+                flash(u'Item checked out.', 'success')
+                return redirect(url_for('item_page', oid=oid))
+            # If checking in
+            elif request.form['submit'] == 'Check In':
+                # # Checks in the item
+                # conn.execute(Item.checkin, {
+                #     'OID' : oid,
+                # })
+
+                # Commits the transaction changes
+                transaction.commit()
+
+                flash(u'Item checked in.', 'success')
+                return redirect(url_for('item_page', oid=oid))
+        except:
+            # Rollback and discard transaction changes upon failure
+            transaction.rollback()
+            raise
 
     return redirect(url_for('search_page'))
 

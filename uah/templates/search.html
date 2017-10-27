@@ -201,6 +201,10 @@ $('#color_filter').dropdown('set selected', '{{ selectedColor }}');
 $('#era_filter').dropdown('set selected', '{{ selectedEra }}');
 {% endif %}
 
+{% if selectedChecked %}
+$('#checked_filter').dropdown('set selected', '{{ selectedChecked }}');
+{% endif %}
+
 {% if selectedCategory == "costume" %}
     $('.costume').css('display', 'inline-block');
     {% if selectedSize %}
