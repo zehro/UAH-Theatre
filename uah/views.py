@@ -39,9 +39,10 @@ def before_request():
             # Sets the user in the application context
             queryResult = result.fetchone()
             if (queryResult != None):
-                    g.user = {'Username'   : queryResult[0],
-                              'isAdmin'    : queryResult[1],
-                              'isVerified' : queryResult[2]}
+                g.user = {'UID'        : queryResult[0],
+                          'Username'   : queryResult[1],
+                          'isAdmin'    : queryResult[2],
+                          'isVerified' : queryResult[3]}
 
 # Invalid/Error 404 Route
 # All invalid URLs will be redirected to the 404 page
@@ -111,9 +112,10 @@ def login():
             flash(u'Invalid username or password.', 'danger')
             return login_page()
         # Sets the user in the application context
-        g.user = {'Username'   : queryResult[0][0],
-                  'isAdmin'    : queryResult[0][1],
-                  'isVerified' : queryResult[0][2]}
+        g.user = {'UID'        : queryResult[0][0],
+                  'Username'   : queryResult[0][1],
+                  'isAdmin'    : queryResult[0][2],
+                  'isVerified' : queryResult[0][3]}
         # Sets up a session with user from application context
         session['user'] = g.user['Username']
     # Navigates to the main page
@@ -413,12 +415,16 @@ def item_page(oid):
 
     # Get a string of all the item's colors
     itemColors = ''
-    for color in range(len(itemColorArray)):
-        itemColors += itemColorArray[color]
-        if color < len(itemColorArray) - 1:
-            itemColors += ', '
+    if len(itemColorArray) == 0:
+        itemColors = 'None'
+    else:
+        for color in range(len(itemColorArray)):
+            itemColors += itemColorArray[color]
+            if color < len(itemColorArray) - 1:
+                itemColors += ', '
 
     return render_template('item.html',
+                            user           = g.user,
                             item           = item,
                             images         = images,
                             size           = size,
@@ -427,7 +433,9 @@ def item_page(oid):
                             itemColorArray = itemColorArray,
                             conditions     = conditionList,
                             colors         = colorList,
-                            eras           = eraList)
+                            eras           = eraList,
+                            sizes          = sizeList,
+                            dimensions     = dimensionList)
 
 # View Item Route: HTML Template
 @app.route('/items/id/<int:oid>', methods=['POST'])
@@ -437,8 +445,9 @@ def item_update(oid):
     if 'itemName' not in request.form or \
             'itemDescription' not in request.form or \
             'itemCategory' not in request.form or \
-            'itemColors' not in request.form or \
+            'itemCondition' not in request.form or \
             'itemEra' not in request.form or \
+            'itemColors' not in request.form or \
             ('itemSize' not in request.form and \
             'itemDimension' not in request.form):
         flash(u'Required fields do not exist.', 'danger')
@@ -450,8 +459,9 @@ def item_update(oid):
     # get filter inputs
     itemDescription = request.form['itemDescription']
     itemCategory    = request.form['itemCategory']
-    itemColors      = request.form['itemColors']
+    itemCondition   = request.form['itemCondition']
     itemEra         = request.form['itemEra']
+    itemColors      = request.form['itemColors']
 
     # check optional filters
     if 'itemSize' in request.form:
@@ -464,16 +474,50 @@ def item_update(oid):
         transaction = conn.begin()
         try:
             # If updating
-            # if request.form['submit'] == 'Confirm':
-            #     flash(u'Item updated.', 'success')
-            #     return redirect(url_for('item_page', oid=oid))
-            # # If deleting
-            # elif request.form['submit'] == 'Delete':
-            #     flash(u'Item deleted.', 'success')
-            #     return redirect(url_for('search_page'))
+            if request.form['submit'] == 'Confirm':
+                # # Updates the item
+                # conn.execute(Item.update)
 
-            # Commits the transaction changes
-            transaction.commit()
+                # Commits the transaction changes
+                transaction.commit()
+
+                flash(u'Item updated.', 'success')
+                return redirect(url_for('item_page', oid=oid))
+            # If deleting
+            elif request.form['submit'] == 'Delete':
+                # # Deletes the item
+                # conn.execute(Item.delete)
+
+                # Commits the transaction changes
+                transaction.commit()
+
+                flash(u'Item deleted.', 'success')
+                return redirect(url_for('search_page'))
+            # If checking out
+            elif request.form['submit'] == 'Check Out':
+                # # Checks out the item
+                # conn.execute(Item.checkout, {
+                #     'OID' : oid,
+                #     'UID' : g.user['UID'],
+                # })
+
+                # Commits the transaction changes
+                transaction.commit()
+
+                flash(u'Item checked out.', 'success')
+                return redirect(url_for('item_page', oid=oid))
+            # If checking in
+            elif request.form['submit'] == 'Check In':
+                # # Checks in the item
+                # conn.execute(Item.checkin, {
+                #     'OID' : oid,
+                # })
+
+                # Commits the transaction changes
+                transaction.commit()
+
+                flash(u'Item checked in.', 'success')
+                return redirect(url_for('item_page', oid=oid))
         except:
             # Rollback and discard transaction changes upon failure
             transaction.rollback()

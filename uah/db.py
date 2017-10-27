@@ -145,20 +145,20 @@ def buildCreate(name, description, objecttype, condition, era, colors, dimension
     #for color in colors:
 
 def buildUpdate(name, objecttype, condition, era, checkedout, color, dimension, size):
-#similar to search, just not implemented yet
+    #similar to search, just not implemented yet
     print(name) #placeholder
 
 # Creates Bunch contexts for the database schema and queries
 User = Bunch()
 User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
-User.findby_username = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
-User.check_login     = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
+User.findby_username = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
+User.check_login     = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
 
 Item = Bunch()
 # Item.insert                = ''
 # Item.update                = ''
-# Item.checkout              = ''
-# Item.checkin               = ''
+Item.checkout              = 'UPDATE OBJECT SET CHECKOUTTO = %(UID)s WHERE OID = %(OID)s'
+Item.checkin               = 'UPDATE OBJECT SET CHECKOUTTO = NULL WHERE OID = %(OID)s'
 Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
 Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
 Item.get_size              = 'SELECT SIZENAME FROM COSTUME NATURAL JOIN SIZE WHERE OID = %(OID)s'
