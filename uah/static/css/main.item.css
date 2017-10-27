@@ -181,11 +181,14 @@ nav.ui.menu .item.ui.dropdown {
 }
 #page_content .item_container .image {
   background: black;
+  height: 300px;
+  margin: auto;
+  max-height: 70vw;
   outline: none;
   display: none;
 }
 #page_content .item_container .image:first-child {
-  display: inline-block;
+  display: flex;
 }
 #page_content .item_container .image img {
   margin: auto;
