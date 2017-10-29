@@ -458,15 +458,77 @@ def item_update(oid):
 @app.route('/items/new', methods=['GET'])
 @login_required()
 def additem_page():
-    return render_template('additem.html')
+    with DatabaseConnection() as conn:
+        # Gets the condition filters
+        conditionResult = conn.execute(Item.get_condition_filters)
+        conditionQuery = conditionResult.fetchall()
+        conditionList = []
+        for conditionTuple in conditionQuery:
+            conditionList.append(conditionTuple[0])
+
+        # Gets the color filters
+        colorResult = conn.execute(Item.get_color_filters)
+        colorQuery = colorResult.fetchall()
+        colorList = []
+        for colorTuple in colorQuery:
+            colorList.append(colorTuple[0])
+
+        # Gets the era filters
+        eraResult = conn.execute(Item.get_era_filters)
+        eraQuery = eraResult.fetchall()
+        eraList = []
+        for eraTuple in eraQuery:
+            eraList.append(eraTuple[0])
+
+    return render_template('additem.html',
+                            conditions        = conditionList,
+                            colors            = colorList,
+                            eras              = eraList)
 
 # Add Item Route: POST method after form submission
 @app.route('/items/new', methods=['POST'])
 @login_required()
 def additem():
+
+    # Get field inputs
+    itemName        = request.form['itemName']
+    itemCategory    = request.form['itemCategory']
+    itemDescription = request.form['itemDescription']
+    itemCondition   = request.form['itemCondition']
+    itemColor       = request.form['itemColor']
+    itemEra         = request.form['itemEra']
+    itemSize        = request.form['itemSize']
+
+
+    # Checks if required fields are empty
+    if itemName == '':
+        flash(u'Name field cannot be empty.', 'danger')
+        return additem_page()
+    if itemCategory == '':
+        flash(u'Must select a category.', 'danger')
+        return additem_page()
+
     if request.files:
         image = request.files['image']
         imageName = save_image(image)
         return search_page()
     else:
         return redirect(url_for('home_page'))
+
+
+    # with DatabaseConnection() as conn:
+    #     # Begins a transaction
+    #     transaction = conn.begin()
+    #     try:
+    #         # Add the item
+    #         conn.execute(Item.insert, {
+    #             'Item Name' : itemName,
+    #             'Description' : itemDescription
+    #         })
+    #         # Commits the transaction changes
+    #         transaction.commit()
+    #     except:
+    #         # Rollback and discard transaction changes upon failure
+    #         transaction.rollback()
+    #         raise
+    # return redirect(url_for('login_page'))

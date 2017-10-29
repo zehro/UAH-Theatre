@@ -168,23 +168,33 @@ nav.ui.menu .item.ui.dropdown {
     min-width: auto;
   }
 }
-.temp_class {
-  margin: 20px auto;
-  width: 25%;
+#page_content .temp_class {
+  text-align: center;
+  width: 50%;
+  margin: auto;
 }
-.temp_class .input_container,
-.temp_class .button_container {
+#page_content .temp_class .input_fields {
+  background: #007AC4;
+  border-radius: 10px;
+  color: white;
+  margin: 20px auto;
+  padding: 10px 10px;
+}
+#page_content .temp_class .input_fields .input_container {
   border: none;
   margin: 10px 0px;
-  padding: 0px;
 }
-.temp_class .textbox {
+#page_content .temp_class .button_container {
+  border: none;
+  margin: 10px 0px;
+}
+#page_content .temp_class .textbox {
   border: none;
   margin: 10px 0px;
   padding: 0px;
   height: 100px;
 }
-.temp_class .subtext {
+#page_content .temp_class .subtext {
   -webkit-transition: all 0.2s ease;
   -moz-transition: all 0.2s ease;
   -ms-transition: all 0.2s ease;
@@ -194,13 +204,13 @@ nav.ui.menu .item.ui.dropdown {
   cursor: pointer;
   text-decoration: underline;
 }
-.temp_class .subtext:hover,
-.temp_class .subtext:focus {
+#page_content .temp_class .subtext:hover,
+#page_content .temp_class .subtext:focus {
   color: white;
 }
 @media only screen and (max-width: 767px) {
   #page_content {
     min-width: auto;
-    width: 75%;
+    width: 80%;
   }
 }

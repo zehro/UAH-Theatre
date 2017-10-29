@@ -26,43 +26,58 @@ nav.ui.menu {
 }
 
 #page_content {
-    //
-}
 
-.temp_class {
-    margin     : 20px auto;
-    width      : 25%;
+    .temp_class {
+        text-align : center;
+        width      : 50%;
+        margin     : auto;
 
-    .input_container, .button_container {
-        border  : none;
-        margin  : 10px 0px;
-        padding : 0px;
-    }
+        .input_fields {
+            background     : @color_primary;
+            border-radius  : 10px;
+            color          : white;
+            margin         : 20px auto;
+            padding        : 10px 10px;
 
-    .textbox {
-        border  : none;
-        margin  : 10px 0px;
-        padding : 0px;
-        height  : 100px;
-    }
+            .input_container {
+                border  : none;
+                margin  : 10px 0px;
+            }
 
-    .subtext {
-        .animate( all, 0.2s );
-        color           : @color_primary;
-        cursor          : pointer;
-        text-decoration : underline;
+        }
 
-        &:hover, &:focus {
-            color : white;
+        .button_container {
+            border  : none;
+            margin  : 10px 0px;
+        }
+
+        .textbox {
+            border  : none;
+            margin  : 10px 0px;
+            padding : 0px;
+            height  : 100px;
+        }
+
+        .subtext {
+            .animate( all, 0.2s );
+            color           : @color_primary;
+            cursor          : pointer;
+            text-decoration : underline;
+
+            &:hover, &:focus {
+                color : white;
+            }
         }
     }
+
 }
+
 
 // Mobile Style Overrides
 @media only screen and ( max-width : @screen_max_width )
 {
     #page_content {
         min-width : auto;
-        width     : 75%;
+        width     : 80%;
     }
 }
