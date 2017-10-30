@@ -505,30 +505,47 @@ def additem():
         flash(u'Name field cannot be empty.', 'danger')
         return additem_page()
     if itemCategory == '':
-        flash(u'Must select a category.', 'danger')
+        flash(u'Please select a category.', 'danger')
+        return additem_page()
+    if itemEra == '':
+        flash(u'Please select an era.', 'danger')
+        return additem_page()
+    if itemColor == '':
+        flash(u'Please select a color.', 'danger')
+        return additem_page()
+    if itemSize == '':
+        flash(u'Please select a size.', 'danger')
+        return additem_page()
+    if itemCondition == '':
+        flash(u'Please select a condition.', 'danger')
         return additem_page()
 
-    if request.files:
-        image = request.files['image']
-        imageName = save_image(image)
-        return search_page()
-    else:
-        return redirect(url_for('home_page'))
 
+    # if request.files:
+    #     image = request.files['image']
+    #     imageName = save_image(image)
+    #     return search_page()
+    # else:
+    #     return redirect(url_for('home_page'))
 
-    # with DatabaseConnection() as conn:
-    #     # Begins a transaction
-    #     transaction = conn.begin()
-    #     try:
-    #         # Add the item
-    #         conn.execute(Item.insert, {
-    #             'Item Name' : itemName,
-    #             'Description' : itemDescription
-    #         })
-    #         # Commits the transaction changes
-    #         transaction.commit()
-    #     except:
-    #         # Rollback and discard transaction changes upon failure
-    #         transaction.rollback()
-    #         raise
-    # return redirect(url_for('login_page'))
+    with DatabaseConnection() as conn:
+        # Begins a transaction
+        transaction = conn.begin()
+        try:
+            # Add the item
+            conn.execute(Item.insert, {
+                'Item Name'     : itemName,
+                'Description'   : itemDescription,
+                'Category'      : itemCategory,
+                'Era'           : itemEra,
+                'Color'         : itemColor,
+                'Size'          : itemSize,
+                'Condition'     : itemCondition
+            })
+            # Commits the transaction changes
+            transaction.commit()
+        except:
+            # Rollback and discard transaction changes upon failure
+            transaction.rollback()
+            raise
+    return redirect(url_for('search_page'))

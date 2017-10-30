@@ -40,6 +40,13 @@
                 </div>
             </fieldset>
 
+            <div class="ui form">
+                <div class="field">
+                    <textarea placeholder="Description" name="itemDescription" rows="2"></textarea>
+                </div>
+            </div>
+
+
             <fieldset class="input_container">
                 <div class="ui selection dropdown fluid">
                     <input type="hidden" name="itemCategory">
@@ -51,39 +58,6 @@
                     </div>
                 </div>
             </fieldset>
-
-            <div class="ui form">
-                <div class="field">
-                    <textarea placeholder="Description" name="itemDescription" rows="2"></textarea>
-                </div>
-            </div>
-
-            <fieldset class="input_container">
-                <div class="ui dropdown selection fluid" id="condition">
-                    <input type="hidden" name="itemCondition">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Condition</div>
-                    <div class="menu">
-                        {% for condition in conditions %}
-                        <div class="item">{{ condition }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </fieldset>
-
-            <fieldset class="input_container">
-                <div class="ui dropdown selection fluid" id="color">
-                    <input type="hidden" name="itemColor">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Color</div>
-                    <div class="menu">
-                        {% for color in colors %}
-                        <div class="item">{{ color }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </fieldset>
-
 
             <fieldset class="input_container">
                 <div class="ui dropdown selection fluid" id="era">
@@ -101,6 +75,19 @@
 
 
             <fieldset class="input_container">
+                <div class="ui dropdown selection fluid" id="color">
+                    <input type="hidden" name="itemColor">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Color</div>
+                    <div class="menu">
+                        {% for color in colors %}
+                        <div class="item">{{ color }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="input_container">
                 <select class="ui selection dropdown fluid">
                     <option value="">Size</option>
                     <option value="s">Small</option>
@@ -110,39 +97,19 @@
                 </select>
             </fieldset>
 
-    <!--         <fieldset class="input_container">
-                <div class="ui selection dropdown fluid">
-                    <input type="hidden" name="">
+
+            <fieldset class="input_container">
+                <div class="ui dropdown selection fluid" id="condition">
+                    <input type="hidden" name="itemCondition">
                     <i class="dropdown icon"></i>
                     <div class="default text">Condition</div>
                     <div class="menu">
-                        <div class="item">New</div>
-                        <div class="item">Good</div>
-                        <div class="item">Decent</div>
-                        <div class="item">Worn</div>
+                        {% for condition in conditions %}
+                        <div class="item">{{ condition }}</div>
+                        {% endfor %}
                     </div>
                 </div>
-            </fieldset> -->
-
-
-    <!--
-            <fieldset class="input_container">
-                <select class="ui selection dropdown">
-                    <option value="">Color</option>
-                    <option value="black">Black</option>
-                    <option value="blue">Blue</option>
-                    <option value="green">Green</option>
-                    <option value="red">Red</option>
-                </select>
             </fieldset>
-
-            <fieldset class="input_container">
-                <select class="ui selection dropdown">
-                    <option value="">Era</option>
-                    <option value="chinese">Chinese</option>
-                    <option value="medieval">Medieval</option>
-                </select>
-            </fieldset> -->
 
         </div>
 

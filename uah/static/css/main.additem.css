@@ -209,8 +209,7 @@ nav.ui.menu .item.ui.dropdown {
   color: white;
 }
 @media only screen and (max-width: 767px) {
-  #page_content {
-    min-width: auto;
+  #page_content .temp_class {
     width: 80%;
   }
 }
