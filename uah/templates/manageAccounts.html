@@ -34,18 +34,47 @@
         <div class="account">
             <span>{{ account.USERNAME }}</span>
             {% if not account.ISVERIFIED %}
-                <button class="ui button fluid" type="button" id="verify_button">
+                <button class="ui button toggle_status_button" type="button" uid="{{ account.UID }}">
                     Verify
                 </button>
             {% else %}
-                <button class="ui button" type="button" id="verify_button">
+                <button class="ui button toggle_status_button" type="button" uid="{{ account.UID }}">
                     Disable
                 </button>
             {% endif %}
-            <button class="ui button" type="button" id="verify_button">
+            <button class="ui button delete_account_button" type="button" uid="{{ account.UID }}">
                 Delete
             </button>
         </div>
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block js %}
+<script type='text/javascript'>
+$('.toggle_status_button').click(function() {
+    $.ajax({
+        url: '/account/verify/' + $(this).attr("uid"),
+        type: 'POST',
+        success: function(data, status) {
+            location.reload();
+        },
+        error: function() {
+            console.log("Error occurs. Please try again.");
+        }
+    });
+});
+$('.delete_account_button').click(function() {
+    $.ajax({
+        url: '/account/delete/' + $(this).attr("uid"),
+        type: 'POST',
+        success: function(data, status) {
+            location.reload();
+        },
+        error: function() {
+            console.log("Error occurs. Please try again.");
+        }
+    });
+});
+</script>
 {% endblock %}
