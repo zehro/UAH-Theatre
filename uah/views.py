@@ -480,10 +480,18 @@ def additem_page():
         for eraTuple in eraQuery:
             eraList.append(eraTuple[0])
 
+        # Gets the size filters
+        sizeResult = conn.execute(Item.get_size_filters)
+        sizeQuery = sizeResult.fetchall()
+        sizeList = []
+        for sizeTuple in sizeQuery:
+            sizeList.append(sizeTuple[0])
+
     return render_template('additem.html',
                             conditions        = conditionList,
                             colors            = colorList,
-                            eras              = eraList)
+                            eras              = eraList,
+                            sizes             = sizeList)
 
 # Add Item Route: POST method after form submission
 @app.route('/items/new', methods=['POST'])
@@ -521,12 +529,13 @@ def additem():
         return additem_page()
 
 
-    # if request.files:
-    #     image = request.files['image']
-    #     imageName = save_image(image)
+    if request.files:
+        image = request.files['image']
+        imageName = save_image(image)
     #     return search_page()
     # else:
     #     return redirect(url_for('home_page'))
+
 
     with DatabaseConnection() as conn:
         # Begins a transaction

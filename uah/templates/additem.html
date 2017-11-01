@@ -32,6 +32,7 @@
 <div class="temp_class">
     <form method="post" action="/items/new" enctype="multipart/form-data">
         <div class="input_fields">
+
             <input type="file" name='image' accept='.jpg, .jpeg, .png, .bmp, .gif'>
 
             <fieldset class="input_container">
@@ -95,6 +96,19 @@
                     <option value="l">Large</option>
                     <option value="xl">X-Large</option>
                 </select>
+            </fieldset>
+
+            <fieldset class="input_container">
+                <div class="ui dropdown selection fluid" id="size">
+                    <input type="hidden" name="itemSize">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Size</div>
+                    <div class="menu">
+                        {% for size in sizes %}
+                        <div class="item">{{ size }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
             </fieldset>
 
 
