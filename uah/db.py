@@ -27,30 +27,6 @@ class DatabaseConnection:
         # make sure the database connection gets closed
         self.connection.close()
 
-# Declares some useful constants
-TRUE = 1
-FALSE = 0
-
-# Creates Bunch contexts for the database schema and queries
-User = Bunch()
-User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
-User.find_all        = 'SELECT * FROM USER'
-User.toggle_status   = 'UPDATE USER SET ISVERIFIED = IF(ISVERIFIED=1, 0, 1) WHERE UID = %(UID)s'
-User.delete_one      = 'DELETE FROM USER WHERE UID = %(UID)s'
-User.findby_username = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
-User.check_login     = 'SELECT USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
-
-Item = Bunch()
-Item.find_all              = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE'
-Item.findby_oid            = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE WHERE OID = %(OID)s'
-Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
-Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
-Item.get_sizes             = ''
-Item.get_dimensions        = ''
-Item.get_era_filters       = 'SELECT ERANAME FROM ERA'
-Item.get_color_filters     = 'SELECT COLORNAME FROM COLOR'
-Item.get_condition_filters = 'SELECT CNDTNNAME FROM CNDTN'
-
 # Declares some useful functions
 def convertCategory(category):
     if category == 'costume':
@@ -168,9 +144,16 @@ def buildUpdate(name, objecttype, condition, era, checkedout, color, dimension, 
     #similar to search, just not implemented yet
     print(name) #placeholder
 
+# Declares some useful constants
+TRUE = 1
+FALSE = 0
+
 # Creates Bunch contexts for the database schema and queries
 User = Bunch()
 User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
+User.find_all        = 'SELECT * FROM USER'
+User.toggle_status   = 'UPDATE USER SET ISVERIFIED = IF(ISVERIFIED=1, 0, 1) WHERE UID = %(UID)s'
+User.delete_one      = 'DELETE FROM USER WHERE UID = %(UID)s'
 User.findby_username = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
 User.check_login     = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
 
@@ -179,6 +162,8 @@ Item = Bunch()
 # Item.update                = ''
 Item.checkout              = 'UPDATE OBJECT SET CHECKOUTTO = %(UID)s WHERE OID = %(OID)s'
 Item.checkin               = 'UPDATE OBJECT SET CHECKOUTTO = NULL WHERE OID = %(OID)s'
+Item.find_all              = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE'
+Item.findby_oid            = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE WHERE OID = %(OID)s'
 Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
 Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
 Item.get_size              = 'SELECT SIZENAME FROM COSTUME NATURAL JOIN SIZE WHERE OID = %(OID)s'
