@@ -236,3 +236,22 @@ INSERT INTO PROP(OID, DID) VALUES (oid, did);
 #Insert COLOR (run once per color adding to the object):
 INSERT INTO OBJECTCOLOR(OID, CID) VALUES (oid, cid);
 ```
+Queries for buildUpdate:
+```
+#Find SID:
+SELECT SID FROM SIZE WHERE SIZENAME = 'string';
+#Find DID:
+SELECT DID FROM DIMENSION WHERE DIMENSIONNAME = 'string';
+#Find CID:
+SELECT CID FROM COLOR WHERE COLORNAME = 'string';
+#Update an object (clauses in SET can be excluded as needed):
+UPDATE OBJECT SET OBJECTNAME = 'objectname', DESCRIPTION = 'description', TYPE = 'type', CNID = cnid, EID = eid WHERE OID = oid;
+#Update dimension for prop:
+UPDATE PROP SET DID = did WHERE OID = oid;
+#Update size for costume:
+UPDATE COSTUME SET SID = sid WHERE OID = oid;
+#Remove a color:
+DELETE FROM OBJECTCOLOR WHERE OID = oid AND CID = cid;
+#Add a new color:
+INSERT INTO OBJECTCOLOR(OID, CID) VALUES (oid, cid);
+```
