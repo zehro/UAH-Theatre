@@ -31,12 +31,12 @@
 
 {% block pagecontent %}
 <form class="item_container" method="post">
-    <a class="ui image medium group" href="{{ url_for('load_image', filename=item.IMAGE) }}">
+    {% for image in images %}
+    <a class="ui image medium group" href="{{ url_for('load_image', filename=image[0]) }}">
         <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
     </a>
-    {% for image in images %}
-    <a class="group gallery" href="{{ url_for('load_image', filename=image[0]) }}"></a>
     {% endfor %}
+
     <div class="description">
         <h2 class="header static">{{ item.OBJECTNAME }}</h2>
         <div class="ui form meta update">
@@ -111,7 +111,7 @@
         <div class="ui form meta">
             <div class="field">
                 <label>Size: </label>
-                <p class="static">{{ item.SIZE }}</p>
+                <p class="static">{{ size }}</p>
 
                 <div class="ui dropdown selection update" id="size_dropdown">
                     <input type="hidden" name="itemSize">
@@ -131,7 +131,7 @@
         <div class="ui form meta">
             <div class="field">
                 <label>Dimension: </label>
-                <p class="static">{{ item.DIMENSION }}</p>
+                <p class="static">{{ dimension }}</p>
 
                 <div class="ui dropdown selection update" id="dimension_dropdown">
                     <input type="hidden" name="itemDimension">
@@ -166,11 +166,15 @@
         </div>
     </div>
 
+    {% if item.CHECKEDOUTTO == None or item.CHECKEDOUTTO == user.UID %}
     <div class="button_container static">
-        <button class="ui button fluid" id="check_in_button">
-            Check In
-        </button>
+        <input class="ui button fluid green" type="submit" name="submit" value="" id="check_button"></input>
     </div>
+    {% else %}
+    <div class="button_container static">
+        <button class="ui button fluid disabled" disabled>Checked Out to '{{ user.Username }}'</button>
+    </div>
+    {% endif %}
 
     <div class="button_container static">
         <button class="ui button fluid yellow" type="button" id="update_button">
@@ -189,7 +193,7 @@
     </div>
 
     <div class="button_container static">
-        <input class="ui button fluid red" type="submit" type="submit" value="Delete"></input>
+        <input class="ui button fluid red" type="submit" name="submit" value="Delete"></input>
     </div>
 </form>
 {% endblock %}
@@ -204,6 +208,12 @@ $(".group").colorbox({
     rel         :'group'
 });
 
+{% if item.CHECKEDOUTTO == user.UID %}
+$('#check_button').val('Check In');
+{% else %}
+$('#check_button').val('Check Out');
+{% endif %}
+
 $('#update_button').click(function() {
     $('.static').css('display', 'none');
     $('.update').css('display', 'block');
@@ -217,7 +227,9 @@ $('#cancel_button').click(function() {
 
 $('#category_dropdown').dropdown('set selected', '{{ convertTypeToString(item.TYPE) }}');
 $('#era_dropdown').dropdown('set selected', '{{ item.ERANAME }}');
-$('#color_select').dropdown('set selected', '{{ item.CNDTNNAME }}');
+$('#color_select').dropdown('set selected', {{ itemColorArray | safe }});
+$('#size_dropdown').dropdown('set selected', '{{ size }}');
+$('#dimension_dropdown').dropdown('set selected', '{{ dimension }}');
 $('#condition_dropdown').dropdown('set selected', '{{ item.CNDTNNAME }}');
 </script>
 {% endblock %}
