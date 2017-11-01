@@ -541,3 +541,28 @@ def additem():
         return search_page()
     else:
         return redirect(url_for('home_page'))
+
+@app.route('/accounts', methods=['GET'])
+@login_required()
+def manage_accounts():
+    with DatabaseConnection() as conn:
+        accounts = conn.execute(User.find_all).fetchall()
+    return render_template('manageAccounts.html', accounts=accounts)
+
+@app.route('/account/verify/<int:userId>', methods=['POST'])
+@login_required()
+def toggle_account_status(userId):
+    with DatabaseConnection() as conn:
+        conn.execute(User.toggle_status, {
+            'UID' : userId,
+        })
+    return redirect(url_for('manage_accounts'))
+
+@app.route('/account/delete/<int:userId>', methods=['POST'])
+@login_required()
+def delete_account(userId):
+    with DatabaseConnection() as conn:
+        conn.execute(User.delete_one, {
+            'UID' : userId,
+        })
+    return redirect(url_for('manage_accounts'))

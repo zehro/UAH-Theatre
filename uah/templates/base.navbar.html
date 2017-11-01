@@ -17,7 +17,7 @@
             </a>
 
             {% if isAdmin() %}
-            <a class="item blue">
+            <a href="{{ url_for('manage_accounts') }}" class="item blue">
                 <i class="icon address book"></i>
                 Manage Accounts
             </a>
@@ -45,7 +45,7 @@
     </a>
 
     {% if isAdmin() %}
-    <a class="item blue">
+    <a href="{{ url_for('manage_accounts') }}" class="item blue">
         <i class="icon address book"></i>
         Manage Accounts
     </a>
