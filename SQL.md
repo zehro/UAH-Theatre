@@ -213,3 +213,26 @@ Get Objects and its pictures
 ```
 SELECT * FROM OBJECT NATURAL JOIN PICTURE
 ```
+Queries for buildCreate (finding IDs needs to be done before buildCreate call)
+```
+#Find max OID (you'll need to add 1 to the result):
+SELECT MAX(OID) AS OID FROM OBJECT;
+#Find CNID:
+SELECT CNID FROM CNDTN WHERE CNDTNNAME = 'string';
+#Find EID:
+SELECT EID FROM ERA WHERE ERANAME = 'string';
+#Find SID:
+SELECT SID FROM SIZE WHERE SIZENAME = 'string';
+#Find DID:
+SELECT DID FROM DIMENSION WHERE DIMENSIONNAME = 'string';
+#Find CID:
+SELECT CID FROM COLOR WHERE COLORNAME = 'string';
+#Insert OBJECT:
+INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (oid, 'objectname', 'description', 'type', cnid, eid);
+#Insert COSTUME (run only for type = 'c'):
+INSERT INTO COSTUME(OID, SID) VALUES (oid, sid);
+#Insert PROP (run only for type = 'p'):
+INSERT INTO PROP(OID, DID) VALUES (oid, did);
+#Insert COLOR (run once per color adding to the object):
+INSERT INTO OBJECTCOLOR(OID, CID) VALUES (oid, cid);
+```
