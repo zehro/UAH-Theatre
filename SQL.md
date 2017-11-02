@@ -1,12 +1,12 @@
 # SQL statements used to initialize database tables
 
 ```
-CREATE TABLE USER(
-    UID        INT         AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE "USER"(
+    UID        SERIAL      PRIMARY KEY,
     USERNAME   VARCHAR(20) UNIQUE NOT NULL,
-    PASSWORD   VARCHAR(20) NOT NULL,
-    ISADMIN    BOOL        DEFAULT 0 NOT NULL,
-    ISVERIFIED BOOL        DEFAULT 1 NOT NULL
+    PASSWORD   VARCHAR(32) NOT NULL,
+    ISADMIN    BOOL        DEFAULT false NOT NULL,
+    ISVERIFIED BOOL        DEFAULT true NOT NULL
 );
 
 CREATE TABLE ERA(
@@ -212,4 +212,46 @@ DELETE FROM USER WHERE UID = $uid$;
 Get Objects and its pictures
 ```
 SELECT * FROM OBJECT NATURAL JOIN PICTURE
+```
+Queries for buildCreate (finding IDs needs to be done before buildCreate call)
+```
+#Find max OID (you'll need to add 1 to the result):
+SELECT MAX(OID) AS OID FROM OBJECT;
+#Find CNID:
+SELECT CNID FROM CNDTN WHERE CNDTNNAME = 'string';
+#Find EID:
+SELECT EID FROM ERA WHERE ERANAME = 'string';
+#Find SID:
+SELECT SID FROM SIZE WHERE SIZENAME = 'string';
+#Find DID:
+SELECT DID FROM DIMENSION WHERE DIMENSIONNAME = 'string';
+#Find CID:
+SELECT CID FROM COLOR WHERE COLORNAME = 'string';
+#Insert OBJECT:
+INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (oid, 'objectname', 'description', 'type', cnid, eid);
+#Insert COSTUME (run only for type = 'c'):
+INSERT INTO COSTUME(OID, SID) VALUES (oid, sid);
+#Insert PROP (run only for type = 'p'):
+INSERT INTO PROP(OID, DID) VALUES (oid, did);
+#Insert COLOR (run once per color adding to the object):
+INSERT INTO OBJECTCOLOR(OID, CID) VALUES (oid, cid);
+```
+Queries for buildUpdate:
+```
+#Find SID:
+SELECT SID FROM SIZE WHERE SIZENAME = 'string';
+#Find DID:
+SELECT DID FROM DIMENSION WHERE DIMENSIONNAME = 'string';
+#Find CID:
+SELECT CID FROM COLOR WHERE COLORNAME = 'string';
+#Update an object (clauses in SET can be excluded as needed):
+UPDATE OBJECT SET OBJECTNAME = 'objectname', DESCRIPTION = 'description', TYPE = 'type', CNID = cnid, EID = eid WHERE OID = oid;
+#Update dimension for prop:
+UPDATE PROP SET DID = did WHERE OID = oid;
+#Update size for costume:
+UPDATE COSTUME SET SID = sid WHERE OID = oid;
+#Remove a color:
+DELETE FROM OBJECTCOLOR WHERE OID = oid AND CID = cid;
+#Add a new color:
+INSERT INTO OBJECTCOLOR(OID, CID) VALUES (oid, cid);
 ```
