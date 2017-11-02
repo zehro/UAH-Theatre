@@ -166,13 +166,13 @@
         </div>
     </div>
 
-    {% if item.CHECKEDOUTTO == None or item.CHECKEDOUTTO == user.UID %}
+    {% if item.CHECKEDOUTTO == None or item.CHECKEDOUTTO == currentUser.UID %}
     <div class="button_container static">
         <input class="ui button fluid green" type="submit" name="submit" value="" id="check_button"></input>
     </div>
     {% else %}
     <div class="button_container static">
-        <button class="ui button fluid disabled" disabled>Checked Out to '{{ user.Username }}'</button>
+        <button class="ui button fluid disabled" disabled>Checked out to '{{ borrower }}'</button>
     </div>
     {% endif %}
 
@@ -208,7 +208,7 @@ $(".group").colorbox({
     rel         :'group'
 });
 
-{% if item.CHECKEDOUTTO == user.UID %}
+{% if item.CHECKEDOUTTO == currentUser.UID %}
 $('#check_button').val('Check In');
 {% else %}
 $('#check_button').val('Check Out');

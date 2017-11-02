@@ -408,6 +408,11 @@ def item_page(oid):
         if dimension != None:
             dimension = dimension[0]
 
+        # Get the item's borrower, if it has one
+        checkedTo = conn.execute(Item.get_borrower, {
+            'OID' : oid,
+        }).fetchone()
+
     # Parse and format the item's colors
     itemColorArray = []
     for color in range(len(colors)):
@@ -423,8 +428,11 @@ def item_page(oid):
             if color < len(itemColorArray) - 1:
                 itemColors += ', '
 
+    print(checkedTo[0], file=sys.stderr)
+
     return render_template('item.html',
-                            user           = g.user,
+                            currentUser    = g.user,
+                            borrower       = checkedTo[0],
                             item           = item,
                             images         = images,
                             size           = size,
@@ -495,11 +503,11 @@ def item_update(oid):
                 return redirect(url_for('search_page'))
             # If checking out
             elif request.form['submit'] == 'Check Out':
-                # # Checks out the item
-                # conn.execute(Item.checkout, {
-                #     'OID' : oid,
-                #     'UID' : g.user['UID'],
-                # })
+                # Checks out the item
+                conn.execute(Item.checkout, {
+                    'OID' : oid,
+                    'UID' : g.user['UID'],
+                })
 
                 # Commits the transaction changes
                 transaction.commit()
@@ -508,10 +516,10 @@ def item_update(oid):
                 return redirect(url_for('item_page', oid=oid))
             # If checking in
             elif request.form['submit'] == 'Check In':
-                # # Checks in the item
-                # conn.execute(Item.checkin, {
-                #     'OID' : oid,
-                # })
+                # Checks in the item
+                conn.execute(Item.checkin, {
+                    'OID' : oid,
+                })
 
                 # Commits the transaction changes
                 transaction.commit()
