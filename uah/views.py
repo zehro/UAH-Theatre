@@ -24,6 +24,16 @@ def inject_convertTypeToString_function():
         return enum
     return dict(convertTypeToString=convertTypeToString)
 
+@app.context_processor
+def inject_fileExists_function():
+    def convertTypeToString(enum):
+        if enum == 'c':
+            return 'Costume'
+        if enum == 'p':
+            return 'Prop'
+        return enum
+    return dict(convertTypeToString=convertTypeToString)
+
 # Request to be executed before all requests
 @app.before_request
 def before_request():
@@ -235,6 +245,8 @@ def search_page():
         # Gets the search results
         searchResults = conn.execute(searchQuery).fetchall()
 
+        print(searchResults, file=sys.stderr)
+
     return render_template('search.html',
                             conditions = conditionList,
                             colors     = colorList,
@@ -397,6 +409,8 @@ def item_page(oid):
         checkedTo = conn.execute(Item.get_borrower, {
             'OID' : oid,
         }).fetchone()
+        if checkedTo:
+            checkedTo = checkedTo[0]
 
     # Parse and format the item's colors
     itemColorArray = []
@@ -415,7 +429,7 @@ def item_page(oid):
 
     return render_template('item.html',
                             currentUser    = g.user,
-                            borrower       = checkedTo[0],
+                            borrower       = checkedTo,
                             item           = item,
                             images         = images,
                             size           = size,
@@ -583,10 +597,8 @@ def additem():
     itemColors      = request.form['itemColors']
 
     # check optional filters
-    if 'itemSize' in request.form:
-        itemSize = request.form['itemSize']
-    elif 'itemDimension' in request.form:
-        itemDimension = request.form['itemDimension']
+    itemSize      = request.form['itemSize']
+    itemDimension = request.form['itemDimension']
 
     # Checks if required fields are empty
     if itemName == '':
@@ -615,8 +627,6 @@ def additem():
     if request.files:
         image = request.files['image']
         imageName = save_image(image)
-
-    print(request.files['image'], file=sys.stderr)
 
     with DatabaseConnection() as conn:
         # Begins a transaction
@@ -658,7 +668,7 @@ def additem():
                 })
 
             # Updates tables for the size property
-            if 'itemSize' in request.form:
+            if itemSize != '':
                 sid = conn.execute(Item.get_new_size, {
                     'Size' : itemSize,
                 }).fetchone()[0]
@@ -668,7 +678,7 @@ def additem():
                     'SID' : sid,
                 })
             # Updates tables for the dimension property
-            elif 'itemDimension' in request.form:
+            elif itemDimension != '':
                 did = conn.execute(Item.get_new_dimension, {
                     'Dimension' : itemDimension,
                 }).fetchone()[0]
@@ -689,6 +699,7 @@ def additem():
         except:
             # Rollback and discard transaction changes upon failure
             transaction.rollback()
+            flash(u'An error occurred.', 'danger')
             raise
 
     return redirect(url_for('search_page'))

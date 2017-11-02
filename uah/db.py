@@ -44,7 +44,7 @@ def convertChecked(status):
 
 # Any input that isn't being searched on should be null
 def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, dimension):
-    query = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE WHERE OBJORDER = 1'
+    query = 'SELECT * FROM (OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA) NATURAL LEFT OUTER JOIN (SELECT * FROM PICTURE WHERE OBJORDER = 1) AS PICTURES'
 
     if oid != '' or \
             name != '' or \
@@ -55,7 +55,7 @@ def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, 
             checkedout != '' or \
             size != '' or \
             dimension != '':
-        query += ' AND '
+        query += ' WHERE '
 
         if oid != '':
             query += 'OID = ' + str(oid)
@@ -158,7 +158,7 @@ Item.insert_into_object    = 'INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, T
 Item.insert_into_color     = 'INSERT INTO OBJECTCOLOR(OID, CID) VALUES (%(OID)s, %(CID)s)'
 Item.insert_into_costume   = 'INSERT INTO COSTUME(OID, SID) VALUES (%(OID)s, %(SID)s)'
 Item.insert_into_prop      = 'INSERT INTO PROP(OID, DID) VALUES (%(OID)s, %(DID)s)'
-Item.insert_into_picture   = 'INSERT INTO PICTURE(OID, IMAGE) VALUES (%(OID)s, %(ImageBlob)s)'
+Item.insert_into_picture   = 'INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (%(OID)s, %(ImageBlob)s, 1) ON DUPLICATE KEY UPDATE OBJORDER = OBJORDER + 1'
 # Item.update                = ''
 
 Item.get_borrower          = 'SELECT USERNAME FROM USER WHERE UID IN (SELECT CHECKEDOUTTO FROM OBJECT WHERE OID = %(OID)s)'
