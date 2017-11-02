@@ -77,6 +77,7 @@ CREATE TABLE PICTURE(
     OID integer NOT NULL,
     IMAGE VARCHAR(100) NOT NULL,
     OBJORDER integer NOT NULL,
+    UNIQUE(OID, OBJORDER),
     FOREIGN KEY (OID) REFERENCES OBJECT(OID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -235,6 +236,8 @@ INSERT INTO COSTUME(OID, SID) VALUES (oid, sid);
 INSERT INTO PROP(OID, DID) VALUES (oid, did);
 #Insert COLOR (run once per color adding to the object):
 INSERT INTO OBJECTCOLOR(OID, CID) VALUES (oid, cid);
+#Insert PICTURE: (order should start at 1 for the first picture, and be incremented for subsequent pictures)
+INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (oid, 'image', order);
 ```
 Queries for buildUpdate:
 ```
@@ -244,6 +247,8 @@ SELECT SID FROM SIZE WHERE SIZENAME = 'string';
 SELECT DID FROM DIMENSION WHERE DIMENSIONNAME = 'string';
 #Find CID:
 SELECT CID FROM COLOR WHERE COLORNAME = 'string';
+#Get highest OBJORDER for an OBJECT:
+SELECT MAX(OBJORDER) AS OBJORDER FROM PICTURE WHERE OID = oid;
 #Update an object (clauses in SET can be excluded as needed):
 UPDATE OBJECT SET OBJECTNAME = 'objectname', DESCRIPTION = 'description', TYPE = 'type', CNID = cnid, EID = eid WHERE OID = oid;
 #Update dimension for prop:
@@ -254,4 +259,14 @@ UPDATE COSTUME SET SID = sid WHERE OID = oid;
 DELETE FROM OBJECTCOLOR WHERE OID = oid AND CID = cid;
 #Add a new color:
 INSERT INTO OBJECTCOLOR(OID, CID) VALUES (oid, cid);
+#Add new PICTURE: (be sure and increment order)
+INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (oid, 'image', order);
+#Delete a PICTURE:
+DELETE FROM PICTURE WHERE OID = oid AND OBJORDER = order;
+or
+DELETE FROM PICTURE WHERE IMAGE = 'image';
+```
+Queries for delete: (everything else cascades)
+```
+DELETE FROM OBJECT WHERE OID = oid;
 ```
