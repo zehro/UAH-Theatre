@@ -168,48 +168,43 @@ nav.ui.menu .item.ui.dropdown {
     min-width: auto;
   }
 }
-#page_content .temp_class {
+#page_content .item_container {
+  margin: 0 auto;
   text-align: center;
-  width: 50%;
-  margin: auto;
+  width: 80%;
 }
-#page_content .temp_class .input_fields {
+#page_content .item_container .input_fields {
   background: #007AC4;
   border-radius: 10px;
   color: white;
   margin: 20px auto;
-  padding: 10px 10px;
+  padding: 1em;
 }
-#page_content .temp_class .input_fields .input_container {
+#page_content .item_container .input_fields .input_container {
+  border: none;
+  margin: 10px 0;
+}
+#page_content .item_container .input_fields .file_input {
+  background: white;
+  border-radius: 0.285714rem;
+  color: black;
+  padding: 5px;
+  margin: auto;
+  max-width: 250px;
+}
+#page_content .item_container .input_fields .costume,
+#page_content .item_container .input_fields .prop {
+  display: none;
+}
+#page_content .item_container .button_container {
   border: none;
   margin: 10px 0px;
-}
-#page_content .temp_class .button_container {
-  border: none;
-  margin: 10px 0px;
-}
-#page_content .temp_class .textbox {
-  border: none;
-  margin: 10px 0px;
-  padding: 0px;
-  height: 100px;
-}
-#page_content .temp_class .subtext {
-  -webkit-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  -ms-transition: all 0.2s ease;
-  -o-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-  color: #007AC4;
-  cursor: pointer;
-  text-decoration: underline;
-}
-#page_content .temp_class .subtext:hover,
-#page_content .temp_class .subtext:focus {
-  color: white;
 }
 @media only screen and (max-width: 767px) {
-  #page_content .temp_class {
+  #page_content .item_container {
     width: 80%;
+  }
+  #page_content .item_container .file_input {
+    width: 100%;
   }
 }

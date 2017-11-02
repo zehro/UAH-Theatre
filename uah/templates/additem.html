@@ -29,148 +29,134 @@
 {% endblock %}
 
 {% block pagecontent %}
-<div class="temp_class">
-    <form method="post" action="/items/new" enctype="multipart/form-data">
-        <div class="input_fields">
+<form class="item_container" method="post">
+    <div class="input_fields">
+        <input class="file_input" type="file" name='image' accept='.jpg, .jpeg, .png, .bmp, .gif'>
 
-            <input type="file" name='image' accept='.jpg, .jpeg, .png, .bmp, .gif'>
+        <fieldset class="input_container">
+            <div class="ui input fluid">
+                <input name="itemName" type="text" placeholder="Item Name">
+            </div>
+        </fieldset>
 
-            <fieldset class="input_container">
-                <div class="ui input fluid">
-                    <input id="itemName" type="text" placeholder="Item Name">
-                </div>
-            </fieldset>
+        <div class="ui form">
+            <div class="field">
+                <textarea name="itemDescription" rows="4" placeholder="Description"></textarea>
+            </div>
+        </div>
 
-            <div class="ui form">
-                <div class="field">
-                    <textarea placeholder="Description" name="itemDescription" rows="2"></textarea>
+        <fieldset class="input_container">
+            <div class="ui selection dropdown fluid" id="category">
+                <input type="hidden" name="itemCategory">
+                <i class="dropdown icon"></i>
+                <div class="default text">Category</div>
+                <div class="menu">
+                    <div class="item">Costume</div>
+                    <div class="item">Prop</div>
                 </div>
             </div>
+        </fieldset>
 
-
-            <fieldset class="input_container">
-                <div class="ui selection dropdown fluid" id="category">
-                    <input type="hidden" name="itemCategory">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Category</div>
-                    <div class="menu">
-                        <div class="item">Costume</div>
-                        <div class="item">Prop</div>
-                    </div>
+        <fieldset class="input_container">
+            <div class="ui dropdown selection fluid" id="era">
+                <input type="hidden" name="itemEra">
+                <i class="dropdown icon"></i>
+                <div class="default text">Era</div>
+                <div class="menu">
+                    {% for era in eras %}
+                    <div class="item">{{ era }}</div>
+                    {% endfor %}
                 </div>
-            </fieldset>
+            </div>
+        </fieldset>
 
-            <fieldset class="input_container">
-                <div class="ui dropdown selection fluid" id="era">
-                    <input type="hidden" name="itemEra">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Era</div>
-                    <div class="menu">
-                        {% for era in eras %}
-                        <div class="item">{{ era }}</div>
-                        {% endfor %}
-                    </div>
+        <fieldset class="input_container">
+            <div class="ui dropdown selection multiple fluid" id="color">
+                <input type="hidden" name="itemColors">
+                <i class="dropdown icon"></i>
+                <div class="default text">Colors</div>
+                <div class="menu">
+                    {% for color in colors %}
+                    <div class="item">{{ color }}</div>
+                    {% endfor %}
                 </div>
-            </fieldset>
+            </div>
+        </fieldset>
 
-
-
-            <fieldset class="input_container">
-                <div class="ui dropdown selection fluid" id="color">
-                    <input type="hidden" name="itemColor">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Color</div>
-                    <div class="menu">
-                        {% for color in colors %}
-                        <div class="item">{{ color }}</div>
-                        {% endfor %}
-                    </div>
+        <fieldset class="input_container costume">
+            <div class="ui dropdown selection fluid" id="size">
+                <input type="hidden" name="itemSize">
+                <i class="dropdown icon"></i>
+                <div class="default text">Size</div>
+                <div class="menu">
+                    {% for size in sizes %}
+                    <div class="item">{{ size }}</div>
+                    {% endfor %}
                 </div>
-            </fieldset>
+            </div>
+        </fieldset>
 
-
-            <fieldset class="input_container">
-                <div class="ui dropdown selection fluid" id="size">
-                    <input type="hidden" name="itemSize">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Size</div>
-                    <div class="menu">
-                        {% for size in sizes %}
-                        <div class="item">{{ size }}</div>
-                        {% endfor %}
-                    </div>
+        <fieldset class="input_container prop">
+            <div class="ui dropdown selection fluid" id="dimension">
+                <input type="hidden" name="itemDimension">
+                <i class="dropdown icon"></i>
+                <div class="default text">Dimension</div>
+                <div class="menu">
+                    {% for dimension in dimensions %}
+                    <div class="item">{{ dimension }}</div>
+                    {% endfor %}
                 </div>
-            </fieldset>
+            </div>
+        </fieldset>
 
-            <fieldset class="input_container">
-                <div class="ui dropdown selection fluid" id="dimension">
-                    <input type="hidden" name="itemDimension">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Dimension</div>
-                    <div class="menu">
-                        {% for dimension in dimensions %}
-                        <div class="item">{{ dimension }}</div>
-                        {% endfor %}
-                    </div>
+        <fieldset class="input_container">
+            <div class="ui dropdown selection fluid" id="condition">
+                <input type="hidden" name="itemCondition">
+                <i class="dropdown icon"></i>
+                <div class="default text">Condition</div>
+                <div class="menu">
+                    {% for condition in conditions %}
+                    <div class="item">{{ condition }}</div>
+                    {% endfor %}
                 </div>
-            </fieldset>
+            </div>
+        </fieldset>
+    </div>
 
+    <div class="button_container">
+        <button type='submit'
+           class="ui button fluid blue">
+            Submit
+        </button>
+    </div>
 
-            <fieldset class="input_container">
-                <div class="ui dropdown selection fluid" id="condition">
-                    <input type="hidden" name="itemCondition">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Condition</div>
-                    <div class="menu">
-                        {% for condition in conditions %}
-                        <div class="item">{{ condition }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </fieldset>
-
-        </div>
-
-        <div class="button_container">
-            <button type='submit'
-               class="ui button fluid blue">
-                Submit
-            </button>
-        </div>
-
-        <div class="button_container">
-            <a href="{{ url_for('home_page') }}"
-               class="ui button fluid">
-                Cancel
-            </a>
-        </div>
-    </form>
-</div>
-
-
+    <div class="button_container">
+        <a href="{{ url_for('home_page') }}"
+           class="ui button fluid">
+            Cancel
+        </a>
+    </div>
+</form>
 {% endblock %}
 
 {% block js %}
-
 <script src="{{ url_for('static', filename='js/semantic.dropdown.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
-
 $('#category .menu').click(function() {
     if ($('#category input').val() == 'costume')
     {
-        $('.costume').css('display', 'inline-block');
+        $('.costume').css('display', 'block');
         $('.prop').css('display', 'none');
     }
     else if ($('#category input').val() == 'prop')
     {
         $('.costume').css('display', 'none');
-        $('.prop').css('display', 'inline-block');
+        $('.prop').css('display', 'block');
     }
     else {
         $('.costume').css('display', 'none');
         $('.prop').css('display', 'none');
     }
 });
-
 </script>
 {% endblock %}

@@ -200,39 +200,34 @@ def register():
 def search_page():
     with DatabaseConnection() as conn:
         # Gets the condition filters
-        conditionResult = conn.execute(Item.get_condition_filters)
-        conditionQuery = conditionResult.fetchall()
+        conditionQuery = conn.execute(Item.get_condition_filters).fetchall()
         conditionList = []
         for conditionTuple in conditionQuery:
-            conditionList.append(conditionTuple[0])
+            conditionList.append(conditionTuple[1])
 
         # Gets the color filters
-        colorResult = conn.execute(Item.get_color_filters)
-        colorQuery = colorResult.fetchall()
+        colorQuery = conn.execute(Item.get_color_filters).fetchall()
         colorList = []
         for colorTuple in colorQuery:
-            colorList.append(colorTuple[0])
+            colorList.append(colorTuple[1])
 
         # Gets the era filters
-        eraResult = conn.execute(Item.get_era_filters)
-        eraQuery = eraResult.fetchall()
+        eraQuery = conn.execute(Item.get_era_filters).fetchall()
         eraList = []
         for eraTuple in eraQuery:
-            eraList.append(eraTuple[0])
+            eraList.append(eraTuple[1])
 
         # Gets the size filters
-        sizeResult = conn.execute(Item.get_size_filters)
-        sizeQuery = sizeResult.fetchall()
+        sizeQuery = conn.execute(Item.get_size_filters).fetchall()
         sizeList = []
         for sizeTuple in sizeQuery:
-            sizeList.append(sizeTuple[0])
+            sizeList.append(sizeTuple[1])
 
         # Gets the dimension filters
-        dimensionResult = conn.execute(Item.get_dimension_filters)
-        dimensionQuery = dimensionResult.fetchall()
+        dimensionQuery = conn.execute(Item.get_dimension_filters).fetchall()
         dimensionList = []
         for dimensionTuple in dimensionQuery:
-            dimensionList.append(dimensionTuple[0])
+            dimensionList.append(dimensionTuple[1])
 
         # Get all search results and no filters
         searchQuery = buildSearch('', '', '', '', '', '', '', '', '')
@@ -280,39 +275,34 @@ def search():
 
     with DatabaseConnection() as conn:
         # Gets the condition filters
-        conditionResult = conn.execute(Item.get_condition_filters)
-        conditionQuery = conditionResult.fetchall()
+        conditionQuery = conn.execute(Item.get_condition_filters).fetchall()
         conditionList = []
         for conditionTuple in conditionQuery:
-            conditionList.append(conditionTuple[0])
+            conditionList.append(conditionTuple[1])
 
         # Gets the color filters
-        colorResult = conn.execute(Item.get_color_filters)
-        colorQuery = colorResult.fetchall()
+        colorQuery = conn.execute(Item.get_color_filters).fetchall()
         colorList = []
         for colorTuple in colorQuery:
-            colorList.append(colorTuple[0])
+            colorList.append(colorTuple[1])
 
         # Gets the era filters
-        eraResult = conn.execute(Item.get_era_filters)
-        eraQuery = eraResult.fetchall()
+        eraQuery = conn.execute(Item.get_era_filters).fetchall()
         eraList = []
         for eraTuple in eraQuery:
-            eraList.append(eraTuple[0])
+            eraList.append(eraTuple[1])
 
         # Gets the size filters
-        sizeResult = conn.execute(Item.get_size_filters)
-        sizeQuery = sizeResult.fetchall()
+        sizeQuery = conn.execute(Item.get_size_filters).fetchall()
         sizeList = []
         for sizeTuple in sizeQuery:
-            sizeList.append(sizeTuple[0])
+            sizeList.append(sizeTuple[1])
 
         # Gets the dimension filters
-        dimensionResult = conn.execute(Item.get_dimension_filters)
-        dimensionQuery = dimensionResult.fetchall()
+        dimensionQuery = conn.execute(Item.get_dimension_filters).fetchall()
         dimensionList = []
         for dimensionTuple in dimensionQuery:
-            dimensionList.append(dimensionTuple[0])
+            dimensionList.append(dimensionTuple[1])
 
         # Get the search query
         searchQuery = buildSearch('', itemName, convertCategory(itemCategory),
@@ -344,39 +334,34 @@ def search():
 def item_page(oid):
     with DatabaseConnection() as conn:
         # Gets the condition filters
-        conditionResult = conn.execute(Item.get_condition_filters)
-        conditionQuery = conditionResult.fetchall()
+        conditionQuery = conn.execute(Item.get_condition_filters).fetchall()
         conditionList = []
         for conditionTuple in conditionQuery:
-            conditionList.append(conditionTuple[0])
+            conditionList.append(conditionTuple[1])
 
         # Gets the color filters
-        colorResult = conn.execute(Item.get_color_filters)
-        colorQuery = colorResult.fetchall()
+        colorQuery = conn.execute(Item.get_color_filters).fetchall()
         colorList = []
         for colorTuple in colorQuery:
-            colorList.append(colorTuple[0])
+            colorList.append(colorTuple[1])
 
         # Gets the era filters
-        eraResult = conn.execute(Item.get_era_filters)
-        eraQuery = eraResult.fetchall()
+        eraQuery = conn.execute(Item.get_era_filters).fetchall()
         eraList = []
         for eraTuple in eraQuery:
-            eraList.append(eraTuple[0])
+            eraList.append(eraTuple[1])
 
         # Gets the size filters
-        sizeResult = conn.execute(Item.get_size_filters)
-        sizeQuery = sizeResult.fetchall()
+        sizeQuery = conn.execute(Item.get_size_filters).fetchall()
         sizeList = []
         for sizeTuple in sizeQuery:
-            sizeList.append(sizeTuple[0])
+            sizeList.append(sizeTuple[1])
 
         # Gets the dimension filters
-        dimensionResult = conn.execute(Item.get_dimension_filters)
-        dimensionQuery = dimensionResult.fetchall()
+        dimensionQuery = conn.execute(Item.get_dimension_filters).fetchall()
         dimensionList = []
         for dimensionTuple in dimensionQuery:
-            dimensionList.append(dimensionTuple[0])
+            dimensionList.append(dimensionTuple[1])
 
         # Get an item by an OID
         searchQuery = buildSearch(oid, '', '', '', '', '', '', '', '')
@@ -427,8 +412,6 @@ def item_page(oid):
             itemColors += itemColorArray[color]
             if color < len(itemColorArray) - 1:
                 itemColors += ', '
-
-    print(checkedTo[0], file=sys.stderr)
 
     return render_template('item.html',
                             currentUser    = g.user,
@@ -508,7 +491,6 @@ def item_update(oid):
                     'OID' : oid,
                     'UID' : g.user['UID'],
                 })
-
                 # Commits the transaction changes
                 transaction.commit()
 
@@ -520,7 +502,6 @@ def item_update(oid):
                 conn.execute(Item.checkin, {
                     'OID' : oid,
                 })
-
                 # Commits the transaction changes
                 transaction.commit()
 
@@ -539,39 +520,34 @@ def item_update(oid):
 def additem_page():
     with DatabaseConnection() as conn:
         # Gets the condition filters
-        conditionResult = conn.execute(Item.get_condition_filters)
-        conditionQuery = conditionResult.fetchall()
+        conditionQuery = conn.execute(Item.get_condition_filters).fetchall()
         conditionList = []
         for conditionTuple in conditionQuery:
-            conditionList.append(conditionTuple[0])
+            conditionList.append(conditionTuple[1])
 
         # Gets the color filters
-        colorResult = conn.execute(Item.get_color_filters)
-        colorQuery = colorResult.fetchall()
+        colorQuery = conn.execute(Item.get_color_filters).fetchall()
         colorList = []
         for colorTuple in colorQuery:
-            colorList.append(colorTuple[0])
+            colorList.append(colorTuple[1])
 
         # Gets the era filters
-        eraResult = conn.execute(Item.get_era_filters)
-        eraQuery = eraResult.fetchall()
+        eraQuery = conn.execute(Item.get_era_filters).fetchall()
         eraList = []
         for eraTuple in eraQuery:
-            eraList.append(eraTuple[0])
+            eraList.append(eraTuple[1])
 
         # Gets the size filters
-        sizeResult = conn.execute(Item.get_size_filters)
-        sizeQuery = sizeResult.fetchall()
+        sizeQuery = conn.execute(Item.get_size_filters).fetchall()
         sizeList = []
         for sizeTuple in sizeQuery:
-            sizeList.append(sizeTuple[0])
+            sizeList.append(sizeTuple[1])
 
         # Gets the dimension filters
-        dimensionResult = conn.execute(Item.get_dimension_filters)
-        dimensionQuery = dimensionResult.fetchall()
+        dimensionQuery = conn.execute(Item.get_dimension_filters).fetchall()
         dimensionList = []
         for dimensionTuple in dimensionQuery:
-            dimensionList.append(dimensionTuple[0])
+            dimensionList.append(dimensionTuple[1])
 
     return render_template('additem.html',
                             conditions        = conditionList,
@@ -584,17 +560,33 @@ def additem_page():
 @app.route('/items/new', methods=['POST'])
 @login_required()
 def additem():
+    # Checks if required fields exist in form
+    if 'itemName' not in request.form or \
+            'itemDescription' not in request.form or \
+            'itemCategory' not in request.form or \
+            'itemCondition' not in request.form or \
+            'itemEra' not in request.form or \
+            'itemColors' not in request.form or \
+            ('itemSize' not in request.form and \
+            'itemDimension' not in request.form):
+        flash(u'Required fields do not exist.', 'danger')
+        return additem_page()
 
-    # Get field inputs
-    itemName        = request.form['itemName']
-    itemCategory    = request.form['itemCategory']
+    # Get search bar input
+    itemName = request.form['itemName']
+
+    # get detail inputs
     itemDescription = request.form['itemDescription']
+    itemCategory    = request.form['itemCategory']
     itemCondition   = request.form['itemCondition']
-    itemColor       = request.form['itemColor']
     itemEra         = request.form['itemEra']
-    itemSize        = request.form['itemSize']
-    itemDimension   = request.form['itemDimension']
+    itemColors      = request.form['itemColors']
 
+    # check optional filters
+    if 'itemSize' in request.form:
+        itemSize = request.form['itemSize']
+    elif 'itemDimension' in request.form:
+        itemDimension = request.form['itemDimension']
 
     # Checks if required fields are empty
     if itemName == '':
@@ -606,49 +598,99 @@ def additem():
     if itemEra == '':
         flash(u'Please select an era.', 'danger')
         return additem_page()
-    if itemColor == '':
+    if itemColors == '':
         flash(u'Please select a color.', 'danger')
         return additem_page()
-    if (itemCategory == 'Costume' and itemSize == ''):
+    if (itemCategory == 'costume' and itemSize == ''):
         flash(u'Please select a size.', 'danger')
         return additem_page()
-    if (itemCategory == 'Prop' and itemDimension == ''):
+    if (itemCategory == 'prop' and itemDimension == ''):
         flash(u'Please select a dimension.', 'danger')
         return additem_page()
     if itemCondition == '':
         flash(u'Please select a condition.', 'danger')
         return additem_page()
 
-
+    # Handles image file uploading
     if request.files:
         image = request.files['image']
         imageName = save_image(image)
-    #     return search_page()
-    # else:
-    #     return redirect(url_for('home_page'))
 
+    print(request.files['image'], file=sys.stderr)
 
     with DatabaseConnection() as conn:
         # Begins a transaction
         transaction = conn.begin()
         try:
+            # Parse the inputs into unique IDs
+            oid = conn.execute(Item.get_new_oid).fetchone()[0] + 1
+
+            eid = conn.execute(Item.get_new_era, {
+                'Era' : itemEra,
+            }).fetchone()[0]
+
+            colorNames = itemColors.split(',')
+            colorIDs = []
+            for colorName in colorNames:
+                colorID = conn.execute(Item.get_new_color, {
+                    'Color' : colorName,
+                }).fetchone()
+                colorIDs.append(colorID[0])
+
+            cnid = conn.execute(Item.get_new_condition, {
+                'Condition' : itemCondition,
+            }).fetchone()[0]
+
             # Add the item
-            conn.execute(Item.insert, {
-                'Item Name'     : itemName,
-                'Description'   : itemDescription,
-                'Category'      : itemCategory,
-                'Era'           : itemEra,
-                'Color'         : itemColor,
-                'Size'          : itemSize,
-                'Dimension'     : itemDimension,
-                'Condition'     : itemCondition
+            conn.execute(Item.insert_into_object, {
+                'OID'         : oid,
+                'Name'        : itemName,
+                'Description' : itemDescription,
+                'Type'        : convertCategory(itemCategory),
+                'CNID'        : cnid,
+                'EID'         : eid,
             })
+
+            for cid in colorIDs:
+                conn.execute(Item.insert_into_color, {
+                    'OID' : oid,
+                    'CID' : cid,
+                })
+
+            # Updates tables for the size property
+            if 'itemSize' in request.form:
+                sid = conn.execute(Item.get_new_size, {
+                    'Size' : itemSize,
+                }).fetchone()[0]
+
+                conn.execute(Item.insert_into_costume, {
+                    'OID' : oid,
+                    'SID' : sid,
+                })
+            # Updates tables for the dimension property
+            elif 'itemDimension' in request.form:
+                did = conn.execute(Item.get_new_dimension, {
+                    'Dimension' : itemDimension,
+                }).fetchone()[0]
+
+                conn.execute(Item.insert_into_prop, {
+                    'OID' : oid,
+                    'DID' : did,
+                })
+
+            conn.execute(Item.insert_into_picture, {
+                'OID' : oid,
+                'ImageBlob' : imageName,
+            })
+
             # Commits the transaction changes
             transaction.commit()
+            flash(u'Item added.', 'success')
         except:
             # Rollback and discard transaction changes upon failure
             transaction.rollback()
             raise
+
     return redirect(url_for('search_page'))
 
 

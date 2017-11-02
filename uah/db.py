@@ -129,21 +129,6 @@ def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, 
 
     return query;
 
-# Name, objecttype, condition, and era are required of type String
-# Colors should be a list of valid colors
-# For Costumes, size is required
-# For Props, dimension is required
-def buildCreate(name, description, objecttype, condition, era, colors, dimension, size):
-    return 'INSERT INTO OBJECT(OBJECTNAME, TYPE, CNID, EID) VALUES (\'New Object\', \'c\', 0, 0)'
-    #query = [];
-    #query.add('');
-    #query[0] = 'INSERT INTO OBJECT(OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (\'' + name + '\', \''+ objecttype
-    #for color in colors:
-
-def buildUpdate(name, objecttype, condition, era, checkedout, color, dimension, size):
-    #similar to search, just not implemented yet
-    print(name) #placeholder
-
 # Declares some useful constants
 TRUE = 1
 FALSE = 0
@@ -151,26 +136,45 @@ FALSE = 0
 # Creates Bunch contexts for the database schema and queries
 User = Bunch()
 User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
+
 User.find_all        = 'SELECT * FROM USER'
 User.toggle_status   = 'UPDATE USER SET ISVERIFIED = IF(ISVERIFIED=1, 0, 1) WHERE UID = %(UID)s'
 User.delete_one      = 'DELETE FROM USER WHERE UID = %(UID)s'
+
 User.findby_username = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
 User.check_login     = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
 
+
+
 Item = Bunch()
-# Item.insert                = ''
+Item.get_new_oid           = 'SELECT MAX(OID) AS OID FROM OBJECT'
+Item.get_new_condition     = 'SELECT CNID FROM CNDTN WHERE CNDTNNAME = %(Condition)s'
+Item.get_new_era           = 'SELECT EID FROM ERA WHERE ERANAME = %(Era)s'
+Item.get_new_color         = 'SELECT CID FROM COLOR WHERE COLORNAME = %(Color)s'
+Item.get_new_size          = 'SELECT SID FROM SIZE WHERE SIZENAME = %(Size)s'
+Item.get_new_dimension     = 'SELECT DID FROM DIMENSION WHERE DIMENSIONNAME = %(Dimension)s'
+
+Item.insert_into_object    = 'INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (%(OID)s, %(Name)s, %(Description)s, %(Type)s, %(CNID)s, %(EID)s)'
+Item.insert_into_color     = 'INSERT INTO OBJECTCOLOR(OID, CID) VALUES (%(OID)s, %(CID)s)'
+Item.insert_into_costume   = 'INSERT INTO COSTUME(OID, SID) VALUES (%(OID)s, %(SID)s)'
+Item.insert_into_prop      = 'INSERT INTO PROP(OID, DID) VALUES (%(OID)s, %(DID)s)'
+Item.insert_into_picture   = 'INSERT INTO PICTURE(OID, IMAGE) VALUES (%(OID)s, %(ImageBlob)s)'
 # Item.update                = ''
+
 Item.get_borrower          = 'SELECT USERNAME FROM USER WHERE UID IN (SELECT CHECKEDOUTTO FROM OBJECT WHERE OID = %(OID)s)'
 Item.checkout              = 'UPDATE OBJECT SET CHECKEDOUTTO = %(UID)s WHERE OID = %(OID)s'
 Item.checkin               = 'UPDATE OBJECT SET CHECKEDOUTTO = NULL WHERE OID = %(OID)s'
+
 Item.find_all              = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE'
 Item.findby_oid            = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE WHERE OID = %(OID)s'
+
 Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
 Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
 Item.get_size              = 'SELECT SIZENAME FROM COSTUME NATURAL JOIN SIZE WHERE OID = %(OID)s'
 Item.get_dimension         = 'SELECT DIMENSIONNAME FROM PROP NATURAL JOIN DIMENSION WHERE OID = %(OID)s'
-Item.get_size_filters      = 'SELECT SID, SIZENAME FROM SIZE'
-Item.get_dimension_filters = 'SELECT DID, DIMENSIONNAME FROM DIMENSION'
-Item.get_era_filters       = 'SELECT EID, ERANAME FROM ERA'
-Item.get_color_filters     = 'SELECT CID, COLORNAME FROM COLOR'
-Item.get_condition_filters = 'SELECT CNID, CNDTNNAME FROM CNDTN'
+
+Item.get_size_filters      = 'SELECT SID, SIZENAME FROM SIZE ORDER BY SID'
+Item.get_dimension_filters = 'SELECT DID, DIMENSIONNAME FROM DIMENSION ORDER BY DID'
+Item.get_era_filters       = 'SELECT EID, ERANAME FROM ERA ORDER BY EID'
+Item.get_color_filters     = 'SELECT CID, COLORNAME FROM COLOR ORDER BY CID'
+Item.get_condition_filters = 'SELECT CNID, CNDTNNAME FROM CNDTN ORDER BY CNID'
