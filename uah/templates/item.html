@@ -111,8 +111,7 @@
             </div>
         </div>
 
-        {% if item.TYPE == 'c' %}
-        <div class="ui form meta">
+        <div class="ui form meta costume">
             <div class="field">
                 <label>Size: </label>
                 <p class="static">{{ size }}</p>
@@ -129,10 +128,8 @@
                 </div>
             </div>
         </div>
-        {% endif %}
 
-        {% if item.TYPE == 'p' %}
-        <div class="ui form meta">
+        <div class="ui form meta prop">
             <div class="field">
                 <label>Dimension: </label>
                 <p class="static">{{ dimension }}</p>
@@ -149,7 +146,6 @@
                 </div>
             </div>
         </div>
-        {% endif %}
 
         <div class="ui form meta">
             <div class="field">
@@ -235,5 +231,37 @@ $('#color_select').dropdown('set selected', {{ itemColorArray | safe }});
 $('#size_dropdown').dropdown('set selected', '{{ size }}');
 $('#dimension_dropdown').dropdown('set selected', '{{ dimension }}');
 $('#condition_dropdown').dropdown('set selected', '{{ item.CNDTNNAME }}');
+
+if ($('#category_dropdown input').val() == 'costume')
+{
+    $('.costume').css('display', 'block');
+    $('.prop').css('display', 'none');
+}
+else if ($('#category_dropdown input').val() == 'prop')
+{
+    $('.costume').css('display', 'none');
+    $('.prop').css('display', 'block');
+}
+else {
+    $('.costume').css('display', 'none');
+    $('.prop').css('display', 'none');
+}
+
+$('#category_dropdown .menu').click(function() {
+    if ($('#category_dropdown input').val() == 'costume')
+    {
+        $('.costume').css('display', 'block');
+        $('.prop').css('display', 'none');
+    }
+    else if ($('#category_dropdown input').val() == 'prop')
+    {
+        $('.costume').css('display', 'none');
+        $('.prop').css('display', 'block');
+    }
+    else {
+        $('.costume').css('display', 'none');
+        $('.prop').css('display', 'none');
+    }
+});
 </script>
 {% endblock %}

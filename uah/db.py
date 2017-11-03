@@ -44,7 +44,10 @@ def convertChecked(status):
 
 # Any input that isn't being searched on should be null
 def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, dimension):
-    query = 'SELECT * FROM (OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA) NATURAL LEFT OUTER JOIN (SELECT * FROM PICTURE WHERE OBJORDER = 1) AS PICTURES'
+    query =  '''SELECT * FROM OBJECT
+                NATURAL LEFT OUTER JOIN CNDTN
+                NATURAL LEFT OUTER JOIN ERA
+                NATURAL LEFT OUTER JOIN (SELECT * FROM PICTURE WHERE OBJORDER = 1) AS PICTURES'''
 
     if oid != '' or \
             name != '' or \
@@ -147,20 +150,30 @@ User.check_login     = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM USER WHER
 
 
 Item = Bunch()
-Item.get_new_oid           = 'SELECT MAX(OID) AS OID FROM OBJECT'
+Item.get_max_oid           = 'SELECT MAX(OID) AS OID FROM OBJECT'
 Item.get_new_condition     = 'SELECT CNID FROM CNDTN WHERE CNDTNNAME = %(Condition)s'
 Item.get_new_era           = 'SELECT EID FROM ERA WHERE ERANAME = %(Era)s'
 Item.get_new_color         = 'SELECT CID FROM COLOR WHERE COLORNAME = %(Color)s'
 Item.get_new_size          = 'SELECT SID FROM SIZE WHERE SIZENAME = %(Size)s'
 Item.get_new_dimension     = 'SELECT DID FROM DIMENSION WHERE DIMENSIONNAME = %(Dimension)s'
+Item.get_max_picture_num   = 'SELECT MAX(OBJORDER) AS OBJORDER FROM PICTURE WHERE OID = %(OID)s'
 
 Item.insert_into_object    = 'INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (%(OID)s, %(Name)s, %(Description)s, %(Type)s, %(CNID)s, %(EID)s)'
 Item.insert_into_color     = 'INSERT INTO OBJECTCOLOR(OID, CID) VALUES (%(OID)s, %(CID)s)'
 Item.insert_into_costume   = 'INSERT INTO COSTUME(OID, SID) VALUES (%(OID)s, %(SID)s)'
 Item.insert_into_prop      = 'INSERT INTO PROP(OID, DID) VALUES (%(OID)s, %(DID)s)'
-Item.insert_into_picture   = 'INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (%(OID)s, %(ImageBlob)s, 1) ON DUPLICATE KEY UPDATE OBJORDER = OBJORDER + 1'
+Item.insert_into_picture   = 'INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (%(OID)s, %(ImageBlob)s, %(Order)s)'
 
-# Item.update                = ''
+Item.update_into_object    = 'UPDATE OBJECT SET OBJECTNAME = %(Name)s, DESCRIPTION = %(Description)s, TYPE = %(Type)s, CNID = %(CNID)s, EID = %(EID)s WHERE OID = %(OID)s'
+Item.update_into_costume   = 'UPDATE COSTUME SET SID = %(SID)s WHERE OID = %(OID)s'
+Item.update_into_prop      = 'UPDATE PROP SET DID = %(DID)s WHERE OID = %(OID)s'
+Item.delete_currentColors  = 'DELETE FROM OBJECTCOLOR WHERE OID = %(OID)s'
+Item.delete_from_costumes  = 'DELETE FROM COSTUME WHERE OID = %(OID)s'
+Item.delete_from_props     = 'DELETE FROM PROP WHERE OID = %(OID)s'
+# #Delete a PICTURE:
+# DELETE FROM PICTURE WHERE OID = oid AND OBJORDER = order;
+# or
+# DELETE FROM PICTURE WHERE IMAGE = 'image';
 
 Item.delete                = 'DELETE FROM OBJECT WHERE OID = %(OID)s'
 

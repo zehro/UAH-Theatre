@@ -455,7 +455,7 @@ def item_update(oid):
     # Get search bar input
     itemName = request.form['itemName']
 
-    # get filter inputs
+    # get detail inputs
     itemDescription = request.form['itemDescription']
     itemCategory    = request.form['itemCategory']
     itemCondition   = request.form['itemCondition']
@@ -463,10 +463,19 @@ def item_update(oid):
     itemColors      = request.form['itemColors']
 
     # check optional filters
-    if 'itemSize' in request.form:
-        itemSize = request.form['itemSize']
-    elif 'itemDimension' in request.form:
-        itemDimension = request.form['itemDimension']
+    itemSize      = request.form['itemSize']
+    itemDimension = request.form['itemDimension']
+
+    # Checks if required fields are empty
+    if itemName == '':
+        flash(u'Name field cannot be empty.', 'danger')
+        return additem_page()
+    if itemCategory == '':
+        flash(u'Please select a category.', 'danger')
+        return additem_page()
+    if itemCondition == '':
+        flash(u'Please select a condition.', 'danger')
+        return additem_page()
 
     with DatabaseConnection() as conn:
         # Begins a transaction
@@ -474,8 +483,69 @@ def item_update(oid):
         try:
             # If updating
             if request.form['submit'] == 'Confirm':
-                # # Updates the item
-                # conn.execute(Item.update)
+                # Parse the inputs into unique IDs
+                eid = conn.execute(Item.get_new_era, {
+                    'Era' : itemEra,
+                }).fetchone()
+                if eid:
+                    eid = eid[0]
+
+                colorNames = itemColors.split(',')
+                colorIDs = []
+                for colorName in colorNames:
+                    colorID = conn.execute(Item.get_new_color, {
+                        'Color' : colorName,
+                    }).fetchone()
+                    colorIDs.append(colorID[0])
+
+                cnid = conn.execute(Item.get_new_condition, {
+                    'Condition' : itemCondition,
+                }).fetchone()[0]
+
+                # Updates the item
+                conn.execute(Item.update_into_object, {
+                    'OID'         : oid,
+                    'Name'        : itemName,
+                    'Description' : itemDescription,
+                    'Type'        : convertCategory(itemCategory),
+                    'CNID'        : cnid,
+                    'EID'         : eid,
+                })
+                # Clears current colors then adds the new updated values
+                conn.execute(Item.delete_currentColors, {
+                    'OID' : oid,
+                })
+                for cid in colorIDs:
+                    conn.execute(Item.insert_into_color, {
+                        'OID' : oid,
+                        'CID' : cid,
+                    })
+                # Updates tables for the size property
+                if itemSize != '':
+                    conn.execute(Item.delete_from_props, {
+                        'OID' : oid,
+                    })
+                    sid = conn.execute(Item.get_new_size, {
+                        'Size' : itemSize,
+                    }).fetchone()[0]
+
+                    conn.execute(Item.update_into_costume, {
+                        'OID' : oid,
+                        'SID' : sid,
+                    })
+                # Updates tables for the dimension property
+                elif itemDimension != '':
+                    conn.execute(Item.delete_from_costumes, {
+                        'OID' : oid,
+                    })
+                    did = conn.execute(Item.get_new_dimension, {
+                        'Dimension' : itemDimension,
+                    }).fetchone()[0]
+
+                    conn.execute(Item.update_into_prop, {
+                        'OID' : oid,
+                        'DID' : did,
+                    })
 
                 # Commits the transaction changes
                 transaction.commit()
@@ -525,6 +595,7 @@ def item_update(oid):
         except:
             # Rollback and discard transaction changes upon failure
             transaction.rollback()
+            flash(u'An error occurred.', 'success')
             raise
 
     return redirect(url_for('search_page'))
@@ -582,8 +653,8 @@ def additem():
             'itemCondition' not in request.form or \
             'itemEra' not in request.form or \
             'itemColors' not in request.form or \
-            ('itemSize' not in request.form and \
-            'itemDimension' not in request.form):
+            'itemSize' not in request.form or \
+            'itemDimension' not in request.form:
         flash(u'Required fields do not exist.', 'danger')
         return additem_page()
 
@@ -608,49 +679,43 @@ def additem():
     if itemCategory == '':
         flash(u'Please select a category.', 'danger')
         return additem_page()
-    if itemEra == '':
-        flash(u'Please select an era.', 'danger')
-        return additem_page()
-    if itemColors == '':
-        flash(u'Please select a color.', 'danger')
-        return additem_page()
-    if (itemCategory == 'costume' and itemSize == ''):
-        flash(u'Please select a size.', 'danger')
-        return additem_page()
-    if (itemCategory == 'prop' and itemDimension == ''):
-        flash(u'Please select a dimension.', 'danger')
-        return additem_page()
     if itemCondition == '':
         flash(u'Please select a condition.', 'danger')
         return additem_page()
 
     # Handles image file uploading
     if request.files:
-        image = request.files['image']
-        imageName = save_image(image)
+        images = request.files.getlist('image')
 
     with DatabaseConnection() as conn:
         # Begins a transaction
         transaction = conn.begin()
         try:
             # Parse the inputs into unique IDs
-            oid = conn.execute(Item.get_new_oid).fetchone()[0] + 1
+            oid = conn.execute(Item.get_max_oid).fetchone()
+            if oid:
+                oid = oid[0] + 1
 
             eid = conn.execute(Item.get_new_era, {
                 'Era' : itemEra,
-            }).fetchone()[0]
+            }).fetchone()
+            if eid:
+                eid = eid[0]
 
-            colorNames = itemColors.split(',')
             colorIDs = []
-            for colorName in colorNames:
-                colorID = conn.execute(Item.get_new_color, {
-                    'Color' : colorName,
-                }).fetchone()
-                colorIDs.append(colorID[0])
+            if itemColors != '':
+                colorNames = itemColors.split(',')
+                for colorName in colorNames:
+                    colorID = conn.execute(Item.get_new_color, {
+                        'Color' : colorName,
+                    }).fetchone()
+                    colorIDs.append(colorID[0])
 
             cnid = conn.execute(Item.get_new_condition, {
                 'Condition' : itemCondition,
-            }).fetchone()[0]
+            }).fetchone()
+            if cnid:
+                cnid = cnid[0]
 
             # Add the item
             conn.execute(Item.insert_into_object, {
@@ -689,10 +754,23 @@ def additem():
                     'DID' : did,
                 })
 
-            conn.execute(Item.insert_into_picture, {
-                'OID' : oid,
-                'ImageBlob' : imageName,
-            })
+            for image in images:
+                order = conn.execute(Item.get_max_picture_num, {
+                    'OID' : oid,
+                }).fetchone()[0]
+                if order:
+                    order += 1
+                else:
+                    order = 1
+                imageName = save_image(image)
+                conn.execute(Item.insert_into_picture, {
+                    'OID'       : oid,
+                    'ImageBlob' : imageName,
+                    'Order'     : order,
+                })
+
+            test = conn.execute('SELECT * FROM PICTURE WHERE OID = ' + str(oid)).fetchall()
+            print(test, file=sys.stderr)
 
             # Commits the transaction changes
             transaction.commit()

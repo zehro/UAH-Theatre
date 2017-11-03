@@ -177,7 +177,7 @@ nav.ui.menu .item.ui.dropdown {
 #page_content .item_container {
   margin: 0 auto;
   text-align: center;
-  width: 50%;
+  width: 80%;
 }
 #page_content .item_container .image {
   background: black;
@@ -257,6 +257,10 @@ nav.ui.menu .item.ui.dropdown {
 }
 #page_content .item_container .description .meta .New {
   background: #00A000;
+}
+#page_content .item_container .description .costume,
+#page_content .item_container .description .prop {
+  display: none;
 }
 #page_content .item_container .button_container {
   margin: 10px 0;
