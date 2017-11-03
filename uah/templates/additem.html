@@ -31,7 +31,7 @@
 {% block pagecontent %}
 <form class="item_container" method="post" enctype="multipart/form-data">
     <div class="input_fields">
-        <input class="file_input" type="file" name='image' accept='.jpg, .jpeg, .png, .bmp, .gif'>
+        <input class="file_input" type="file" name='image' accept='.jpg, .jpeg, .png, .bmp, .gif' multiple>
 
         <fieldset class="input_container">
             <div class="ui input fluid">
@@ -46,7 +46,7 @@
         </div>
 
         <fieldset class="input_container">
-            <div class="ui selection dropdown fluid" id="category">
+            <div class="ui selection dropdown fluid" id="category_dropdown">
                 <input type="hidden" name="itemCategory">
                 <i class="dropdown icon"></i>
                 <div class="default text">Category</div>
@@ -58,7 +58,7 @@
         </fieldset>
 
         <fieldset class="input_container">
-            <div class="ui dropdown selection fluid" id="era">
+            <div class="ui dropdown selection fluid" id="era_dropdown">
                 <input type="hidden" name="itemEra">
                 <i class="dropdown icon"></i>
                 <div class="default text">Era</div>
@@ -71,7 +71,7 @@
         </fieldset>
 
         <fieldset class="input_container">
-            <div class="ui dropdown selection multiple fluid" id="color">
+            <div class="ui dropdown selection multiple fluid" id="color_dropdown">
                 <input type="hidden" name="itemColors">
                 <i class="dropdown icon"></i>
                 <div class="default text">Colors</div>
@@ -84,7 +84,7 @@
         </fieldset>
 
         <fieldset class="input_container costume">
-            <div class="ui dropdown selection fluid" id="size">
+            <div class="ui dropdown selection fluid" id="size_dropdown">
                 <input type="hidden" name="itemSize">
                 <i class="dropdown icon"></i>
                 <div class="default text">Size</div>
@@ -97,7 +97,7 @@
         </fieldset>
 
         <fieldset class="input_container prop">
-            <div class="ui dropdown selection fluid" id="dimension">
+            <div class="ui dropdown selection fluid" id="dimension_dropdown">
                 <input type="hidden" name="itemDimension">
                 <i class="dropdown icon"></i>
                 <div class="default text">Dimension</div>
@@ -110,7 +110,7 @@
         </fieldset>
 
         <fieldset class="input_container">
-            <div class="ui dropdown selection fluid" id="condition">
+            <div class="ui dropdown selection fluid" id="condition_dropdown">
                 <input type="hidden" name="itemCondition">
                 <i class="dropdown icon"></i>
                 <div class="default text">Condition</div>
@@ -142,13 +142,13 @@
 {% block js %}
 <script src="{{ url_for('static', filename='js/semantic.dropdown.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
-$('#category .menu').click(function() {
-    if ($('#category input').val() == 'costume')
+$('#category_dropdown .menu').click(function() {
+    if ($('#category_dropdown input').val() == 'costume')
     {
         $('.costume').css('display', 'block');
         $('.prop').css('display', 'none');
     }
-    else if ($('#category input').val() == 'prop')
+    else if ($('#category_dropdown input').val() == 'prop')
     {
         $('.costume').css('display', 'none');
         $('.prop').css('display', 'block');
