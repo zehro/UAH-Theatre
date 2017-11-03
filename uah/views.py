@@ -241,8 +241,6 @@ def search_page():
         # Gets the search results
         searchResults = conn.execute(searchQuery).fetchall()
 
-        print(searchResults, file=sys.stderr)
-
     return render_template('search.html',
                             conditions = conditionList,
                             colors     = colorList,
@@ -486,9 +484,16 @@ def item_update(oid):
                 return redirect(url_for('item_page', oid=oid))
             # If deleting
             elif request.form['submit'] == 'Delete':
-                # # Deletes the item
-                # conn.execute(Item.delete)
-
+                # Deletes associated item images
+                images = conn.execute(Item.get_images, {
+                    'OID' : oid,
+                }).fetchall()
+                for imageTuple in images:
+                    delete_image(imageTuple[0])
+                # Deletes the item
+                conn.execute(Item.delete, {
+                    'OID' : oid,
+                })
                 # Commits the transaction changes
                 transaction.commit()
 
