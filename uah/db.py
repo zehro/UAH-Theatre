@@ -159,7 +159,10 @@ Item.insert_into_color     = 'INSERT INTO OBJECTCOLOR(OID, CID) VALUES (%(OID)s,
 Item.insert_into_costume   = 'INSERT INTO COSTUME(OID, SID) VALUES (%(OID)s, %(SID)s)'
 Item.insert_into_prop      = 'INSERT INTO PROP(OID, DID) VALUES (%(OID)s, %(DID)s)'
 Item.insert_into_picture   = 'INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (%(OID)s, %(ImageBlob)s, 1) ON DUPLICATE KEY UPDATE OBJORDER = OBJORDER + 1'
+
 # Item.update                = ''
+
+Item.delete                = 'DELETE FROM OBJECT WHERE OID = %(OID)s'
 
 Item.get_borrower          = 'SELECT USERNAME FROM USER WHERE UID IN (SELECT CHECKEDOUTTO FROM OBJECT WHERE OID = %(OID)s)'
 Item.checkout              = 'UPDATE OBJECT SET CHECKEDOUTTO = %(UID)s WHERE OID = %(OID)s'

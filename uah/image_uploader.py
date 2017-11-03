@@ -15,3 +15,11 @@ def save_image(image):
 @app.route('/static/images/inventory/<filename>')
 def load_image(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+def fileExists(filename):
+    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    return os.path.exists(path)
+
+def delete_image(filename):
+    if fileExists(filename):
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
