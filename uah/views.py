@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g
 from uah import app
 from uah.db import *
-from uah.image_uploader import save_image, load_image
+from uah.image_uploader import *
 from uah.sessions import *
-
 import sys
 
 # Sets up variables/functions for use in Jinja templates
@@ -26,13 +25,10 @@ def inject_convertTypeToString_function():
 
 @app.context_processor
 def inject_fileExists_function():
-    def convertTypeToString(enum):
-        if enum == 'c':
-            return 'Costume'
-        if enum == 'p':
-            return 'Prop'
-        return enum
-    return dict(convertTypeToString=convertTypeToString)
+    def fileExists(filename):
+        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        return os.path.exists(path)
+    return dict(fileExists=fileExists)
 
 # Request to be executed before all requests
 @app.before_request

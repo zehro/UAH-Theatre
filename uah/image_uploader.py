@@ -3,9 +3,8 @@ from flask import send_from_directory
 from werkzeug.utils import secure_filename
 from uah import app
 
-staticImagePath = 'static/images/inventory'
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(APP_ROOT, staticImagePath)
+UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static/images/inventory')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def save_image(image):
