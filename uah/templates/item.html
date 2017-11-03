@@ -31,11 +31,15 @@
 
 {% block pagecontent %}
 <form class="item_container" method="post">
-    {% for image in images %}
-    <a class="ui image medium group" href="{{ url_for('load_image', filename=image[0]) }}">
-        <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
-    </a>
-    {% endfor %}
+    {% if images %}
+        {% for image in images %}
+        {% if item.IMAGE and fileExists(item.IMAGE) %}
+        <a class="ui image medium group" href="{{ url_for('load_image', filename=image[0]) }}">
+            <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
+        </a>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
 
     <div class="description">
         <h2 class="header static">{{ item.OBJECTNAME }}</h2>
@@ -166,13 +170,13 @@
         </div>
     </div>
 
-    {% if item.CHECKEDOUTTO == None or item.CHECKEDOUTTO == user.UID %}
+    {% if item.CHECKEDOUTTO == None or item.CHECKEDOUTTO == currentUser.UID %}
     <div class="button_container static">
         <input class="ui button fluid green" type="submit" name="submit" value="" id="check_button"></input>
     </div>
     {% else %}
     <div class="button_container static">
-        <button class="ui button fluid disabled" disabled>Checked Out to '{{ user.Username }}'</button>
+        <button class="ui button fluid disabled" disabled>Checked out to '{{ borrower }}'</button>
     </div>
     {% endif %}
 
@@ -208,7 +212,7 @@ $(".group").colorbox({
     rel         :'group'
 });
 
-{% if item.CHECKEDOUTTO == user.UID %}
+{% if item.CHECKEDOUTTO == currentUser.UID %}
 $('#check_button').val('Check In');
 {% else %}
 $('#check_button').val('Check Out');

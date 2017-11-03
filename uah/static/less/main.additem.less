@@ -3,57 +3,42 @@
 // Importing Main Styles
 @import url( 'main.less' );
 
-// Landing Page Content
-#page_header {
-    // Logo
-    #logo_container {
-        //
-    }
-
-    // Banner
-    #banner_container {
-        //
-    }
-
-    // Logout Button
-    #logout_container {
-        //
-    }
-}
-
-nav.ui.menu {
-    //
-}
-
+// Add Item Page Styles
 #page_content {
-    //
-}
+    .item_container {
+        margin     : 0 auto;
+        text-align : center;
+        width      : 80%;
 
-.temp_class {
-    margin     : 20px auto;
-    width      : 25%;
+        .input_fields {
+            background    : @color_primary;
+            border-radius : 10px;
+            color         : white;
+            margin        : 20px auto;
+            padding       : 1em;
 
-    .input_container, .button_container {
-        border  : none;
-        margin  : 10px 0px;
-        padding : 0px;
-    }
+            .input_container {
+                border  : none;
+                margin  : 10px 0;
+            }
 
-    .textbox {
-        border  : none;
-        margin  : 10px 0px;
-        padding : 0px;
-        height  : 100px;
-    }
+            .file_input {
+                background    : white;
+                border-radius : 0.285714rem;
+                color         : black;
+                padding       : 5px;
+                margin        : auto;
+                max-width     : 250px;
+            }
 
-    .subtext {
-        .animate( all, 0.2s );
-        color           : @color_primary;
-        cursor          : pointer;
-        text-decoration : underline;
+            .costume, .prop {
+                display : none;
+            }
+        }
 
-        &:hover, &:focus {
-            color : white;
+        .button_container {
+            border : none;
+            margin : 10px 0px;
         }
     }
 }
@@ -62,7 +47,12 @@ nav.ui.menu {
 @media only screen and ( max-width : @screen_max_width )
 {
     #page_content {
-        min-width : auto;
-        width     : 75%;
+        .item_container {
+            width : 80%;
+
+            .file_input {
+                width : 100%;
+            }
+        }
     }
 }

@@ -216,7 +216,7 @@ nav.ui.menu .item.ui.dropdown {
   border-bottom: 30px solid #007AC4;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  max-height: calc(100% - 200px);
+  max-height: calc(100% - 300px);
   overflow-y: auto;
   text-align: left;
 }
@@ -229,6 +229,7 @@ nav.ui.menu .item.ui.dropdown {
   background: black;
   display: flex;
   height: 150px;
+  text-align: center;
   width: 150px;
 }
 #page_content .search_result_container .ui.items.divided .item .image img {
@@ -236,6 +237,10 @@ nav.ui.menu .item.ui.dropdown {
   max-width: 100% !important;
   margin: auto;
   width: auto;
+}
+#page_content .search_result_container .ui.items.divided .item .image .alt {
+  color: white;
+  width: 100%;
 }
 #page_content .search_result_container .ui.items.divided .item .header,
 #page_content .search_result_container .ui.items.divided .item .meta,

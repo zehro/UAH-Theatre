@@ -168,39 +168,43 @@ nav.ui.menu .item.ui.dropdown {
     min-width: auto;
   }
 }
-.temp_class {
-  margin: 20px auto;
-  width: 25%;
+#page_content .item_container {
+  margin: 0 auto;
+  text-align: center;
+  width: 80%;
 }
-.temp_class .input_container,
-.temp_class .button_container {
-  border: none;
-  margin: 10px 0px;
-  padding: 0px;
-}
-.temp_class .textbox {
-  border: none;
-  margin: 10px 0px;
-  padding: 0px;
-  height: 100px;
-}
-.temp_class .subtext {
-  -webkit-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  -ms-transition: all 0.2s ease;
-  -o-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-  color: #007AC4;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.temp_class .subtext:hover,
-.temp_class .subtext:focus {
+#page_content .item_container .input_fields {
+  background: #007AC4;
+  border-radius: 10px;
   color: white;
+  margin: 20px auto;
+  padding: 1em;
+}
+#page_content .item_container .input_fields .input_container {
+  border: none;
+  margin: 10px 0;
+}
+#page_content .item_container .input_fields .file_input {
+  background: white;
+  border-radius: 0.285714rem;
+  color: black;
+  padding: 5px;
+  margin: auto;
+  max-width: 250px;
+}
+#page_content .item_container .input_fields .costume,
+#page_content .item_container .input_fields .prop {
+  display: none;
+}
+#page_content .item_container .button_container {
+  border: none;
+  margin: 10px 0px;
 }
 @media only screen and (max-width: 767px) {
-  #page_content {
-    min-width: auto;
-    width: 75%;
+  #page_content .item_container {
+    width: 80%;
+  }
+  #page_content .item_container .file_input {
+    width: 100%;
   }
 }

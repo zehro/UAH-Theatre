@@ -135,7 +135,11 @@
         {% for item in items %}
         <a class="item" href="{{ url_for('item_page', oid=item.OID) }}">
             <div class="ui small image">
-                <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
+                {% if item.IMAGE and fileExists(item.IMAGE) %}
+                    <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
+                {% else %}
+                    <div class="alt">Image Not Available</div>
+                {% endif %}
             </div>
             <div class="content">
                 <div class="header">{{ item.OBJECTNAME }}</div>
