@@ -3,7 +3,7 @@
 {% block title %}Manage Accounts{% endblock %}
 
 {% block stylesheets %}
-<link href="{{ url_for('static', filename='css/main.search.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static', filename='css/main.manageAccounts.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block header %}
@@ -29,22 +29,26 @@
 {% endblock %}
 
 {% block pagecontent %}
-    <div>
+    <div class="page_container">
         {% for account in accounts %}
         <div class="account">
+
             <span>{{ account.USERNAME }}</span>
-            {% if not account.ISVERIFIED %}
-                <button class="ui button toggle_status_button" type="button" uid="{{ account.UID }}">
-                    Verify
+                <div class="button_container">
+
+                {% if not account.ISVERIFIED %}
+                    <button class="ui button toggle_status_button" type="button" uid="{{ account.UID }}">
+                        Verify
+                    </button>
+                {% else %}
+                    <button class="ui button toggle_status_button" type="button" uid="{{ account.UID }}">
+                        Disable
+                    </button>
+                {% endif %}
+                <button class="ui button delete_account_button" type="button" uid="{{ account.UID }}">
+                    Delete
                 </button>
-            {% else %}
-                <button class="ui button toggle_status_button" type="button" uid="{{ account.UID }}">
-                    Disable
-                </button>
-            {% endif %}
-            <button class="ui button delete_account_button" type="button" uid="{{ account.UID }}">
-                Delete
-            </button>
+            </div>
         </div>
         {% endfor %}
     </div>

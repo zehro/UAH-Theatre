@@ -1,0 +1,107 @@
+// out: ../css/main.manageAccounts.css, sourcemap: false, compress: false
+
+// Importing Main Styles
+@import url( 'main.less' );
+
+// Add Item Page Styles
+#page_content {
+    .page_container {
+        margin     : 0 auto;
+        text-align : center;
+        width      : 80%;
+        background    : @color_primary;
+        border-radius : 10px;
+        color         : white;
+        margin        : 20px auto;
+        padding       : 1em;
+
+        .account {
+            //width: 80%;
+            border-radius : 10px;
+            margin: 10px 10px;
+            padding: 1em;
+            font-size : 1.25rem;
+            text-align : left;
+            background : @color_secondary;
+
+
+
+
+            .button_container {
+                text-align  : right;
+                margin-top  : 10px;
+                //float: left;
+
+            }
+
+
+
+        }
+
+    }
+
+
+
+    // .item_container {
+    //     margin     : 0 auto;
+    //     text-align : center;
+    //     width      : 80%;
+    //
+    //     .input_fields {
+    //         background    : @color_primary;
+    //         border-radius : 10px;
+    //         color         : white;
+    //         margin        : 20px auto;
+    //         padding       : 1em;
+    //
+    //         .input_container {
+    //             border  : none;
+    //             margin  : 10px 0;
+    //         }
+    //
+    //         .file_input {
+    //             background    : white;
+    //             border-radius : 0.285714rem;
+    //             color         : black;
+    //             padding       : 5px;
+    //             margin        : auto;
+    //             max-width     : 250px;
+    //         }
+    //
+    //         .costume, .prop {
+    //             display : none;
+    //         }
+    //     }
+    //
+    //     .button_container {
+    //         border : none;
+    //         margin : 10px 0px;
+    //     }
+    // }
+}
+
+// Mobile Style Overrides
+@media only screen and ( max-width : @screen_max_width )
+{
+    #page_content {
+
+        .page_container {
+
+            .account {
+
+                font-size : 1.2rem;
+
+            }
+        }
+//        width : 80%;
+
+
+        // .item_container {
+        //     width : 80%;
+        //
+        //     .file_input {
+        //         width : 100%;
+        //     }
+        // }
+    }
+}
