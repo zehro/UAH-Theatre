@@ -176,7 +176,7 @@ nav.ui.menu .item.ui.dropdown {
   border-radius: 10px;
   color: white;
   margin: 20px auto;
-  padding: 1em;
+  padding: 0.5em;
 }
 #page_content .page_container .account {
   border-radius: 10px;
@@ -191,7 +191,14 @@ nav.ui.menu .item.ui.dropdown {
   margin-top: 10px;
 }
 @media only screen and (max-width: 767px) {
+  #page_content .page_container {
+    width: 90%;
+  }
   #page_content .page_container .account {
     font-size: 1.2rem;
+  }
+  #page_content .page_container .account .button_container {
+    text-align: center;
+    margin-top: 10px;
   }
 }
