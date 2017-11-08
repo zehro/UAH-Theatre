@@ -114,7 +114,7 @@ INSERT INTO ACCOUNT(USERNAME, PASSWORD, FIRSTNAME, LASTNAME, ISADMIN) VALUES ('a
 
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (1, 'Crown', 'Shiny, pointy, and goes on head', 'c', 3, 1);
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (2, 'Broadsword', 'A big sword for swinging around', 'p', 5, 1);
-INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (3, 'Katana', 'For when just wearing all black doesn't make you NINJA enough', 'p', 2, 2);
+INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (3, 'Katana', 'For when just wearing all black doesn\'t make you NINJA enough', 'p', 2, 2);
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (4, 'Cape', 'NO CAPES!', 'c', 2, 3);
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (5, 'Sunglasses', 'For blocking bright lights or just to look cool', 'c', 3, 3);
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (6, 'Trebuchet', 'To launch Pumpkin Kid aerially into your enemies', 'p', 5, 1);
@@ -147,7 +147,7 @@ INSERT INTO PICTURE (PID, OID, IMAGE, OBJORDER) VALUES (7, 7, ‘treb1.jpg', 1);
 # Application Queries
 Login Query
 ```
-SELECT UID FROM ACCOUNT WHERE NAME = $name$ AND PASSWORD = $password$ AND ISVERIFIED = 1;
+SELECT UID FROM ACCOUNT WHERE NAME = '$name$' AND PASSWORD = '$password$' AND ISVERIFIED = true;
 ```
 User Registration Query
 ```
@@ -155,15 +155,7 @@ INSERT INTO ACCOUNT(NAME, PASSWORD, FIRSTNAME, LASTNAME) VALUES ($name$, $passwo
 ```
 Admin Registration Query
 ```
-INSERT INTO ACCOUNT(NAME, PASSWORD, ISADMIN, FIRSTNAME, LASTNAME) VALUES ($name$, $password$, 1, $firstname$, $lastname$);
-```
-Search Query (with filters)
-```
-SELECT * FROM OBJECT WHERE NAME = $searchName$ [AND TYPE = 'c' | AND TYPE = 'p'] [AND CNDTN = 'New' | AND CNDTN = 'Good' | AND CNDTN = 'Decent' | AND CNDTN = 'Excellent' | AND CNDTN = 'Bad' | AND CNDTN = 'Unusable'] [AND ERA = $era$] [AND NOT (CHECKEDOUTTO = NULL)];
-```
-Edit Object Query
-```
-UPDATE OBJECT SET [TYPE = 'c' | TYPE = 'p'] [CNDTN = 'New' | CNDTN = 'Good' | CNDTN = 'Decent' | CNDTN = 'Excellent' | CNDTN = 'Bad' | CNDTN = 'Unusable'] [ERA = $era$] [CHECKOUTTO = $uid$] WHERE OID = $objID$;
+INSERT INTO ACCOUNT(NAME, PASSWORD, ISADMIN, FIRSTNAME, LASTNAME) VALUES ($name$, $password$, true, $firstname$, $lastname$);
 ```
 Add Picture Query
 ```
@@ -188,30 +180,30 @@ SELECT * FROM OBJECT NATURAL JOIN PICTURE
 Queries for buildCreate (finding IDs needs to be done before buildCreate call)
 ```
 #Find CNID:
-SELECT CNID FROM CNDTN WHERE CNDTNNAME = $condition$;
+SELECT CNID FROM CNDTN WHERE CNDTNNAME = '$condition$';
 #Find EID:
-SELECT EID FROM ERA WHERE ERANAME = $era$;
+SELECT EID FROM ERA WHERE ERANAME = '$era$';
 #Find CID:
-SELECT CID FROM COLOR WHERE COLORNAME = $color$;
+SELECT CID FROM COLOR WHERE COLORNAME = '$color$';
 #Insert OBJECT:
-INSERT INTO OBJECT(OBJECTNAME, DESCRIPTION, TYPE, SIZE, CNID, EID) VALUES ($objectname$, $description$, $type$, $size$, cnid, eid);
+INSERT INTO OBJECT(OBJECTNAME, DESCRIPTION, TYPE, SIZE, CNID, EID) VALUES ('$objectname$', '$description$', '$type$', '$size$', cnid, eid);
 #Insert COLOR (run once per color adding to the object):
 INSERT INTO OBJECTCOLOR(OID, CID) VALUES (oid, cid);
 #Insert PICTURE: (order should start at 1 for the first picture, and be incremented for subsequent pictures)
-INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (oid, $image$, order);
+INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (oid, '$image$', order);
 ```
 Queries for buildUpdate:
 ```
 #Find CNID:
-SELECT CNID FROM CNDTN WHERE CNDTNNAME = $condition$;
+SELECT CNID FROM CNDTN WHERE CNDTNNAME = '$condition$';
 #Find EID:
-SELECT EID FROM ERA WHERE ERANAME = $era$;
+SELECT EID FROM ERA WHERE ERANAME = '$era$';
 #Find CID:
 SELECT CID FROM COLOR WHERE COLORNAME = 'string';
 #Get highest OBJORDER for an OBJECT:
 SELECT MAX(OBJORDER) AS OBJORDER FROM PICTURE WHERE OID = oid;
 #Update an object (clauses in SET can be excluded as needed):
-UPDATE OBJECT SET OBJECTNAME = $objectname$, DESCRIPTION = $description$, TYPE = $type$, SIZE = $size$, CNID = cnid, EID = eid WHERE OID = oid;
+UPDATE OBJECT SET OBJECTNAME = '$objectname$', DESCRIPTION = '$description$', TYPE = '$type$', SIZE = '$size$', CNID = cnid, EID = eid WHERE OID = oid;
 #Remove a color:
 DELETE FROM OBJECTCOLOR WHERE OID = oid AND CID = cid;
 #Add a new color:
