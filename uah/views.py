@@ -770,7 +770,7 @@ def additem():
                 })
 
             test = conn.execute('SELECT * FROM PICTURE WHERE OID = ' + str(oid)).fetchall()
-            print(test, file=sys.stderr)
+            # print(test, file=sys.stderr)
 
             # Commits the transaction changes
             transaction.commit()
@@ -808,3 +808,83 @@ def delete_account(userId):
             'UID' : userId,
         })
     return redirect(url_for('manage_accounts'))
+
+@app.route('/options', methods=['GET'])
+@login_required()
+def manage_options():
+    with DatabaseConnection() as conn:
+        colors = conn.execute(Color.find_all).fetchall()
+        eras = conn.execute(Era.find_all).fetchall()
+    return render_template('manageOptions.html', colors=colors, eras=eras)
+
+@app.route('/colors', methods=['POST'])
+@login_required()
+def add_color():
+    if not len(request.form['newColorName']):
+        flash(u'Please enter color name.', 'danger')
+    else:
+        newColorName = request.form['newColorName']
+        with DatabaseConnection() as conn:
+            conn.execute(Color.add, {
+                'COLORNAME' : newColorName,
+            })
+    return redirect(url_for('manage_options'))
+
+@app.route('/colors/<int:cid>', methods=['POST'])
+@login_required()
+def update_color(cid):
+    newColorName = request.form['newColorName']
+    if not len(newColorName):
+        flash(u'Please enter new color name.', 'danger')
+    else:
+        with DatabaseConnection() as conn:
+            conn.execute(Color.update, {
+                'CID' : cid,
+                'NEWCOLORNAME': newColorName
+            })
+    return redirect(url_for('manage_options'))
+
+@app.route('/colors/delete/<int:cid>', methods=['POST'])
+@login_required()
+def delete_color(cid):
+    with DatabaseConnection() as conn:
+        conn.execute(Color.delete, {
+            'CID' : cid,
+        })
+    return redirect(url_for('manage_options'))
+
+@app.route('/eras', methods=['POST'])
+@login_required()
+def add_era():
+    if not len(request.form['newEraName']):
+        flash(u'Please enter era name.', 'danger')
+    else:
+        newEraName = request.form['newEraName']
+        with DatabaseConnection() as conn:
+            conn.execute(Era.add, {
+                'ERANAME' : newEraName,
+            })
+    return redirect(url_for('manage_options'))
+
+@app.route('/eras/<int:eid>', methods=['POST'])
+@login_required()
+def update_era(eid):
+    newEraName = request.form['newEraName']
+    if not len(newEraName):
+        flash(u'Please enter new era name.', 'danger')
+    else:
+        with DatabaseConnection() as conn:
+            conn.execute(Era.update, {
+                'EID' : eid,
+                'NEWERANAME': newEraName
+            })
+    return redirect(url_for('manage_options'))
+
+@app.route('/eras/delete/<int:eid>', methods=['POST'])
+@login_required()
+def delete_era(eid):
+    with DatabaseConnection() as conn:
+        conn.execute(Era.delete, {
+            'EID' : eid,
+        })
+    return redirect(url_for('manage_options'))

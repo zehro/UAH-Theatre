@@ -26,7 +26,7 @@
             {% if isAdmin() %}
             <a class="item blue">
                 <i class="icon settings"></i>
-                Manage Settings
+                Manage Options
             </a>
             {% endif %}
         </div>
@@ -52,9 +52,9 @@
     {% endif %}
 
     {% if isAdmin() %}
-    <a class="item blue">
+    <a href="{{ url_for('manage_options') }}" class="item blue">
         <i class="icon settings"></i>
-        Manage Settings
+        Manage Options
     </a>
     {% endif %}
 </nav>

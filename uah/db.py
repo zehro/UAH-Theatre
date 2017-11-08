@@ -194,3 +194,15 @@ Item.get_dimension_filters = 'SELECT DID, DIMENSIONNAME FROM DIMENSION ORDER BY 
 Item.get_era_filters       = 'SELECT EID, ERANAME FROM ERA ORDER BY EID'
 Item.get_color_filters     = 'SELECT CID, COLORNAME FROM COLOR ORDER BY CID'
 Item.get_condition_filters = 'SELECT CNID, CNDTNNAME FROM CNDTN ORDER BY CNID'
+
+Color = Bunch()
+Color.find_all             = 'SELECT * FROM COLOR'
+Color.add                  = 'INSERT INTO COLOR(COLORNAME) VALUES (%(COLORNAME)s)'
+Color.update               = 'UPDATE COLOR SET COLORNAME = %(NEWCOLORNAME)s WHERE CID = %(CID)s'
+Color.delete               = 'DELETE FROM COLOR WHERE CID = %(CID)s'
+
+Era = Bunch()
+Era.find_all             = 'SELECT * FROM ERA'
+Era.add                  = 'INSERT INTO ERA(ERANAME) VALUES (%(ERANAME)s)'
+Era.update               = 'UPDATE ERA SET ERANAME = %(NEWERANAME)s WHERE EID = %(EID)s'
+Era.delete               = 'DELETE FROM ERA WHERE EID = %(EID)s'
