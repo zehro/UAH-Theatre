@@ -1,7 +1,7 @@
 # SQL statements used to initialize database tables
 
 ```
-CREATE TABLE "USER"(
+CREATE TABLE ACCOUNT(
     UID        SERIAL      PRIMARY KEY,
     USERNAME   VARCHAR(20) UNIQUE NOT NULL,
     PASSWORD   VARCHAR(32) NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE OBJECT(
     CHECKEDOUTTO INTEGER,
     FOREIGN KEY (EID) REFERENCES ERA(EID) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (CNID) REFERENCES CNDTN(CNID) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (CHECKEDOUTTO) REFERENCES "USER"(UID) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (CHECKEDOUTTO) REFERENCES ACCOUNT(UID) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 
@@ -51,7 +51,7 @@ CREATE TABLE AUDIT(
     UID  INTEGER,
     FOREIGN KEY (AAID) REFERENCES AUDITACTION(AAID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (OID) REFERENCES OBJECT(OID) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (UID) REFERENCES "USER"(UID) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (UID) REFERENCES ACCOUNT(UID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE PICTURE(
@@ -109,8 +109,8 @@ INSERT INTO COLOR(CID, COLORNAME) VALUES (3, 'Red');
 INSERT INTO COLOR(CID, COLORNAME) VALUES (4, 'Yellow');
 INSERT INTO COLOR(CID, COLORNAME) VALUES (5, 'Brown');
 
-INSERT INTO "USER"(USERNAME, PASSWORD, FIRSTNAME, LASTNAME) VALUES ('user', 'user', 'user', 'user');
-INSERT INTO "USER"(USERNAME, PASSWORD, FIRSTNAME, LASTNAME, ISADMIN) VALUES ('admin', 'admin', 'admin', 'admin', true);
+INSERT INTO ACCOUNT(USERNAME, PASSWORD, FIRSTNAME, LASTNAME) VALUES ('user', 'user', 'user', 'user');
+INSERT INTO ACCOUNT(USERNAME, PASSWORD, FIRSTNAME, LASTNAME, ISADMIN) VALUES ('admin', 'admin', 'admin', 'admin', true);
 
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (1, 'Crown', 'Shiny, pointy, and goes on head', 'c', 3, 1);
 INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (2, 'Broadsword', 'A big sword for swinging around', 'p', 5, 1);
@@ -147,15 +147,15 @@ INSERT INTO PICTURE (PID, OID, IMAGE, OBJORDER) VALUES (7, 7, ‘treb1.jpg', 1);
 # Application Queries
 Login Query
 ```
-SELECT UID FROM USER WHERE NAME = $name$ AND PASSWORD = $password$ AND ISVERIFIED = 1;
+SELECT UID FROM ACCOUNT WHERE NAME = $name$ AND PASSWORD = $password$ AND ISVERIFIED = 1;
 ```
 User Registration Query
 ```
-INSERT INTO USER(NAME, PASSWORD) VALUES ($name$, $password$);
+INSERT INTO ACCOUNT(NAME, PASSWORD, FIRSTNAME, LASTNAME) VALUES ($name$, $password$, $firstname$, $lastname$);
 ```
 Admin Registration Query
 ```
-INSERT INTO USER(NAME, PASSWORD, ISADMIN) VALUES ($name$, $password$, 1);
+INSERT INTO ACCOUNT(NAME, PASSWORD, ISADMIN, FIRSTNAME, LASTNAME) VALUES ($name$, $password$, 1, $firstname$, $lastname$);
 ```
 Search Query (with filters)
 ```
@@ -167,7 +167,7 @@ UPDATE OBJECT SET [TYPE = 'c' | TYPE = 'p'] [CNDTN = 'New' | CNDTN = 'Good' | CN
 ```
 Add Picture Query
 ```
-INSERT INTO PICTURE(OID, IMAGE) VALUES ($oid$, $imageBlob$);
+INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES ($oid$, $imageBlob$, $ordervalue$);
 ```
 View Logs
 ```
@@ -179,7 +179,7 @@ DELETE FROM OBJECT WHERE OID = $oid$;
 ```
 Remove User
 ```
-DELETE FROM USER WHERE UID = $uid$;
+DELETE FROM ACCOUNT WHERE UID = $uid$;
 ```
 Get Objects and its pictures
 ```
@@ -187,45 +187,31 @@ SELECT * FROM OBJECT NATURAL JOIN PICTURE
 ```
 Queries for buildCreate (finding IDs needs to be done before buildCreate call)
 ```
-#Find max OID (you'll need to add 1 to the result):
-SELECT MAX(OID) AS OID FROM OBJECT;
 #Find CNID:
-SELECT CNID FROM CNDTN WHERE CNDTNNAME = 'string';
+SELECT CNID FROM CNDTN WHERE CNDTNNAME = $condition$;
 #Find EID:
-SELECT EID FROM ERA WHERE ERANAME = 'string';
-#Find SID:
-SELECT SID FROM SIZE WHERE SIZENAME = 'string';
-#Find DID:
-SELECT DID FROM DIMENSION WHERE DIMENSIONNAME = 'string';
+SELECT EID FROM ERA WHERE ERANAME = $era$;
 #Find CID:
-SELECT CID FROM COLOR WHERE COLORNAME = 'string';
+SELECT CID FROM COLOR WHERE COLORNAME = $color$;
 #Insert OBJECT:
-INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (oid, 'objectname', 'description', 'type', cnid, eid);
-#Insert COSTUME (run only for type = 'c'):
-INSERT INTO COSTUME(OID, SID) VALUES (oid, sid);
-#Insert PROP (run only for type = 'p'):
-INSERT INTO PROP(OID, DID) VALUES (oid, did);
+INSERT INTO OBJECT(OBJECTNAME, DESCRIPTION, TYPE, SIZE, CNID, EID) VALUES ($objectname$, $description$, $type$, $size$, cnid, eid);
 #Insert COLOR (run once per color adding to the object):
 INSERT INTO OBJECTCOLOR(OID, CID) VALUES (oid, cid);
 #Insert PICTURE: (order should start at 1 for the first picture, and be incremented for subsequent pictures)
-INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (oid, 'image', order);
+INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (oid, $image$, order);
 ```
 Queries for buildUpdate:
 ```
-#Find SID:
-SELECT SID FROM SIZE WHERE SIZENAME = 'string';
-#Find DID:
-SELECT DID FROM DIMENSION WHERE DIMENSIONNAME = 'string';
+#Find CNID:
+SELECT CNID FROM CNDTN WHERE CNDTNNAME = $condition$;
+#Find EID:
+SELECT EID FROM ERA WHERE ERANAME = $era$;
 #Find CID:
 SELECT CID FROM COLOR WHERE COLORNAME = 'string';
 #Get highest OBJORDER for an OBJECT:
 SELECT MAX(OBJORDER) AS OBJORDER FROM PICTURE WHERE OID = oid;
 #Update an object (clauses in SET can be excluded as needed):
-UPDATE OBJECT SET OBJECTNAME = 'objectname', DESCRIPTION = 'description', TYPE = 'type', CNID = cnid, EID = eid WHERE OID = oid;
-#Update dimension for prop:
-UPDATE PROP SET DID = did WHERE OID = oid;
-#Update size for costume:
-UPDATE COSTUME SET SID = sid WHERE OID = oid;
+UPDATE OBJECT SET OBJECTNAME = $objectname$, DESCRIPTION = $description$, TYPE = $type$, SIZE = $size$, CNID = cnid, EID = eid WHERE OID = oid;
 #Remove a color:
 DELETE FROM OBJECTCOLOR WHERE OID = oid AND CID = cid;
 #Add a new color:
