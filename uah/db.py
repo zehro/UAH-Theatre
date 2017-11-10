@@ -3,9 +3,9 @@ from bunch import Bunch
 from time import gmtime, strftime
 
 # Creates a SQLAlchemy engine to execute query statements on the engine's connection
-engine = create_engine('mysql+pymysql://test:sombra123@35.185.36.22/UAH_Theater')
+#engine = create_engine('mysql+pymysql://test:sombra123@35.185.36.22/UAH_Theater')
 # new engine:
-#engine = create_engine('postgres://zofcfonftlaxgc:6b740a65d78cfbb48421918f357ddc36b09078c58f18e6f91aec64f12fab0686@ec2-54-225-112-61.compute-1.amazonaws.com:5432/d29sibnn2hc0ib')
+engine = create_engine('postgres://zofcfonftlaxgc:6b740a65d78cfbb48421918f357ddc36b09078c58f18e6f91aec64f12fab0686@ec2-54-225-112-61.compute-1.amazonaws.com:5432/d29sibnn2hc0ib')
 
 # Create a class for managing the database connection as an object
 class DatabaseConnection:
@@ -29,9 +29,10 @@ class DatabaseConnection:
 
 # Declares some useful functions
 def convertCategory(category):
-    if category == 'costume':
+    category = category.capitalize()
+    if category == 'Costume':
         return 'c'
-    if category == 'prop':
+    if category == 'Prop':
         return 'p'
     return category
 
@@ -42,35 +43,82 @@ def convertChecked(status):
         return True
     return status
 
-# Any input that isn't being searched on should be null
-def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, dimension):
-    query =  '''SELECT * FROM OBJECT
-                NATURAL LEFT OUTER JOIN CNDTN
-                NATURAL LEFT OUTER JOIN ERA
-                NATURAL LEFT OUTER JOIN (SELECT * FROM PICTURE WHERE OBJORDER = 1) AS PICTURES'''
+# Creates Bunch contexts for the database schema and queries
+User = Bunch()
+User.find_all        = 'SELECT * FROM ACCOUNT'
+User.findby_username = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM ACCOUNT WHERE USERNAME = %(USERNAME)s AND ISVERIFIED = true'
+User.check_login     = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM ACCOUNT WHERE USERNAME = %(USERNAME)s AND PASSWORD = %(PASSWORD)s AND ISVERIFIED = true'
+User.insert          = 'INSERT INTO ACCOUNT(USERNAME, PASSWORD, FIRSTNAME, LASTNAME) VALUES (%(USERNAME)s, %(PASSWORD)s, %(FIRSTNAME)s, %(LASTNAME)s)'
+User.toggle_status   = 'UPDATE ACCOUNT SET ISVERIFIED = IF(ISVERIFIED=true, false, true) WHERE UID = %(UID)s'
+User.delete          = 'DELETE FROM ACCOUNT WHERE UID = %(UID)s'
 
-    if oid != '' or \
-            name != '' or \
+Item = Bunch()
+Item.select_all          = '''SELECT OID,
+                                     OBJECTNAME,
+                                     DESCRIPTION,
+                                     TYPE,
+                                     SIZE,
+                                     CNDTNNAME,
+                                     ERANAME,
+                                     CHECKEDOUTTO,
+                                     IMAGE
+                                FROM OBJECT
+                                NATURAL LEFT OUTER JOIN CNDTN
+                                NATURAL LEFT OUTER JOIN ERA
+                                NATURAL LEFT OUTER JOIN (
+                                    SELECT * FROM PICTURE WHERE OBJORDER = 1)
+                                    AS PICTURES'''
+Item.order               = ' ORDER BY OBJECTNAME'
+Item.find_all            = Item.select_all + Item.order
+Item.findby_oid          = Item.select_all + ' WHERE OID = %(OID)s'
+Item.get_images          = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
+Item.get_colors          = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
+Item.get_borrower        = 'SELECT USERNAME FROM ACCOUNT WHERE UID IN (SELECT CHECKEDOUTTO FROM OBJECT WHERE OID = %(OID)s)'
+Item.get_next_oid        = 'SELECT MAX(OID) FROM OBJECT'
+Item.get_picture_count   = 'SELECT MAX(OBJORDER) AS OBJORDER FROM PICTURE WHERE OID = %(OID)s'
+Item.insert              = 'INSERT INTO OBJECT(OBJECTNAME, DESCRIPTION, TYPE, SIZE, CNID, EID) VALUES (%(OBJECTNAME)s, %(DESCRIPTION)s, %(TYPE)s, %(SIZE)s, %(CNID)s, %(EID)s)'
+Item.insert_into_color   = 'INSERT INTO OBJECTCOLOR(OID, CID) VALUES (%(OID)s, %(CID)s)'
+Item.insert_into_picture = 'INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (%(OID)s, %(IMAGE)s, %(OBJORDER)s)'
+Item.update              = 'UPDATE OBJECT SET OBJECTNAME = %(OBJECTNAME)s, DESCRIPTION = %(DESCRIPTION)s, TYPE = %(TYPE)s, SIZE = %(SIZE)s, CNID = %(CNID)s, EID = %(EID)s WHERE OID = %(OID)s'
+Item.checkout            = 'UPDATE OBJECT SET CHECKEDOUTTO = %(UID)s WHERE OID = %(OID)s'
+Item.checkin             = 'UPDATE OBJECT SET CHECKEDOUTTO = NULL WHERE OID = %(OID)s'
+# #Delete a PICTURE:
+# DELETE FROM PICTURE WHERE OID = oid AND OBJORDER = order;
+# or
+# DELETE FROM PICTURE WHERE IMAGE = 'image';
+Item.delete              = 'DELETE FROM OBJECT WHERE OID = %(OID)s'
+Item.delete_colors       = 'DELETE FROM OBJECTCOLOR WHERE OID = %(OID)s'
+
+Condition = Bunch()
+Condition.find_all     = 'SELECT * FROM CNDTN ORDER BY CNID'
+Condition.find_by_name = 'SELECT * FROM CNDTN WHERE CNDTNNAME = %(CNDTNNAME)s'
+
+Era = Bunch()
+Era.find_all     = 'SELECT * FROM ERA ORDER BY ERANAME'
+Era.find_by_name = 'SELECT * FROM ERA WHERE ERANAME = %(ERANAME)s'
+Era.add          = 'INSERT INTO ERA(ERANAME) VALUES (%(ERANAME)s)'
+Era.update       = 'UPDATE ERA SET ERANAME = %(NEWERANAME)s WHERE EID = %(EID)s'
+Era.delete       = 'DELETE FROM ERA WHERE EID = %(EID)s'
+
+Color = Bunch()
+Color.find_all     = 'SELECT * FROM COLOR ORDER BY COLORNAME'
+Color.find_by_name = 'SELECT * FROM COLOR WHERE COLORNAME = %(COLORNAME)s'
+Color.add          = 'INSERT INTO COLOR(COLORNAME) VALUES (%(COLORNAME)s)'
+Color.update       = 'UPDATE COLOR SET COLORNAME = %(NEWCOLORNAME)s WHERE CID = %(CID)s'
+Color.delete       = 'DELETE FROM COLOR WHERE CID = %(CID)s'
+
+# Any input that isn't being searched on should be null
+def buildSearch(name, objecttype, condition, color, era, checkedout, size):
+    query = Item.select_all
+
+    if name != '' or \
             objecttype != '' or \
             condition != '' or \
             color != '' or \
             era != '' or \
             checkedout != '' or \
-            size != '' or \
-            dimension != '':
+            size != '':
         query += ' WHERE '
-
-        if oid != '':
-            query += 'OID = ' + str(oid)
-            if name != '' or \
-                    objecttype != '' or \
-                    condition != '' or \
-                    color != '' or \
-                    era != '' or \
-                    checkedout != '' or \
-                    size != '' or \
-                    dimension != '':
-                query += ' AND '
 
         if name != '':
             query += 'OBJECTNAME = \'' + name + '\''
@@ -79,8 +127,7 @@ def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, 
                     color != '' or \
                     era != '' or \
                     checkedout != '' or \
-                    size != '' or \
-                    dimension != '':
+                    size != '':
                 query += ' AND '
 
         if objecttype != '':
@@ -89,8 +136,7 @@ def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, 
                     color != '' or \
                     era != '' or \
                     checkedout != '' or \
-                    size != '' or \
-                    dimension != '':
+                    size != '':
                 query += ' AND '
 
         if condition != '':
@@ -98,23 +144,20 @@ def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, 
             if color != '' or \
                     era != '' or \
                     checkedout != '' or \
-                    size != '' or \
-                    dimension != '':
+                    size != '':
                 query += ' AND '
 
         if color != '':
             query += 'OID IN (SELECT OID FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE COLORNAME = \'' + color + '\')'
             if era != '' or \
                     checkedout != '' or \
-                    size != '' or \
-                    dimension != '':
+                    size != '':
                 query += ' AND '
 
         if era != '':
             query += 'ERANAME = \'' + era + '\''
             if checkedout != '' or \
-                    size != '' or \
-                    dimension != '':
+                    size != '':
                 query += ' AND '
 
         if checkedout != '':
@@ -122,87 +165,10 @@ def buildSearch(oid, name, objecttype, condition, color, era, checkedout, size, 
                 query += 'CHECKEDOUTTO IS NOT NULL'
             elif (not checkedout):
                 query += 'CHECKEDOUTTO IS NULL'
-            if size != '' or dimension != '':
+            if size != '':
                 query += ' AND '
 
-        if objecttype == 'c' and size != '':
-            query += 'OID IN (SELECT OID FROM COSTUME NATURAL JOIN SIZE WHERE SIZENAME = \'' + size + '\')'
-        elif objecttype == 'p' and dimension != '':
-            query += 'OID IN (SELECT OID FROM PROP NATURAL JOIN DIMENSION WHERE DIMENSIONNAME = \'' + dimension + '\')'
+        if size != '':
+            query += 'SIZE = \'' + size + '\''
 
-    return query;
-
-# Declares some useful constants
-TRUE = 1
-FALSE = 0
-
-# Creates Bunch contexts for the database schema and queries
-User = Bunch()
-User.insert          = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (%(Username)s, %(Password)s)'
-
-User.find_all        = 'SELECT * FROM USER'
-User.toggle_status   = 'UPDATE USER SET ISVERIFIED = IF(ISVERIFIED=1, 0, 1) WHERE UID = %(UID)s'
-User.delete_one      = 'DELETE FROM USER WHERE UID = %(UID)s'
-
-User.findby_username = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND ISVERIFIED = 1'
-User.check_login     = 'SELECT UID, USERNAME, ISADMIN, ISVERIFIED FROM USER WHERE USERNAME = %(Username)s AND PASSWORD = %(Password)s AND ISVERIFIED = 1'
-
-
-
-Item = Bunch()
-Item.get_max_oid           = 'SELECT MAX(OID) AS OID FROM OBJECT'
-Item.get_new_condition     = 'SELECT CNID FROM CNDTN WHERE CNDTNNAME = %(Condition)s'
-Item.get_new_era           = 'SELECT EID FROM ERA WHERE ERANAME = %(Era)s'
-Item.get_new_color         = 'SELECT CID FROM COLOR WHERE COLORNAME = %(Color)s'
-Item.get_new_size          = 'SELECT SID FROM SIZE WHERE SIZENAME = %(Size)s'
-Item.get_new_dimension     = 'SELECT DID FROM DIMENSION WHERE DIMENSIONNAME = %(Dimension)s'
-Item.get_max_picture_num   = 'SELECT MAX(OBJORDER) AS OBJORDER FROM PICTURE WHERE OID = %(OID)s'
-
-Item.insert_into_object    = 'INSERT INTO OBJECT(OID, OBJECTNAME, DESCRIPTION, TYPE, CNID, EID) VALUES (%(OID)s, %(Name)s, %(Description)s, %(Type)s, %(CNID)s, %(EID)s)'
-Item.insert_into_color     = 'INSERT INTO OBJECTCOLOR(OID, CID) VALUES (%(OID)s, %(CID)s)'
-Item.insert_into_costume   = 'INSERT INTO COSTUME(OID, SID) VALUES (%(OID)s, %(SID)s)'
-Item.insert_into_prop      = 'INSERT INTO PROP(OID, DID) VALUES (%(OID)s, %(DID)s)'
-Item.insert_into_picture   = 'INSERT INTO PICTURE(OID, IMAGE, OBJORDER) VALUES (%(OID)s, %(ImageBlob)s, %(Order)s)'
-
-Item.update_into_object    = 'UPDATE OBJECT SET OBJECTNAME = %(Name)s, DESCRIPTION = %(Description)s, TYPE = %(Type)s, CNID = %(CNID)s, EID = %(EID)s WHERE OID = %(OID)s'
-Item.update_into_costume   = 'UPDATE COSTUME SET SID = %(SID)s WHERE OID = %(OID)s'
-Item.update_into_prop      = 'UPDATE PROP SET DID = %(DID)s WHERE OID = %(OID)s'
-Item.delete_currentColors  = 'DELETE FROM OBJECTCOLOR WHERE OID = %(OID)s'
-Item.delete_from_costumes  = 'DELETE FROM COSTUME WHERE OID = %(OID)s'
-Item.delete_from_props     = 'DELETE FROM PROP WHERE OID = %(OID)s'
-# #Delete a PICTURE:
-# DELETE FROM PICTURE WHERE OID = oid AND OBJORDER = order;
-# or
-# DELETE FROM PICTURE WHERE IMAGE = 'image';
-
-Item.delete                = 'DELETE FROM OBJECT WHERE OID = %(OID)s'
-
-Item.get_borrower          = 'SELECT USERNAME FROM USER WHERE UID IN (SELECT CHECKEDOUTTO FROM OBJECT WHERE OID = %(OID)s)'
-Item.checkout              = 'UPDATE OBJECT SET CHECKEDOUTTO = %(UID)s WHERE OID = %(OID)s'
-Item.checkin               = 'UPDATE OBJECT SET CHECKEDOUTTO = NULL WHERE OID = %(OID)s'
-
-Item.find_all              = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE'
-Item.findby_oid            = 'SELECT * FROM OBJECT NATURAL JOIN CNDTN NATURAL JOIN ERA NATURAL JOIN PICTURE WHERE OID = %(OID)s'
-
-Item.get_images            = 'SELECT IMAGE FROM PICTURE WHERE OID = %(OID)s'
-Item.get_colors            = 'SELECT COLORNAME FROM OBJECTCOLOR NATURAL JOIN COLOR WHERE OID = %(OID)s'
-Item.get_size              = 'SELECT SIZENAME FROM COSTUME NATURAL JOIN SIZE WHERE OID = %(OID)s'
-Item.get_dimension         = 'SELECT DIMENSIONNAME FROM PROP NATURAL JOIN DIMENSION WHERE OID = %(OID)s'
-
-Item.get_size_filters      = 'SELECT SID, SIZENAME FROM SIZE ORDER BY SID'
-Item.get_dimension_filters = 'SELECT DID, DIMENSIONNAME FROM DIMENSION ORDER BY DID'
-Item.get_era_filters       = 'SELECT EID, ERANAME FROM ERA ORDER BY EID'
-Item.get_color_filters     = 'SELECT CID, COLORNAME FROM COLOR ORDER BY CID'
-Item.get_condition_filters = 'SELECT CNID, CNDTNNAME FROM CNDTN ORDER BY CNID'
-
-Color = Bunch()
-Color.find_all             = 'SELECT * FROM COLOR'
-Color.add                  = 'INSERT INTO COLOR(COLORNAME) VALUES (%(COLORNAME)s)'
-Color.update               = 'UPDATE COLOR SET COLORNAME = %(NEWCOLORNAME)s WHERE CID = %(CID)s'
-Color.delete               = 'DELETE FROM COLOR WHERE CID = %(CID)s'
-
-Era = Bunch()
-Era.find_all             = 'SELECT * FROM ERA'
-Era.add                  = 'INSERT INTO ERA(ERANAME) VALUES (%(ERANAME)s)'
-Era.update               = 'UPDATE ERA SET ERANAME = %(NEWERANAME)s WHERE EID = %(EID)s'
-Era.delete               = 'DELETE FROM ERA WHERE EID = %(EID)s'
+    return query + Item.order;

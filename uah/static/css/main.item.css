@@ -258,10 +258,6 @@ nav.ui.menu .item.ui.dropdown {
 #page_content .item_container .description .meta .New {
   background: #00A000;
 }
-#page_content .item_container .description .costume,
-#page_content .item_container .description .prop {
-  display: none;
-}
 #page_content .item_container .button_container {
   margin: 10px 0;
 }

@@ -33,35 +33,41 @@
 <form class="item_container" method="post">
     {% if images %}
         {% for image in images %}
-        {% if item.IMAGE and fileExists(item.IMAGE) %}
+        {% if item[8] and fileExists(item[8]) %}
         <a class="ui image medium group" href="{{ url_for('load_image', filename=image[0]) }}">
-            <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
+            <img src="{{ url_for('load_image', filename=item[8]) }}">
         </a>
         {% endif %}
         {% endfor %}
     {% endif %}
 
     <div class="description">
-        <h2 class="header static">{{ item.OBJECTNAME }}</h2>
+        <h2 class="header static">{{ item[1] }}</h2>
         <div class="ui form meta update">
             <div class="field">
-                <label>Name</label>
-                <input name="itemName" type="text" value="{{ item.OBJECTNAME }}"></input>
+                <label>Name: </label>
+                <input name="itemName"
+                       type="text"
+                      value="{{ item[1] }}"
+                placeholder="Name"></input>
             </div>
         </div>
 
         <div class="ui form meta">
             <div class="field">
                 <label>Description: </label>
-                <p class="static">{{ item.DESCRIPTION }}</p>
-                <textarea name="itemDescription" rows="8" class="update">{{ item.DESCRIPTION }}</textarea>
+                <p class="static">{{ item[2] }}</p>
+                <textarea name="itemDescription"
+                          rows="8"
+                         class="update"
+                   placeholder="Description">{% if item[2] %}{{ item[2] }}{% endif %}</textarea>
             </div>
         </div>
 
         <div class="ui form meta">
             <div class="field">
                 <label>Category: </label>
-                <p class="static">{{ convertTypeToString(item.TYPE) }}</p>
+                <p class="static">{{ convertTypeToString(item[3]) }}</p>
 
                 <div class="ui dropdown selection update" id="category_dropdown">
                     <input type="hidden" name="itemCategory">
@@ -78,7 +84,7 @@
         <div class="ui form meta">
             <div class="field">
                 <label>Era: </label>
-                <p class="static">{{ item.ERANAME }}</p>
+                <p class="static">{{ item[6] }}</p>
 
                 <div class="ui dropdown selection update" id="era_dropdown">
                     <input type="hidden" name="itemEra">
@@ -111,46 +117,22 @@
             </div>
         </div>
 
-        <div class="ui form meta costume">
+        <div class="ui form meta">
             <div class="field">
                 <label>Size: </label>
-                <p class="static">{{ size }}</p>
-
-                <div class="ui dropdown selection update" id="size_dropdown">
-                    <input type="hidden" name="itemSize">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Size</div>
-                    <div class="menu">
-                        {% for size in sizes %}
-                        <div class="item">{{ size }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="ui form meta prop">
-            <div class="field">
-                <label>Dimension: </label>
-                <p class="static">{{ dimension }}</p>
-
-                <div class="ui dropdown selection update" id="dimension_dropdown">
-                    <input type="hidden" name="itemDimension">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Dimension</div>
-                    <div class="menu">
-                        {% for dimension in dimensions %}
-                        <div class="item">{{ dimension }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
+                <p class="static">{{ item[4] }}</p>
+                <input class="update"
+                        name="itemSize"
+                        type="text"
+                       value="{% if item[4] %}{{ item[4] }}{% endif %}"
+                 placeholder="Size"></input>
             </div>
         </div>
 
         <div class="ui form meta">
             <div class="field">
                 <label>Condition: </label>
-                <p class="static condition {{ item.CNDTNNAME }}">{{ item.CNDTNNAME }}</p>
+                <p class="static condition {{ item[5] }}">{{ item[5] }}</p>
 
                 <div class="ui dropdown selection update" id="condition_dropdown">
                     <input type="hidden" name="itemCondition">
@@ -225,43 +207,9 @@ $('#cancel_button').click(function() {
     $('.update').css('display', 'none');
 });
 
-$('#category_dropdown').dropdown('set selected', '{{ convertTypeToString(item.TYPE) }}');
-$('#era_dropdown').dropdown('set selected', '{{ item.ERANAME }}');
+$('#category_dropdown').dropdown('set selected', '{{ convertTypeToString(item[3]) }}');
+$('#era_dropdown').dropdown('set selected', '{{ item[6] }}');
 $('#color_select').dropdown('set selected', {{ itemColorArray | safe }});
-$('#size_dropdown').dropdown('set selected', '{{ size }}');
-$('#dimension_dropdown').dropdown('set selected', '{{ dimension }}');
-$('#condition_dropdown').dropdown('set selected', '{{ item.CNDTNNAME }}');
-
-if ($('#category_dropdown input').val() == 'costume')
-{
-    $('.costume').css('display', 'block');
-    $('.prop').css('display', 'none');
-}
-else if ($('#category_dropdown input').val() == 'prop')
-{
-    $('.costume').css('display', 'none');
-    $('.prop').css('display', 'block');
-}
-else {
-    $('.costume').css('display', 'none');
-    $('.prop').css('display', 'none');
-}
-
-$('#category_dropdown .menu').click(function() {
-    if ($('#category_dropdown input').val() == 'costume')
-    {
-        $('.costume').css('display', 'block');
-        $('.prop').css('display', 'none');
-    }
-    else if ($('#category_dropdown input').val() == 'prop')
-    {
-        $('.costume').css('display', 'none');
-        $('.prop').css('display', 'block');
-    }
-    else {
-        $('.costume').css('display', 'none');
-        $('.prop').css('display', 'none');
-    }
-});
+$('#condition_dropdown').dropdown('set selected', '{{ item[5] }}');
 </script>
 {% endblock %}

@@ -94,26 +94,12 @@
                     </div>
                 </div>
 
-                <div class="ui dropdown selection costume" id="size_filter">
-                    <input type="hidden" name="itemSize">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Size</div>
-                    <div class="menu">
-                        {% for size in sizes %}
-                        <div class="item">{{ size }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="ui dropdown selection prop" id="dimension_filter">
-                    <input type="hidden" name="itemDimension">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Dimension</div>
-                    <div class="menu">
-                        {% for dimension in dimensions %}
-                        <div class="item">{{ dimension }}</div>
-                        {% endfor %}
-                    </div>
+                <div class="ui input" id="size_filter">
+                    <input class="filter prompt"
+                            type="text"
+                            name="itemSize"
+                     placeholder="Size"
+                           value="{{ itemSize }}">
                 </div>
             </fieldset>
         </div>
@@ -121,7 +107,11 @@
         <div class="ui divider white"></div>
 
         <div class="ui icon input fluid">
-            <input class="prompt" type="text" name="itemName" placeholder="Search...">
+            <input class="search prompt"
+                    type="text"
+                    name="itemName"
+             placeholder="Search..."
+                   value="{{ itemName }}">
             <button id="search_button" class="ui button right attached" type='submit'>
                 <i class="search icon"></i>
             </button>
@@ -133,22 +123,22 @@
 <div class="search_result_container">
     <div class="ui items divided">
         {% for item in items %}
-        <a class="item" href="{{ url_for('item_page', oid=item.OID) }}">
+        <a class="item" href="{{ url_for('item_page', oid=item[0]) }}">
             <div class="ui small image">
-                {% if item.IMAGE and fileExists(item.IMAGE) %}
-                    <img src="{{ url_for('load_image', filename=item.IMAGE) }}">
+                {% if item[8] and fileExists(item[8]) %}
+                <img src="{{ url_for('load_image', filename=item[8]) }}">
                 {% else %}
-                    <div class="alt">Image Not Available</div>
+                <div class="alt">Image Not Available</div>
                 {% endif %}
             </div>
             <div class="content">
-                <div class="header">{{ item.OBJECTNAME }}</div>
+                <div class="header">{{ item[1] }}</div>
                 <div class="meta">
-                    <p class="condition">Condition: {{ item.CNDTNNAME }}</p>
-                    <p class="timePeriod">Era: {{ item.ERANAME }}</p>
+                    <p class="condition">Condition: {{ item[5] }}</p>
+                    <p class="timePeriod">Era: {{ item[6] }}</p>
                 </div>
                 <div class="description">
-                    <p>{{ item.DESCRIPTION }}</p>
+                    <p>{{ item[2] }}</p>
                 </div>
             </div>
         </a>
@@ -168,25 +158,7 @@
 <script type="text/javascript">
 $('#clear_filters').click(function() {
     $('.ui.dropdown').dropdown('clear');
-    $('.costume').css('display', 'none');
-    $('.prop').css('display', 'none');
-});
-
-$('#category_filter .menu').click(function() {
-    if ($('#category_filter input').val() == 'costume')
-    {
-        $('.costume').css('display', 'inline-block');
-        $('.prop').css('display', 'none');
-    }
-    else if ($('#category_filter input').val() == 'prop')
-    {
-        $('.costume').css('display', 'none');
-        $('.prop').css('display', 'inline-block');
-    }
-    else {
-        $('.costume').css('display', 'none');
-        $('.prop').css('display', 'none');
-    }
+    $('.prompt').val('');
 });
 
 {% if selectedCategory %}
@@ -207,20 +179,6 @@ $('#era_filter').dropdown('set selected', '{{ selectedEra }}');
 
 {% if selectedChecked %}
 $('#checked_filter').dropdown('set selected', '{{ selectedChecked }}');
-{% endif %}
-
-{% if selectedCategory == "costume" %}
-    $('.costume').css('display', 'inline-block');
-    {% if selectedSize %}
-        $('#size_filter').dropdown('set selected', '{{ selectedSize }}');
-    {% endif %}
-{% endif %}
-
-{% if selectedCategory == "prop" %}
-    $('.prop').css('display', 'inline-block');
-    {% if selectedDimension %}
-        $('#dimension_filter').dropdown('set selected', '{{ selectedDimension }}');
-    {% endif %}
 {% endif %}
 </script>
 {% endblock %}

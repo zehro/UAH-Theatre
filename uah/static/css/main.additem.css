@@ -192,10 +192,6 @@ nav.ui.menu .item.ui.dropdown {
   margin: auto;
   max-width: 250px;
 }
-#page_content .item_container .input_fields .costume,
-#page_content .item_container .input_fields .prop {
-  display: none;
-}
 #page_content .item_container .button_container {
   border: none;
   margin: 10px 0px;

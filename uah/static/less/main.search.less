@@ -33,16 +33,16 @@
                 }
             }
 
-            .ui.dropdown.selection {
+            .ui.dropdown.selection, .ui.input {
                 margin    : 5px;
                 min-width : 32%;
 
-                &.costume, &.prop {
-                    display : none;
+                .filter.prompt {
+                    border-radius : 4px;
                 }
             }
 
-            .prompt {
+            .ui.input.fluid .search.prompt {
                 border-bottom-right-radius : 0px;
                 border-top-right-radius    : 0px;
             }
@@ -119,9 +119,11 @@
 
 @media only screen and ( max-width : 1050px )
 {
-    #page_content .search_container .ui.search .ui.dropdown.selection {
-        min-width : 0;
-        width     : 31%;
+    #page_content .search_container .ui.search {
+        .ui.dropdown.selection, .ui.input:not(.fluid) {
+            min-width : 0;
+            width     : 31%;
+        }
     }
 }
 

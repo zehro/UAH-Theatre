@@ -182,7 +182,11 @@ nav.ui.menu .item.ui.dropdown {
 }
 #page_content {
   height: auto;
-  padding: 20px 35%;
+  padding: 20px 12.5%;
+}
+#page_content form {
+  margin: auto;
+  max-width: 500px;
 }
 #page_content .input_container,
 #page_content .button_container {
