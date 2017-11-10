@@ -3,9 +3,9 @@ from bunch import Bunch
 from time import gmtime, strftime
 
 # Creates a SQLAlchemy engine to execute query statements on the engine's connection
-#engine = create_engine('mysql+pymysql://test:sombra123@35.185.36.22/UAH_Theater')
-# new engine:
 engine = create_engine('postgres://zofcfonftlaxgc:6b740a65d78cfbb48421918f357ddc36b09078c58f18e6f91aec64f12fab0686@ec2-54-225-112-61.compute-1.amazonaws.com:5432/d29sibnn2hc0ib')
+#TODO: remove mysqlengine below
+#engine = create_engine('mysql+pymysql://test:sombra123@35.185.36.22/UAH_Theater')
 
 # Create a class for managing the database connection as an object
 class DatabaseConnection:
