@@ -29,19 +29,91 @@
 {% endblock %}
 
 {% block pagecontent %}
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="filter_container">
+        <button type="button"
+               class="ui button fluid orange clear_filters"
+               style="margin: 10px; width: 85%;">
+            Clear
+        </button>
+
+        <div class="ui dropdown selection fluid category_filter">
+            <input type="hidden" name="itemCategory">
+            <i class="dropdown icon"></i>
+            <div class="default text">Category</div>
+            <div class="menu">
+                <div class="item">Costume</div>
+                <div class="item">Prop</div>
+            </div>
+        </div>
+
+        <div class="ui dropdown selection fluid condition_filter">
+            <input type="hidden" name="itemCondition">
+            <i class="dropdown icon"></i>
+            <div class="default text">Condition</div>
+            <div class="menu">
+                {% for condition in conditions %}
+                <div class="item">{{ condition }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="ui dropdown selection fluid color_filter">
+            <input type="hidden" name="itemColor">
+            <i class="dropdown icon"></i>
+            <div class="default text">Colors</div>
+            <div class="menu">
+                {% for color in colors %}
+                <div class="item">{{ color }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="ui dropdown selection fluid era_filter">
+            <input type="hidden" name="itemEra">
+            <i class="dropdown icon"></i>
+            <div class="default text">Era</div>
+            <div class="menu">
+                {% for era in eras %}
+                <div class="item">{{ era }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="ui dropdown selection fluid checked_filter">
+            <input type="hidden" name="itemChecked">
+            <i class="dropdown icon"></i>
+            <div class="default text">Check Status</div>
+            <div class="menu">
+                <div class="item">Checked-In</div>
+                <div class="item">Checked-Out</div>
+            </div>
+        </div>
+
+        <div class="ui input fluid size_filter">
+            <input class="filter prompt"
+                    type="text"
+                    name="itemSize"
+             placeholder="Size"
+                   value="{{ itemSize }}">
+        </div>
+    </div>
+</div>
+
 <div class="search_container">
     <form class="ui search" method='post'>
-        <button id="edit_filters" class="ui button fluid">
+        <button id="edit_filters" type="button" class="ui button fluid">
             Edit Filters
         </button>
 
         <div class="filter_container">
-            <button id="clear_filters" class="ui button orange">
+            <button type="button" class="ui button orange clear_filters">
                 Clear
             </button>
 
             <fieldset class="input_container">
-                <div class="ui dropdown selection" id="category_filter">
+                <div class="ui dropdown selection category_filter">
                     <input type="hidden" name="itemCategory">
                     <i class="dropdown icon"></i>
                     <div class="default text">Category</div>
@@ -51,7 +123,7 @@
                     </div>
                 </div>
 
-                <div class="ui dropdown selection" id="condition_filter">
+                <div class="ui dropdown selection condition_filter">
                     <input type="hidden" name="itemCondition">
                     <i class="dropdown icon"></i>
                     <div class="default text">Condition</div>
@@ -62,7 +134,7 @@
                     </div>
                 </div>
 
-                <div class="ui dropdown selection" id="color_filter">
+                <div class="ui dropdown selection color_filter">
                     <input type="hidden" name="itemColor">
                     <i class="dropdown icon"></i>
                     <div class="default text">Colors</div>
@@ -73,7 +145,7 @@
                     </div>
                 </div>
 
-                <div class="ui dropdown selection" id="era_filter">
+                <div class="ui dropdown selection era_filter">
                     <input type="hidden" name="itemEra">
                     <i class="dropdown icon"></i>
                     <div class="default text">Era</div>
@@ -84,7 +156,7 @@
                     </div>
                 </div>
 
-                <div class="ui dropdown selection" id="checked_filter">
+                <div class="ui dropdown selection checked_filter">
                     <input type="hidden" name="itemChecked">
                     <i class="dropdown icon"></i>
                     <div class="default text">Check Status</div>
@@ -94,7 +166,7 @@
                     </div>
                 </div>
 
-                <div class="ui input" id="size_filter">
+                <div class="ui input size_filter">
                     <input class="filter prompt"
                             type="text"
                             name="itemSize"
@@ -156,29 +228,70 @@
 {% block js %}
 <script src="{{ url_for('static', filename='js/semantic.dropdown.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
-$('#clear_filters').click(function() {
+$('#edit_filters').click(function() {
+    $('.ui.modal').modal('show');
+});
+
+$('.clear_filters').click(function() {
     $('.ui.dropdown').dropdown('clear');
     $('.prompt').val('');
 });
 
 {% if selectedCategory %}
-$('#category_filter').dropdown('set selected', '{{ selectedCategory }}');
+$('.category_filter').dropdown('set selected', '{{ selectedCategory }}');
 {% endif %}
+$('.ui.modal .category_filter .menu').click(function() {
+    $('.search_container .category_filter').dropdown('set selected', $('.ui.modal .category_filter input').val());
+});
+$('.search_container .category_filter .menu').click(function() {
+    $('.ui.modal .category_filter').dropdown('set selected', $('.search_container .category_filter input').val());
+});
 
 {% if selectedCondition %}
-$('#condition_filter').dropdown('set selected', '{{ selectedCondition }}');
+$('.condition_filter').dropdown('set selected', '{{ selectedCondition }}');
 {% endif %}
+$('.ui.modal .condition_filter .menu').click(function() {
+    $('.search_container .condition_filter').dropdown('set selected', $('.ui.modal .condition_filter input').val());
+});
+$('.search_container .condition_filter .menu').click(function() {
+    $('.ui.modal .condition_filter').dropdown('set selected', $('.search_container .condition_filter input').val());
+});
 
 {% if selectedColor %}
-$('#color_filter').dropdown('set selected', '{{ selectedColor }}');
+$('.color_filter').dropdown('set selected', '{{ selectedColor }}');
 {% endif %}
+$('.ui.modal .color_filter .menu').click(function() {
+    $('.search_container .color_filter').dropdown('set selected', $('.ui.modal .color_filter input').val());
+});
+$('.search_container .color_filter .menu').click(function() {
+    $('.ui.modal .color_filter').dropdown('set selected', $('.search_container .color_filter input').val());
+});
 
 {% if selectedEra %}
-$('#era_filter').dropdown('set selected', '{{ selectedEra }}');
+$('.era_filter').dropdown('set selected', '{{ selectedEra }}');
 {% endif %}
+$('.ui.modal .era_filter .menu').click(function() {
+    $('.search_container .era_filter').dropdown('set selected', $('.ui.modal .era_filter input').val());
+});
+$('.search_container .era_filter .menu').click(function() {
+    $('.ui.modal .era_filter').dropdown('set selected', $('.search_container .era_filter input').val());
+});
 
 {% if selectedChecked %}
-$('#checked_filter').dropdown('set selected', '{{ selectedChecked }}');
+$('.checked_filter').dropdown('set selected', '{{ selectedChecked }}');
 {% endif %}
+$('.ui.modal .checked_filter .menu').click(function() {
+    $('.search_container .checked_filter').dropdown('set selected', $('.ui.modal .checked_filter input').val());
+});
+$('.search_container .checked_filter .menu').click(function() {
+    $('.ui.modal .checked_filter').dropdown('set selected', $('.search_container .checked_filter input').val());
+});
+
+$('.ui.modal .size_filter input').keyup(function() {
+    $('.search_container .size_filter input').val($('.ui.modal .size_filter input').val());
+});
+$('.search_container .size_filter input').keyup(function() {
+    $('.ui.modal .size_filter input').val($('.search_container .size_filter input').val());
+});
 </script>
 {% endblock %}

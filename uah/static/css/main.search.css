@@ -168,6 +168,21 @@ nav.ui.menu .item.ui.dropdown {
     min-width: auto;
   }
 }
+.ui.modal {
+  background: transparent;
+}
+.ui.modal .close.icon {
+  color: white;
+}
+.ui.modal .filter_container {
+  background: #007AC4;
+  padding: 10px;
+}
+.ui.modal .filter_container .ui.dropdown,
+.ui.modal .filter_container .ui.input {
+  margin: 10px;
+  width: 85%;
+}
 #page_content .search_container {
   background: #007AC4;
   border-top-left-radius: 10px;
@@ -178,7 +193,7 @@ nav.ui.menu .item.ui.dropdown {
   display: none;
   margin-bottom: 10px;
 }
-#page_content .search_container .ui.search #clear_filters {
+#page_content .search_container .ui.search .clear_filters {
   display: inline-block;
   margin-top: 5px;
   vertical-align: top;

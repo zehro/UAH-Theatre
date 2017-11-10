@@ -4,6 +4,24 @@
 @import url( 'main.less' );
 
 // Search Styles
+.ui.modal {
+    background : transparent;
+
+    .close.icon {
+        color : white;
+    }
+
+    .filter_container {
+        background : @color_primary;
+        padding    : 10px;
+
+        .ui.dropdown, .ui.input {
+            margin : 10px;
+            width  : 85%;
+        }
+    }
+}
+
 #page_content {
     .search_container {
         background              : @color_primary;
@@ -17,7 +35,7 @@
                 margin-bottom : 10px;
             }
 
-            #clear_filters {
+            .clear_filters {
                 display        : inline-block;
                 margin-top     : 5px;
                 vertical-align : top;
