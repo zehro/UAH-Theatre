@@ -33,7 +33,8 @@
         {% for account in accounts %}
         <div class="account">
 
-            <span>{{ account.USERNAME }}</span>
+            <span><b>Username:</b> {{ account.USERNAME }} <br> <b>Name:</b></span>
+            <div class="ui divider white"></div>
                 <div class="button_container">
 
                 {% if not account.ISVERIFIED %}
