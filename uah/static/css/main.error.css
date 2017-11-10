@@ -181,10 +181,11 @@ nav.ui.menu .item.ui.dropdown {
   height: 46px;
 }
 #page_content {
+  margin: auto;
   padding: 40px;
 }
 #page_content #error_block {
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: white;
 }
 @media only screen and (max-width: 767px) {
@@ -198,7 +199,9 @@ nav.ui.menu .item.ui.dropdown {
     display: inline;
   }
   #page_content {
-    min-width: auto;
-    width: 75%;
+    padding: 40px 12.5%;
+  }
+  #page_content #error_block {
+    font-size: 2rem;
   }
 }
