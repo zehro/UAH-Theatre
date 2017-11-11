@@ -148,7 +148,7 @@
         </div>
     </div>
 
-    {% if item.CHECKEDOUTTO == None or item.CHECKEDOUTTO == currentUser.UID %}
+    {% if item[7] == None or item[7] == currentUser.UID %}
     <div class="button_container static">
         <input class="ui button fluid green" type="submit" name="submit" value="" id="check_button"></input>
     </div>
