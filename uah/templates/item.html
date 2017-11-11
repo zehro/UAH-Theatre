@@ -190,7 +190,7 @@ $(".group").colorbox({
     rel         :'group'
 });
 
-{% if item.CHECKEDOUTTO == currentUser.UID %}
+{% if item[7] == currentUser.UID %}
 $('#check_button').val('Check In');
 {% else %}
 $('#check_button').val('Check Out');
