@@ -205,17 +205,6 @@ nav.ui.menu .item.ui.dropdown {
 #page_content .page_container tbody tr:nth-child(odd) {
   background-color: #6f9bdc;
 }
-#page_content .page_container .account {
-  border-radius: 10px;
-  margin: 10px 10px;
-  padding: 1em;
-  font-size: 1.25rem;
-  text-align: left;
-  background: #6f9bdc;
-}
-#page_content .page_container .account .button_container {
-  margin-top: 10px;
-}
 @media only screen and (max-width: 767px) {
   #page_content .page_container {
     margin: 0 auto;
@@ -255,16 +244,7 @@ nav.ui.menu .item.ui.dropdown {
   #page_content .page_container tbody tr:nth-child(even) {
     background-color: #6f9bdc;
   }
-  #page_content .page_container tbody tr:nth-child(odd) {
-    background-color: #6f9bdc;
-  }
-  #page_content .page_container .account {
-    font-size: 1.2rem;
-  }
-  #page_content .page_container .account .button_container {
+  #page_content .page_container .button_container {
     text-align: center;
-  }
-  #page_content .page_container .account .button_container button {
-    margin-top: 5px;
   }
 }

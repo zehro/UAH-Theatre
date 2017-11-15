@@ -171,7 +171,7 @@ nav.ui.menu .item.ui.dropdown {
 #page_content input {
   border-radius: 4px;
   padding: 5px 10px;
-  margin: 10px;
+  margin: 5px;
   width: auto;
 }
 #page_content .update_options_form {
@@ -179,15 +179,18 @@ nav.ui.menu .item.ui.dropdown {
 }
 #page_content .attr_container {
   margin: 0 auto;
-  font-size: 1.25rem;
   text-align: center;
-  max-width: 500px;
   width: 80%;
   background: #007AC4;
   border-radius: 10px;
   color: white;
   margin: 20px auto;
   padding: 0.5em;
+  max-height: calc(100% - 300px);
+  overflow-x: auto;
+}
+#page_content .attr_container .title {
+  font-size: 1.2em;
 }
 #page_content .attr_container .colorOption,
 #page_content .attr_container .eraOption {
@@ -205,12 +208,68 @@ nav.ui.menu .item.ui.dropdown {
 #page_content .attr_container .eraOption .button_container {
   text-align: right;
 }
+#page_content .attr_container table {
+  border-collapse: collapse;
+  border-style: hidden;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#page_content .attr_container thead {
+  background-color: #007AC4;
+}
+#page_content .attr_container td {
+  border-right: 1px solid #ACC0FD;
+  border-left: 1px solid #ACC0FD;
+  text-align: left;
+  padding: 8px;
+}
+#page_content .attr_container th {
+  text-align: left;
+  padding: 8px;
+}
+#page_content .attr_container tbody tr:nth-child(even) {
+  background-color: #007AC4;
+}
+#page_content .attr_container tbody tr:nth-child(odd) {
+  background-color: #6f9bdc;
+}
 @media only screen and (max-width: 767px) {
   #page_content input {
-    width: 125px;
+    width: 150px;
   }
   #page_content .attr_container {
-    width: 90%;
+    width: 100%;
+    max-height: calc(100% - 200px);
+  }
+  #page_content .attr_container table {
+    width: 100%;
+  }
+  #page_content .attr_container thead {
+    display: none;
+  }
+  #page_content .attr_container tr:nth-of-type(2n) {
+    background-color: #6f9bdc;
+  }
+  #page_content .attr_container tr td:first-child {
+    background: #007AC4;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  #page_content .attr_container tbody td {
+    display: block;
+    text-align: center;
+    border: none;
+  }
+  #page_content .attr_container tbody td:before {
+    content: attr(data-th);
+    background-color: #6f9bdc;
+    display: block;
+    text-align: center;
+    border: none;
+  }
+  #page_content .attr_container tbody tr:nth-child(even) {
+    background-color: #6f9bdc;
   }
   #page_content .attr_container .colorOption,
   #page_content .attr_container .eraOption {

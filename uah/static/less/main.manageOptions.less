@@ -9,47 +9,81 @@
     input {
         border-radius: 4px;
         padding: 5px 10px;
-        margin: 10px;
+        margin: 5px;
         width: auto;
     }
 
-        .update_options_form {
-            display: none;
+    .update_options_form {
+        display: none;
+    }
+
+    .attr_container {
+        margin     : 0 auto;
+        //font-size : 1.25rem;
+        text-align : center;
+        //max-width : 500px;
+        width      : 80%;
+        background    : @color_primary;
+        border-radius : 10px;
+        color         : white;
+        margin        : 20px auto;
+        padding       : 0.5em;
+        max-height     : ~"calc(100% - 300px)";
+        overflow-x     : auto;
+
+        .title {
+            font-size: 1.2em;
         }
 
-        .attr_container {
-            margin     : 0 auto;
-            font-size : 1.25rem;
-            text-align : center;
-            max-width : 500px;
-            width      : 80%;
-            background    : @color_primary;
+
+        .colorOption, .eraOption {
             border-radius : 10px;
-            color         : white;
-            margin        : 20px auto;
-            padding       : 0.5em;
+            margin: 10px 10px;
+            padding: 1em;
+            //font-size : 1.25rem;
+            text-align : left;
+            background : @color_secondary;
 
-
-            .colorOption, .eraOption {
-                border-radius : 10px;
-                margin: 10px 10px;
-                padding: 1em;
-                //font-size : 1.25rem;
-                text-align : left;
-                background : @color_secondary;
-
-                .ui.divider.white {
-                    margin: 10px;
-                }
-
-
-                .button_container {
-                    text-align  : right;
-                    //margin-top  : 10px;
-                    //float: right
-                }
-
+            .ui.divider.white {
+                margin: 10px;
             }
+
+
+            .button_container {
+                text-align  : right;
+                //margin-top  : 10px;
+                //float: right
+            }
+
+        }
+            table {
+                border-collapse: collapse;
+                border-style: hidden;
+                width: 100%;
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+            thead {
+                background-color: @color_primary;
+            }
+
+            td {
+                border-right: 1px solid @color_tertiary;
+                border-left: 1px solid @color_tertiary;
+                text-align: left;
+                padding: 8px;
+            }
+            th {
+                text-align: left;
+                padding: 8px;
+            }
+            tbody tr:nth-child(even) {
+                 background-color: @color_primary;
+             }
+            tbody tr:nth-child(odd) {
+                background-color: @color_secondary;
+            }
+
 
         }
 
@@ -60,25 +94,59 @@
 {
     #page_content {
         input {
-            width: 125px;
+            width: 150px;
         }
-            .attr_container {
-                width : 90%;
+        .attr_container {
+            width : 100%;
+            max-height : ~"calc(100% - 200px)";
 
-                .colorOption, .eraOption {
-                    padding: 0.75em;
-
-                    .button_container {
-                        text-align  : center;
-                    }
+                table {
+                    width: 100%;
+                }
+                thead {
+                    display: none;
                 }
 
-                form {
-                    .new_input {
-                        width: 175px;
-                    }
+                tr:nth-of-type(2n) {
+                    background-color: @color_secondary;
                 }
 
+                tr td:first-child {
+                    background: @color_primary;
+                    font-weight:bold;
+                    font-size:1.2em;
+
+                }
+                tbody td {
+                    display: block;
+                    text-align:center;
+                    //padding: 8px;
+                    border:none;
+                }
+                tbody td:before {
+                    content: attr(data-th);
+                    background-color: @color_secondary;
+                    display: block;
+                    text-align:center;
+                    border: none;
+                 }
+                 tbody tr:nth-child(even) {
+                      background-color: @color_secondary;
+                  }
+
+            .colorOption, .eraOption {
+                padding: 0.75em;
+
+                .button_container {
+                    text-align  : center;
+                }
+            }
+
+            form {
+                .new_input {
+                    width: 175px;
+                }
+            }
         }
     }
 }

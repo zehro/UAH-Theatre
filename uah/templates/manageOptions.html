@@ -31,9 +31,42 @@
 
 {% block pagecontent %}
 
+
     <div class="attr_container">
-        <span>Colors</span>
-        {% for color in colors %}
+        <span class="title">Colors</span>
+        <table>
+            <thead>
+                <tr>
+                    <th>Color</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for color in colors %}
+                <tr>
+                    <td>
+                        <span id='color_name_{{ color.CID }}'>{{ color.COLORNAME }} colorname</span>
+                        <form method="post" action='/colors/{{ color.CID }}' class='update_options_form' id='update_color_form_{{ color.CID }}'>
+                            <input name="newColorName" type="text" value="{{ color.COLORNAME }}"></input>
+                            <button class="ui button" type="submit">
+                                Ok
+                            </button>
+                    </td>
+                    <td>
+                        </form>
+                        <button class="ui button update_color_button" type="button" id="update_color_{{ color.CID }}" cid="{{ color.CID }}">
+                            Update
+                        </button>
+                        <button class="ui button delete_color_button" type="button" cid="{{ color.CID }}">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- {% for color in colors %}
         <div class="colorOption">
             <span id='color_name_{{ color.CID }}'>{{ color.COLORNAME }}</span>
 
@@ -55,7 +88,7 @@
             </div>
 
         </div>
-        {% endfor %}
+        {% endfor %} -->
         <form method="post" action='/colors'>
             <label>Add new color: </label>
             <input class="new_input" name="newColorName" type="text"></input>
@@ -65,8 +98,40 @@
         </form>
     </div>
     <div class="attr_container">
-        <span>Eras</span>
-        {% for era in eras %}
+        <span class="title">Eras</span>
+        <table>
+            <thead>
+                <tr>
+                    <th>Era</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for era in eras %}
+                <tr>
+                    <td>
+                        <span id='era_name_{{ era.EID }}'>{{ era.ERANAME }} eraname</span>
+                        <form method="post" action='/eras/{{ era.EID }}' class='update_options_form' id='update_era_form_{{ era.EID }}'>
+                            <input name="newEraName" type="text" value="{{ era.ERANAME }}"></input>
+                            <button class="ui button" type="submit">
+                                Ok
+                            </button>
+                    </td>
+                    <td>
+                        </form>
+                        <button class="ui button update_era_button" type="button" id="update_era_{{ era.EID }}" eid="{{ era.EID }}">
+                            Update
+                        </button>
+                        <button class="ui button delete_era_button" type="button" eid="{{ era.EID }}">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- {% for era in eras %}
         <div class="eraOption">
             <span id='era_name_{{ era.EID }}'>{{ era.ERANAME }}</span>
             <form method="post" action='/eras/{{ era.EID }}' class='update_options_form' id='update_era_form_{{ era.EID }}'>
@@ -85,7 +150,7 @@
                 </button>
             </div>
         </div>
-        {% endfor %}
+        {% endfor %} -->
         <form method="post" action='/eras'>
             <label>Add new era: </label>
             <input class="new_input" name="newEraName" type="text"></input>
