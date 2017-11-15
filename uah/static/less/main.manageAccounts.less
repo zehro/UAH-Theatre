@@ -15,6 +15,36 @@
         margin        : 20px auto;
         padding       : 0.5em;
 
+        .title {
+            font-size: 1.2em;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-style: hidden;
+            width: 100%;
+        }
+        thead {
+            background-color: @color_primary;
+        }
+
+        td {
+            border-right: 1px solid @color_tertiary;
+            border-left: 1px solid @color_tertiary;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            text-align: left;
+            padding: 8px;
+        }
+        tbody tr:nth-child(even) {
+             background-color: @color_primary;
+         }
+        tbody tr:nth-child(odd) {
+            background-color: @color_secondary;
+        }
+
         .account {
             border-radius : 10px;
             margin: 10px 10px;
@@ -24,7 +54,6 @@
             background : @color_secondary;
 
             .button_container {
-                text-align  : right;
                 margin-top  : 10px;
 
             }
@@ -36,9 +65,49 @@
 @media only screen and ( max-width : @screen_max_width )
 {
     #page_content {
-        .page_container {
 
-            width : 90%;
+        .page_container {
+            margin     : 0 auto;
+            text-align : center;
+            width      : auto;
+            background    : @color_primary;
+            border-radius : 10px;
+            color         : white;
+            padding       : 0.5em;
+
+            table {
+                width: 100%;
+            }
+            thead {
+                display: none;
+            }
+
+            tr:nth-of-type(2n) {
+                background-color: @color_secondary;
+            }
+
+            tr td:first-child {
+                background: @color_primary;
+                font-weight:bold;
+                font-size:1.2em;
+
+            }
+            tbody td {
+                display: block;
+                text-align:center;
+                border:none;
+            }
+            tbody td:before {
+                content: attr(data-th);
+                background-color: @color_secondary;
+                display: block;
+                text-align:center;
+                border: none;
+             }
+             tbody tr:nth-child(even) {
+                  background-color: @color_secondary;
+              }
+
 
             .account {
 
@@ -46,8 +115,12 @@
 
                 .button_container {
                     text-align  : center;
-                    margin-top  : 10px;
+                    //margin-top  : 10px;
                     //float: left;
+                    button {
+                        margin-top: 5px;
+                    }
+
                 }
             }
         }

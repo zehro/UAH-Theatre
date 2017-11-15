@@ -178,6 +178,33 @@ nav.ui.menu .item.ui.dropdown {
   margin: 20px auto;
   padding: 0.5em;
 }
+#page_content .page_container .title {
+  font-size: 1.2em;
+}
+#page_content .page_container table {
+  border-collapse: collapse;
+  border-style: hidden;
+  width: 100%;
+}
+#page_content .page_container thead {
+  background-color: #007AC4;
+}
+#page_content .page_container td {
+  border-right: 1px solid #ACC0FD;
+  border-left: 1px solid #ACC0FD;
+  text-align: left;
+  padding: 8px;
+}
+#page_content .page_container th {
+  text-align: left;
+  padding: 8px;
+}
+#page_content .page_container tbody tr:nth-child(even) {
+  background-color: #007AC4;
+}
+#page_content .page_container tbody tr:nth-child(odd) {
+  background-color: #6f9bdc;
+}
 #page_content .page_container .account {
   border-radius: 10px;
   margin: 10px 10px;
@@ -187,18 +214,57 @@ nav.ui.menu .item.ui.dropdown {
   background: #6f9bdc;
 }
 #page_content .page_container .account .button_container {
-  text-align: right;
   margin-top: 10px;
 }
 @media only screen and (max-width: 767px) {
   #page_content .page_container {
-    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    width: auto;
+    background: #007AC4;
+    border-radius: 10px;
+    color: white;
+    padding: 0.5em;
+  }
+  #page_content .page_container table {
+    width: 100%;
+  }
+  #page_content .page_container thead {
+    display: none;
+  }
+  #page_content .page_container tr:nth-of-type(2n) {
+    background-color: #6f9bdc;
+  }
+  #page_content .page_container tr td:first-child {
+    background: #007AC4;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  #page_content .page_container tbody td {
+    display: block;
+    text-align: center;
+    border: none;
+  }
+  #page_content .page_container tbody td:before {
+    content: attr(data-th);
+    background-color: #6f9bdc;
+    display: block;
+    text-align: center;
+    border: none;
+  }
+  #page_content .page_container tbody tr:nth-child(even) {
+    background-color: #6f9bdc;
+  }
+  #page_content .page_container tbody tr:nth-child(odd) {
+    background-color: #6f9bdc;
   }
   #page_content .page_container .account {
     font-size: 1.2rem;
   }
   #page_content .page_container .account .button_container {
     text-align: center;
-    margin-top: 10px;
+  }
+  #page_content .page_container .account .button_container button {
+    margin-top: 5px;
   }
 }
