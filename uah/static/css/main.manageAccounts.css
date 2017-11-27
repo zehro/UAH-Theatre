@@ -175,76 +175,67 @@ nav.ui.menu .item.ui.dropdown {
   background: #007AC4;
   border-radius: 10px;
   color: white;
-  margin: 20px auto;
   padding: 0.5em;
+  max-height: 100%;
 }
 #page_content .page_container .title {
   font-size: 1.2em;
+  border-bottom: 2px solid white;
+  padding: 0.4em;
 }
 #page_content .page_container table {
   border-collapse: collapse;
   border-style: hidden;
   width: 100%;
 }
-#page_content .page_container thead {
+#page_content .page_container table thead {
   background-color: #007AC4;
 }
-#page_content .page_container td {
-  border-right: 1px solid #ACC0FD;
-  border-left: 1px solid #ACC0FD;
+#page_content .page_container table thead th {
   text-align: left;
   padding: 8px;
 }
-#page_content .page_container th {
-  text-align: left;
-  padding: 8px;
+#page_content .page_container table thead th:last-child {
+  width: 200px;
 }
-#page_content .page_container tbody tr:nth-child(even) {
+#page_content .page_container table tbody tr:nth-child(even) {
   background-color: #007AC4;
 }
-#page_content .page_container tbody tr:nth-child(odd) {
+#page_content .page_container table tbody tr:nth-child(odd) {
   background-color: #6f9bdc;
+}
+#page_content .page_container table tbody tr td {
+  border-right: 1px solid #ACC0FD;
+  text-align: left;
+  padding: 8px;
+}
+#page_content .page_container table tbody tr td:last-child {
+  border: none;
+}
+#page_content .page_container table .button_container {
+  display: inline-block;
+}
+#page_content .page_container table .button_container .button {
+  width: 90px;
 }
 @media only screen and (max-width: 767px) {
   #page_content .page_container {
-    margin: 0 auto;
-    text-align: center;
     width: auto;
-    background: #007AC4;
-    border-radius: 10px;
-    color: white;
-    padding: 0.5em;
   }
   #page_content .page_container table {
     width: 100%;
   }
-  #page_content .page_container thead {
-    display: none;
-  }
-  #page_content .page_container tr:nth-of-type(2n) {
-    background-color: #6f9bdc;
-  }
-  #page_content .page_container tr td:first-child {
-    background: #007AC4;
-    font-weight: bold;
-    font-size: 1.2em;
-  }
-  #page_content .page_container tbody td {
+  #page_content .page_container table tbody {
     display: block;
-    text-align: center;
-    border: none;
   }
-  #page_content .page_container tbody td:before {
-    content: attr(data-th);
-    background-color: #6f9bdc;
-    display: block;
-    text-align: center;
-    border: none;
+  #page_content .page_container table tbody td {
+    width: 33%;
   }
-  #page_content .page_container tbody tr:nth-child(even) {
-    background-color: #6f9bdc;
+  #page_content .page_container table tbody td:last-child {
+    width: 90px;
   }
-  #page_content .page_container .button_container {
-    text-align: center;
+  #page_content .page_container table tbody {
+    max-height: calc(100vh - 270px);
+    overflow-y: scroll;
   }
 }

@@ -661,9 +661,7 @@ def additem():
             transaction.rollback()
             flash(u'An error occurred.', 'danger')
             raise
-
     return redirect(url_for('search_page'))
-
 
 @app.route('/accounts', methods=['GET'])
 @login_required()

@@ -29,46 +29,45 @@
 {% endblock %}
 
 {% block pagecontent %}
-    <div class="page_container">
-        <span class="title">Accounts</span>
+<div class="page_container">
+    <div class="title">Accounts</div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Last Name</th>
-                    <th>First Name</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for account in accounts %}
-                <tr>
-                    <td>{{ account.USERNAME }} username </td>
-                    <td>{{ account.LASTNAME }} lastname</td>
-                    <td>{{ account.FIRSTNAME }} firstname</td>
-                    <td>
-                        <div class="button_container">
-                        {% if not account.ISVERIFIED %}
-                            <button class="ui button toggle_status_button" type="button" uid="{{ account.UID }}">
-                                Verify
-                            </button>
-                        {% else %}
-                            <button class="ui button toggle_status_button" type="button" uid="{{ account.UID }}">
-                                Disable
-                            </button>
-                        {% endif %}
-                        <button class="ui button delete_account_button" type="button" uid="{{ account.UID }}">
-                            Delete
-                        </button>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in accounts %}
+            <tr>
+                <td>{{ account[1] }}</td>
+                <td>{{ account[3] }}</td>
+                <td>{{ account[4] }}</td>
+                <td>
+                    <div class="button_container">
+                    {% if not account[6] %}
+                    <button class="ui button green toggle_status_button" type="button" uid="{{ account[0] }}">
+                        Verify
+                    </button>
+                    {% else %}
+                    <button class="ui button orange toggle_status_button" type="button" uid="{{ account[0] }}">
+                        Disable
+                    </button>
+                    {% endif %}
+                    <button class="ui button red delete_account_button" type="button" uid="{{ account[0] }}">
+                        Delete
+                    </button>
                     </div>
                 </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-    </div>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
 
 {% block js %}
