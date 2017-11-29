@@ -168,74 +168,83 @@ nav.ui.menu .item.ui.dropdown {
     min-width: auto;
   }
 }
-#page_content .page_container {
-  margin: 0 auto;
-  text-align: center;
-  width: 80%;
+#page_content .table_container {
   background: #007AC4;
   border-radius: 10px;
   color: white;
   padding: 0.5em;
   max-height: 100%;
 }
-#page_content .page_container .title {
+#page_content .table_container .title {
   font-size: 1.2em;
   border-bottom: 2px solid white;
   padding: 0.4em;
 }
-#page_content .page_container table {
+#page_content .table_container table {
+  display: flex;
+  flex-flow: column;
   border-collapse: collapse;
   border-style: hidden;
   width: 100%;
 }
-#page_content .page_container table thead {
-  background-color: #007AC4;
+#page_content .table_container table thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  background: #008de3;
 }
-#page_content .page_container table thead th {
-  text-align: left;
-  padding: 8px;
-}
-#page_content .page_container table thead th:last-child {
-  width: 200px;
-}
-#page_content .page_container table tbody tr:nth-child(even) {
-  background-color: #007AC4;
-}
-#page_content .page_container table tbody tr:nth-child(odd) {
-  background-color: #6f9bdc;
-}
-#page_content .page_container table tbody tr td {
+#page_content .table_container table thead th {
   border-right: 1px solid #ACC0FD;
-  text-align: left;
+  width: 25%;
   padding: 8px;
 }
-#page_content .page_container table tbody tr td:last-child {
+#page_content .table_container table thead th:last-child {
   border: none;
 }
-#page_content .page_container table .button_container {
-  display: inline-block;
+#page_content .table_container table tbody {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 270px);
 }
-#page_content .page_container table .button_container .button {
+#page_content .table_container table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+#page_content .table_container table tbody tr:nth-child(even) {
+  background-color: #007AC4;
+}
+#page_content .table_container table tbody tr:nth-child(odd) {
+  background-color: #6f9bdc;
+}
+#page_content .table_container table tbody tr td {
+  border-right: 1px solid #ACC0FD;
+  width: 25%;
+  padding: 8px;
+}
+#page_content .table_container table tbody tr td:last-child {
+  border: none;
+}
+#page_content .table_container table tbody tr td .button_container .button {
   width: 90px;
+  display: inline-block;
+  margin: 5px auto;
+}
+#page_content .table_container table tbody tr td .button_container .button .web {
+  display: inline;
+}
+#page_content .table_container table tbody tr td .button_container .button .mobile {
+  display: none;
 }
 @media only screen and (max-width: 767px) {
-  #page_content .page_container {
-    width: auto;
+  #page_content .table_container table tbody tr td .button_container .button {
+    width: 50px;
   }
-  #page_content .page_container table {
-    width: 100%;
+  #page_content .table_container table tbody tr td .button_container .button .web {
+    display: none;
   }
-  #page_content .page_container table tbody {
-    display: block;
-  }
-  #page_content .page_container table tbody td {
-    width: 33%;
-  }
-  #page_content .page_container table tbody td:last-child {
-    width: 90px;
-  }
-  #page_content .page_container table tbody {
-    max-height: calc(100vh - 270px);
-    overflow-y: scroll;
+  #page_content .table_container table tbody tr td .button_container .button .mobile {
+    display: inline;
   }
 }

@@ -5,10 +5,7 @@
 
 // Manage Accounts Page Styles
 #page_content {
-    .page_container {
-        margin     : 0 auto;
-        text-align : center;
-        width      : 80%;
+    .table_container {
         background    : @color_primary;
         border-radius : 10px;
         color         : white;
@@ -22,25 +19,40 @@
         }
 
         table {
+            display: flex;
+            flex-flow: column;
             border-collapse: collapse;
             border-style: hidden;
             width: 100%;
 
             thead {
-                background-color: @color_primary;
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+                background: lighten(@color_primary, 6%);
 
                 th {
-                    text-align: left;
+                    border-right: 1px solid @color_tertiary;
+                    width: 25%;
                     padding: 8px;
 
                     &:last-child {
-                        width: 200px;
+                        border: none;
                     }
                 }
             }
 
             tbody {
+                display: block;
+                overflow-x: hidden;
+                overflow-y: auto;
+                max-height: ~"calc(100vh - 270px)";
+
                 tr {
+                    display: table;
+                    width: 100%;
+                    table-layout: fixed;
+
                     &:nth-child(even) {
                         background-color: @color_primary;
                     }
@@ -51,21 +63,29 @@
 
                     td {
                         border-right: 1px solid @color_tertiary;
-                        text-align: left;
+                        width: 25%;
                         padding: 8px;
 
                         &:last-child {
                             border: none;
                         }
+
+                        .button_container {
+                            .button {
+                                width : 90px;
+                                display: inline-block;
+                                margin: 5px auto;
+
+                                .web {
+                                    display: inline;
+                                }
+
+                                .mobile {
+                                    display: none;
+                                }
+                            }
+                        }
                     }
-                }
-            }
-
-            .button_container {
-                display: inline-block;
-
-                .button {
-                    width : 90px;
                 }
             }
         }
@@ -76,27 +96,26 @@
 @media only screen and ( max-width : @screen_max_width )
 {
     #page_content {
-        .page_container {
-            width : auto;
-
+        .table_container {
             table {
-                width: 100%;
-
                 tbody {
-                    display: block;
+                    tr {
+                        td {
+                            .button_container {
+                                .button {
+                                    width : 50px;
 
-                    td {
-                        width: 33%;
+                                    .web {
+                                        display: none;
+                                    }
 
-                        &:last-child {
-                            width: 90px;
+                                    .mobile {
+                                        display: inline;
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-
-                tbody {
-                    max-height: ~"calc(100vh - 270px)";
-                    overflow-y: scroll;
                 }
             }
         }

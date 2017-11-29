@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block pagecontent %}
-<div class="page_container">
+<div class="table_container">
     <div class="title">Accounts</div>
 
     <table>
@@ -49,17 +49,20 @@
                 <td>{{ account[4] }}</td>
                 <td>
                     <div class="button_container">
-                    {% if not account[6] %}
+                    {% if account[6] %}
                     <button class="ui button green toggle_status_button" type="button" uid="{{ account[0] }}">
-                        Verify
+                        <span class="web">Verified</span>
+                        <span class="mobile">V</span>
                     </button>
                     {% else %}
-                    <button class="ui button orange toggle_status_button" type="button" uid="{{ account[0] }}">
-                        Disable
+                    <button class="ui button gray toggle_status_button" type="button" uid="{{ account[0] }}">
+                        <span class="web">Disabled</span>
+                        <span class="mobile">D</span>
                     </button>
                     {% endif %}
                     <button class="ui button red delete_account_button" type="button" uid="{{ account[0] }}">
-                        Delete
+                        <span class="web">Delete</span>
+                        <span class="mobile">D</span>
                     </button>
                     </div>
                 </td>
