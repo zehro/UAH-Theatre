@@ -18,70 +18,94 @@
     }
 
     .attr_container {
-        margin     : 0 auto;
-        //font-size : 1.25rem;
-        text-align : center;
-        //max-width : 500px;
-        width      : 80%;
         background    : @color_primary;
         border-radius : 10px;
         color         : white;
-        margin        : 20px auto;
         padding       : 0.5em;
-        max-height     : ~"calc(100% - 300px)";
-        overflow-x     : auto;
+        margin-bottom : 20px;
+        max-height    : ~"calc(100% - 300px)";
+        overflow-y    : auto;
 
         .title {
             font-size: 1.2em;
+            border-bottom: 2px solid white;
+            padding: 0.4em;
         }
 
-
-        .colorOption, .eraOption {
-            border-radius : 10px;
-            margin: 10px 10px;
-            padding: 1em;
-            //font-size : 1.25rem;
-            text-align : left;
-            background : @color_secondary;
-
-            .ui.divider.white {
-                margin: 10px;
-            }
-
-
-            .button_container {
-                text-align  : right;
-                //margin-top  : 10px;
-                //float: right
-            }
-
-        }
             table {
+
+                display: flex;
+                flex-flow: column;
                 border-collapse: collapse;
                 border-style: hidden;
                 width: 100%;
-                margin-top: 5px;
-                margin-bottom: 5px;
+
+                // border-collapse: collapse;
+                // border-style: hidden;
+                // width: 100%;
+                // margin-top: 5px;
+                // margin-bottom: 5px;
             }
             thead {
-                background-color: @color_primary;
-            }
-
-            td {
-                border-right: 1px solid @color_tertiary;
-                border-left: 1px solid @color_tertiary;
-                text-align: left;
-                padding: 8px;
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+                background: lighten(@color_primary, 6%);
             }
             th {
-                text-align: left;
+                border-right: 1px solid @color_tertiary;
+                width: 25%;
                 padding: 8px;
+
+                &:last-child {
+                    border: none;
+                }
             }
-            tbody tr:nth-child(even) {
-                 background-color: @color_primary;
-             }
-            tbody tr:nth-child(odd) {
-                background-color: @color_secondary;
+
+
+            tbody {
+                display: block;
+
+
+                tr {
+                    display: table;
+                    width: 100%;
+                    table-layout: fixed;
+
+                    &:nth-child(even) {
+                        background-color: @color_primary;
+                    }
+
+                    &:nth-child(odd) {
+                        background-color: @color_secondary;
+                    }
+
+                    td {
+                        border-right: 1px solid @color_tertiary;
+                        width: 25%;
+                        padding: 8px;
+
+                        &:last-child {
+                            border: none;
+                        }
+
+
+                        .button {
+                            width : 90px;
+                            display: inline-block;
+                            margin: 5px auto;
+
+                            .web {
+                                display: inline;
+                            }
+
+                            .mobile {
+                                display: none;
+                            }
+
+                        }
+                    }
+                }
             }
 
 
@@ -94,57 +118,39 @@
 {
     #page_content {
         input {
-            width: 150px;
+            width: 100px;
         }
         .attr_container {
             width : 100%;
-            max-height : ~"calc(100% - 200px)";
+            max-height : ~"calc(100% - 175px)";
 
-                table {
-                    width: 100%;
-                }
-                thead {
-                    display: none;
-                }
+            table {
+                tbody {
+                    tr {
+                        td {
 
-                tr:nth-of-type(2n) {
-                    background-color: @color_secondary;
-                }
+                            .button {
+                                width : 50px;
+                                padding-right: 0px;
+                                padding-left: 0px;
+                                text-align: center;
 
-                tr td:first-child {
-                    background: @color_primary;
-                    font-weight:bold;
-                    font-size:1.2em;
+                                .web {
+                                    display: none;
+                                }
 
-                }
-                tbody td {
-                    display: block;
-                    text-align:center;
-                    //padding: 8px;
-                    border:none;
-                }
-                tbody td:before {
-                    content: attr(data-th);
-                    background-color: @color_secondary;
-                    display: block;
-                    text-align:center;
-                    border: none;
-                 }
-                 tbody tr:nth-child(even) {
-                      background-color: @color_secondary;
-                  }
+                                .mobile {
+                                    display: inline;
+                                }
+                            }
 
-            .colorOption, .eraOption {
-                padding: 0.75em;
-
-                .button_container {
-                    text-align  : center;
+                        }
+                    }
                 }
             }
-
             form {
                 .new_input {
-                    width: 175px;
+                    width: 120px;
                 }
             }
         }

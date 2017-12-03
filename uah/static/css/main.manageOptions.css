@@ -178,55 +178,47 @@ nav.ui.menu .item.ui.dropdown {
   display: none;
 }
 #page_content .attr_container {
-  margin: 0 auto;
-  text-align: center;
-  width: 80%;
   background: #007AC4;
   border-radius: 10px;
   color: white;
-  margin: 20px auto;
   padding: 0.5em;
+  margin-bottom: 20px;
   max-height: calc(100% - 300px);
-  overflow-x: auto;
+  overflow-y: auto;
 }
 #page_content .attr_container .title {
   font-size: 1.2em;
-}
-#page_content .attr_container .colorOption,
-#page_content .attr_container .eraOption {
-  border-radius: 10px;
-  margin: 10px 10px;
-  padding: 1em;
-  text-align: left;
-  background: #6f9bdc;
-}
-#page_content .attr_container .colorOption .ui.divider.white,
-#page_content .attr_container .eraOption .ui.divider.white {
-  margin: 10px;
-}
-#page_content .attr_container .colorOption .button_container,
-#page_content .attr_container .eraOption .button_container {
-  text-align: right;
+  border-bottom: 2px solid white;
+  padding: 0.4em;
 }
 #page_content .attr_container table {
+  display: flex;
+  flex-flow: column;
   border-collapse: collapse;
   border-style: hidden;
   width: 100%;
-  margin-top: 5px;
-  margin-bottom: 5px;
 }
 #page_content .attr_container thead {
-  background-color: #007AC4;
-}
-#page_content .attr_container td {
-  border-right: 1px solid #ACC0FD;
-  border-left: 1px solid #ACC0FD;
-  text-align: left;
-  padding: 8px;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  background: #008de3;
 }
 #page_content .attr_container th {
-  text-align: left;
+  border-right: 1px solid #ACC0FD;
+  width: 25%;
   padding: 8px;
+}
+#page_content .attr_container th:last-child {
+  border: none;
+}
+#page_content .attr_container tbody {
+  display: block;
+}
+#page_content .attr_container tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
 }
 #page_content .attr_container tbody tr:nth-child(even) {
   background-color: #007AC4;
@@ -234,52 +226,46 @@ nav.ui.menu .item.ui.dropdown {
 #page_content .attr_container tbody tr:nth-child(odd) {
   background-color: #6f9bdc;
 }
+#page_content .attr_container tbody tr td {
+  border-right: 1px solid #ACC0FD;
+  width: 25%;
+  padding: 8px;
+}
+#page_content .attr_container tbody tr td:last-child {
+  border: none;
+}
+#page_content .attr_container tbody tr td .button {
+  width: 90px;
+  display: inline-block;
+  margin: 5px auto;
+}
+#page_content .attr_container tbody tr td .button .web {
+  display: inline;
+}
+#page_content .attr_container tbody tr td .button .mobile {
+  display: none;
+}
 @media only screen and (max-width: 767px) {
   #page_content input {
-    width: 150px;
+    width: 100px;
   }
   #page_content .attr_container {
     width: 100%;
-    max-height: calc(100% - 200px);
+    max-height: calc(100% - 175px);
   }
-  #page_content .attr_container table {
-    width: 100%;
+  #page_content .attr_container table tbody tr td .button {
+    width: 50px;
+    padding-right: 0px;
+    padding-left: 0px;
+    text-align: center;
   }
-  #page_content .attr_container thead {
+  #page_content .attr_container table tbody tr td .button .web {
     display: none;
   }
-  #page_content .attr_container tr:nth-of-type(2n) {
-    background-color: #6f9bdc;
-  }
-  #page_content .attr_container tr td:first-child {
-    background: #007AC4;
-    font-weight: bold;
-    font-size: 1.2em;
-  }
-  #page_content .attr_container tbody td {
-    display: block;
-    text-align: center;
-    border: none;
-  }
-  #page_content .attr_container tbody td:before {
-    content: attr(data-th);
-    background-color: #6f9bdc;
-    display: block;
-    text-align: center;
-    border: none;
-  }
-  #page_content .attr_container tbody tr:nth-child(even) {
-    background-color: #6f9bdc;
-  }
-  #page_content .attr_container .colorOption,
-  #page_content .attr_container .eraOption {
-    padding: 0.75em;
-  }
-  #page_content .attr_container .colorOption .button_container,
-  #page_content .attr_container .eraOption .button_container {
-    text-align: center;
+  #page_content .attr_container table tbody tr td .button .mobile {
+    display: inline;
   }
   #page_content .attr_container form .new_input {
-    width: 175px;
+    width: 120px;
   }
 }
