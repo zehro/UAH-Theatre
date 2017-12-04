@@ -23,8 +23,6 @@
         color         : white;
         padding       : 0.5em;
         margin-bottom : 20px;
-        max-height    : ~"calc(100% - 300px)";
-        overflow-y    : auto;
 
         .title {
             font-size: 1.2em;
@@ -40,11 +38,6 @@
                 border-style: hidden;
                 width: 100%;
 
-                // border-collapse: collapse;
-                // border-style: hidden;
-                // width: 100%;
-                // margin-top: 5px;
-                // margin-bottom: 5px;
             }
             thead {
                 display: table;
@@ -65,6 +58,9 @@
 
             tbody {
                 display: block;
+                max-height    : ~"calc(100vh - 400px)";
+                overflow-y    : auto;
+                overflow-x: hidden;
 
 
                 tr {
@@ -121,9 +117,6 @@
             width: 100px;
         }
         .attr_container {
-            width : 100%;
-            max-height : ~"calc(100% - 175px)";
-
             table {
                 tbody {
                     tr {

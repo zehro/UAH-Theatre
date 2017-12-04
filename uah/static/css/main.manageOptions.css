@@ -183,8 +183,6 @@ nav.ui.menu .item.ui.dropdown {
   color: white;
   padding: 0.5em;
   margin-bottom: 20px;
-  max-height: calc(100% - 300px);
-  overflow-y: auto;
 }
 #page_content .attr_container .title {
   font-size: 1.2em;
@@ -214,6 +212,9 @@ nav.ui.menu .item.ui.dropdown {
 }
 #page_content .attr_container tbody {
   display: block;
+  max-height: calc(100vh - 400px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 #page_content .attr_container tbody tr {
   display: table;
@@ -248,10 +249,6 @@ nav.ui.menu .item.ui.dropdown {
 @media only screen and (max-width: 767px) {
   #page_content input {
     width: 100px;
-  }
-  #page_content .attr_container {
-    width: 100%;
-    max-height: calc(100% - 175px);
   }
   #page_content .attr_container table tbody tr td .button {
     width: 50px;
