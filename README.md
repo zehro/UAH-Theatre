@@ -105,3 +105,12 @@ Then, run: ``` flask run ```. This is the command that starts the local server.
 Press ctrl+C to stop the local server.
 
 Run ```deactivate``` to exit the virtualenv.
+
+
+### Troubleshooting:
+
+In the case of issues with Heroku, they have help articles availible at https://devcenter.heroku.com/. If you upload changes and the site no longer works, you can always use the Heroku dashboard to revert to the previous build to undo.
+
+If it is ever necessary to reinitialize the database (if you wipe to clean it up for example), the quieries run to initalize it are all in the top section of the SQL.md file in the main folder of this repository. Just run the whole block and it'll add the tables and some sample data.
+
+If you are having issues with Git, don't worry. It is hard. If you've made changes locally that break things or accidentally delete some code, you can always delete your folder on your computer, and run the pull commmand again to get the latest version of the code from the site. Due to the difficulty of Git, there is a ton of help online even for simple commands, and the articles on the site StackOverflow.com can help a lot, if you just search the issue you are having and include the word 'Git' in your search.
