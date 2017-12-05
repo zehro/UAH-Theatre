@@ -69,6 +69,16 @@ As the application is hosted entirely on the web, no installation is necessary t
 
 The application can be accessed through the live hosting site (https://uah-inventory.herokuapp.com/). For developer testing, run the command ‘flask run’ in the root directory (UAH-Theater) of the project, and go to localhost:5000 to view it.
 
+### Troubleshooting:
+
+In the case of issues with Heroku, they have help articles available at https://devcenter.heroku.com/. If you upload changes and the site no longer works, you can always use the Heroku dashboard to revert to the previous build to undo.
+
+If it is ever necessary to reinitialize the database (if you wipe to clean it up for example), the queries run to initialize it are all in the top section of the SQL.md file in the main folder of this repository. Just run the whole block and it'll add the tables and some sample data.
+
+To run SQL queries, download the Heroku CLI (command line interface) here: https://devcenter.heroku.com/articles/heroku-cli and connect to your account by typing ```heroku:login``` into the command prompt. Once you connect your account, connect to the uah-inventory database by entering the following command ```heroku pg:psql --app uah-inventory```. After connecting, you may enter PostgreSQL SQL queries to edit the database.
+
+If you are having issues with Git, don't worry. It is hard. If you've made changes locally that break things or accidentally delete some code, you can always delete your folder on your computer, and run the pull command again to get the latest version of the code from the site. Due to the difficulty of Git, there is a ton of help online even for simple commands, and the articles on the site StackOverflow.com can help a lot, if you just search the issue you are having and include the word 'Git' in your search.
+
 
 ## Setting Up the Local Server
 1. Install Python 3. If you're running Linux, your distribution will provide packages you can use.
@@ -106,13 +116,3 @@ Press ctrl+C to stop the local server.
 
 Run ```deactivate``` to exit the virtualenv.
 
-
-### Troubleshooting:
-
-In the case of issues with Heroku, they have help articles availible at https://devcenter.heroku.com/. If you upload changes and the site no longer works, you can always use the Heroku dashboard to revert to the previous build to undo.
-
-If it is ever necessary to reinitialize the database (if you wipe to clean it up for example), the quieries run to initalize it are all in the top section of the SQL.md file in the main folder of this repository. Just run the whole block and it'll add the tables and some sample data.
-
-To run SQL queries, download the Heroku CLI (command line interface) here: https://devcenter.heroku.com/articles/heroku-cli and connect to your account by typing ```heroku:login``` into the command prompt. Once you connect your account, connect to the uah-inventory database by entering the following command ```heroku pg:psql --app uah-inventory```. After connecting, you may enter PostgreSQL SQL queries to edit the database.
-
-If you are having issues with Git, don't worry. It is hard. If you've made changes locally that break things or accidentally delete some code, you can always delete your folder on your computer, and run the pull commmand again to get the latest version of the code from the site. Due to the difficulty of Git, there is a ton of help online even for simple commands, and the articles on the site StackOverflow.com can help a lot, if you just search the issue you are having and include the word 'Git' in your search.
