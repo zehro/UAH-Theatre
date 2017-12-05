@@ -26,19 +26,12 @@
 #### New Features:
 
 * Admin functionalities
-
 * Verify newly registered users
-
 * Disable verified users
-
 * Delete registered users
-
 * Create new colors
-
 * Edit/Update current colors
-
 * Create new eras (time periods)
-
 * Edit/Update current eras
 
 #### Bug Fixes:
@@ -52,17 +45,29 @@
 
 ## Install Guide:
 
-Pre-requisites: The application is run remotely through the web hosting solution Heroku. A web browser and internet access is necessary to manage the installation, as are a free Github account (https://github.com/join) and a free Heroku account (https://signup.heroku.com/). A web browser and internet access are also required to use the application.
+### Pre-requisites: 
 
-Dependencies: The application is entirely web-hosted, so it is not dependant on any locally installed libraries or software. No local installation is necessary to use the application. However, if you wish to make changes to the code or update the version that is running on Heroku, you will need to have Git (https://desktop.github.com/) and Heroku (https://devcenter.heroku.com/articles/heroku-cli) installed. For both installations, simply find the installer for your system (Windows/Mac/Linux) on that page, download it, and run it.
+The application is run remotely through the web hosting solution Heroku. A web browser and internet access is necessary to manage the installation, as are a free Github account (https://github.com/join) and a free Heroku account (https://signup.heroku.com/). A web browser and internet access are also required to use the application.
 
-Download Instructions: All of the code for the project is available at https://github.com/zehro/UAH-Theatre.
+### Dependencies: 
 
-Build Instructions: The build process is managed by Heroku. If the source code on Heroku has changed, a build request will automatically be added to the task queue. It normally takes less than 3 minutes for the build to complete and all changes to be deployed.
+The application is entirely web-hosted, so it is not dependant on any locally installed libraries or software. No local installation is necessary to use the application. However, if you wish to make changes to the code or update the version that is running on Heroku, you will need to have Git (https://desktop.github.com/) and Heroku (https://devcenter.heroku.com/articles/heroku-cli) installed. For both installations, simply find the installer for your system (Windows/Mac/Linux) on that page, download it, and run it.
 
-Application Installation: As the application is hosted entirely on the web, no installation is necessary to use the application, just access it through a web browser on any device.
+### Download Instructions: 
 
-Run Instructions: The application can be accessed through the live hosting site (https://uah-inventory.herokuapp.com/). For developer testing, run the command ‘flask run’ in the root directory (UAH-Theater) of the project, and go to localhost:5000 to view it.
+All of the code for the project is available at https://github.com/zehro/UAH-Theatre.
+
+### Build Instructions: 
+
+The build process is managed by Heroku. If the source code on Heroku has changed, a build request will automatically be added to the task queue. It normally takes less than 3 minutes for the build to complete and all changes to be deployed.
+
+### Application Installation: 
+
+As the application is hosted entirely on the web, no installation is necessary to use the application, just access it through a web browser on any device.
+
+### Run Instructions: 
+
+The application can be accessed through the live hosting site (https://uah-inventory.herokuapp.com/). For developer testing, run the command ‘flask run’ in the root directory (UAH-Theater) of the project, and go to localhost:5000 to view it.
 
 
 ## Setting Up the Local Server
