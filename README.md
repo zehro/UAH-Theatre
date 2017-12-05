@@ -1,47 +1,56 @@
 # UAH-Theatre
-Release Notes:
 
-UAH Theatre Inventory 1.0.0
-New Features:
-A functional inventory system
-Create items
-Edit/Update items
-Delete items
-Search items
+## Release Notes:
 
-	Bug Fixes:
-None. It’s the first stable release!
+### UAH Theatre Inventory 1.0.0
 
-Known Bugs:
-None, so far.
+#### New Features:
 
+* A functional inventory system
+* Create items
+* Edit/Update items
+* Delete items
+* Search items
 
-UAH Theatre Inventory 1.0.1a
-New Features:
-Admin functionalities
-Verify newly registered users
-Disable verified users
-Delete registered users
-Create new colors
-Edit/Update current colors
-Create new eras (time periods)
-Edit/Update current eras
+#### Bug Fixes:
 
-	Bug Fixes:
-None. The inventory system from the first release is fine.
+* None. It’s the first stable release!
 
-Known Bugs:
-Regular user accounts can access administrator routes/functions. We should disable that.
+#### Known Bugs:
+
+* None, so far.
 
 
+### UAH Theatre Inventory 1.0.1a
+
+#### New Features:
+
+* Admin functionalities
+
+* Verify newly registered users
+
+* Disable verified users
+
+* Delete registered users
+
+* Create new colors
+
+* Edit/Update current colors
+
+* Create new eras (time periods)
+
+* Edit/Update current eras
+
+#### Bug Fixes:
+
+* None. The inventory system from the first release is fine.
+
+#### Known Bugs:
+
+* Regular user accounts can access administrator routes/functions. We should disable that.
 
 
-
-
-
-
-
-Install Guide:
+## Install Guide:
 
 Pre-requisites: The application is run remotely through the web hosting solution Heroku. A web browser and internet access is necessary to manage the installation, as are a free Github account (https://github.com/join) and a free Heroku account (https://signup.heroku.com/). A web browser and internet access are also required to use the application.
 
@@ -54,15 +63,6 @@ Build Instructions: The build process is managed by Heroku. If the source code o
 Application Installation: As the application is hosted entirely on the web, no installation is necessary to use the application, just access it through a web browser on any device.
 
 Run Instructions: The application can be accessed through the live hosting site (https://uah-inventory.herokuapp.com/). For developer testing, run the command ‘flask run’ in the root directory (UAH-Theater) of the project, and go to localhost:5000 to view it.
-
-Troubleshooting:
-
-
-
-
-
-
-
 
 
 ## Setting Up the Local Server
